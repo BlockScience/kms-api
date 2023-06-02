@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Response, status
 from kms_api.core import firestore_db
-from kms_api.models import KnowledgeObject
+from kms_api.models import KnowledgeObject, UpdateKnowledge
 from kms_api.utils import url_normalize, encode_url, search_typesense, query
 
 router = APIRouter(
@@ -37,9 +37,11 @@ def query_knowledge(q: str, page: int = 1, per_page: int = 15):
 
     return search_typesense(query(q, page, per_page))
 
-@router.put("")
-def update_knowledge():
-    return
+@router.put("/{object_id}")
+def update_knowledge(object_id: str, kobj: UpdateKnowledge):
+    changed_fields = kobj.dict(exclude_none=True)
+    firestore_db.collection('knowledge').document(object_id).set(changed_fields, merge=True)
+    return {'status': 'success'}
 
 @router.delete("/{object_id}")
 def delete_knowledge(object_id: str):
