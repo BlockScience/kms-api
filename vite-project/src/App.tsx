@@ -21,6 +21,7 @@ function App() {
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
+        <button onClick={() => fetch('/api').then(resp=>resp.json()).then(data=>{alert(data.message)})}>click me!</button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>

@@ -1,8 +1,17 @@
 server {
-    listen 80;
 	server_name 34.134.5.5;
+	listen 80;
 
-    location / {
+	# path to static files, update as needed
+	root /home/admin/kms-api/vite-project/dist;
+
+	location / {
+		try_files $uri/index.html $uri.html $uri $uri/ =404;
+	}
+
+    location /api/ {
+		# forwards urls to API backend, but removes /api/ in the sent path 
 		proxy_pass http://localhost:8000;
+		rewrite ^/api(/.*)$ $1 break;
 	}
 }
