@@ -1,10 +1,12 @@
-from fastapi import APIRouter, Response, status
+from fastapi import APIRouter, Response, status, Depends
 from kms_api.core import firestore_db
 from kms_api.models import KnowledgeObject, UpdateKnowledge
 from kms_api.utils import url_normalize, encode_url, search_typesense, query
+from kms_api.auth import validate_key
 
 router = APIRouter(
-    prefix="/knowledge"
+    prefix="/knowledge",
+    dependencies=[Depends(validate_key)]
 )
 
 @router.post("")
