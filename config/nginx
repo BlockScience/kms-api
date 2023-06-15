@@ -3,7 +3,7 @@ server {
 	listen 80;
 
 	# path to static files, update as needed
-	root /home/admin/kms-api/vite-project/dist;
+	root /home/admin/kms-api/frontend/dist;
 
 	location / {
 		try_files $uri/index.html $uri.html $uri $uri/ =404;
