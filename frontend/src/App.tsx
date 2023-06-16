@@ -1,29 +1,40 @@
-import React, { Component } from "react";
-import { Routes, Route, NavLink, BrowserRouter } from "react-router-dom";
+import { Component } from "react";
+import { AppShell } from '@mantine/core';
+import { SpotlightProvider } from '@mantine/spotlight';
+import { Routes, Route, BrowserRouter } from "react-router-dom";
+
+import { Nav } from './_nav';
+import { ThemeProvider } from './ThemeProvider';
+import { Spotlight } from "./Spotlight";
+
 import Home from "./views/Home";
-import Stuff from "./views/Stuff";
-import Contact from "./views/Contact";
+import Console from "./views/Console";
+import Proposals from "./views/Proposals";
+import Schema from "./views/Schema";
+import Notifications from "./views/Notifications";
+import Search from "./views/Search"
 
 class App extends Component {
   render() {
     return (
-      <BrowserRouter>
-        <div>
-          <h1>KMS SPA</h1>
-          <ul className="header">
-            <li><NavLink to="/">Home</NavLink></li>
-            <li><NavLink to="/stuff">Stuff</NavLink></li>
-            <li><NavLink to="/contact">Contact</NavLink></li>
-          </ul>
-          <div className="content">
-            <Routes>
-              <Route path="/" Component={Home} />
-              <Route path="/stuff" Component={Stuff} />
-              <Route path="/contact" Component={Contact} />
-            </Routes>
-          </div>
-        </div>
-      </BrowserRouter>
+      <ThemeProvider>
+        <Spotlight>
+          <BrowserRouter>
+            <AppShell padding="md" fixed={false} navbar={<Nav />}>
+              <div>
+                <Routes>
+                  <Route path="/" Component={Home} />
+                  <Route path="/console" Component={Console} />
+                  <Route path="/proposals" Component={Proposals} />
+                  <Route path="/schema" Component={Schema} />
+                  <Route path="/notifications" Component={Notifications} />
+                  <Route path="/search" Component={Search} />
+                </Routes>
+              </div>
+            </AppShell>
+          </BrowserRouter>
+        </Spotlight>
+      </ThemeProvider>
     );
   }
 }

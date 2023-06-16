@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import { Component } from "react";
 
 class Home extends Component {
   render() {
     return (
       <div>
-        <h2>HELLO</h2>
+        <h2>Home view</h2>
         <p>Cras facilisis urna ornare ex volutpat, et
           convallis erat elementum. Ut aliquam, ipsum vitae
           gravida suscipit, metus dui bibendum est, eget rhoncus nibh
