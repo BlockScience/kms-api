@@ -12,7 +12,7 @@ interface ProposalCardProps {
 
 const useStyles = createStyles((theme) => ({
   paper: {
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
+    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : 'white',
   }
 }));
 
@@ -20,7 +20,7 @@ export function ProposalCard(proposal: ProposalCardProps) {
   const { classes } = useStyles();
   const { colors } = theme();
   return (
-    <Paper shadow="sm" p="lg" withBorder className={classes.paper}>
+    <Paper shadow="md" p="lg" withBorder={currentColorScheme() !== 'dark'} className={classes.paper}>
       <Group position="apart">
         <Group>
           <Title order={5}>{proposal.title}</Title>

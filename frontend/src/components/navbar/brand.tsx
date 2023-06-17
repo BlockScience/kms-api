@@ -20,13 +20,14 @@ const useStyles = createStyles((theme) => ({
 export function Brand() {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const { classes } = useStyles();
+  const kmsVersion = 1.1;
   return (
     <Box className={classes.box}>
       <Group position="apart">
         <NavLink to="/" style={{ textDecoration: 'none' }}>
           <Group>
             <Logo colorScheme={colorScheme} />
-            <Text className={classes.logoText} td="none">KMS</Text>
+            <Text className={classes.logoText} td="none">KMS <Text span inherit fz="sm" c="dimmed">v{kmsVersion}</Text></Text>
           </Group>
         </NavLink>
         <ActionIcon variant="default" onClick={() => toggleColorScheme()} size={30}>

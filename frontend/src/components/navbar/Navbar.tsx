@@ -1,11 +1,12 @@
-import { Navbar, Box, Space, Badge, createStyles, TextInput } from '@mantine/core';
-import { useSpotlight } from '@mantine/spotlight';
-import { Search } from 'tabler-icons-react';
 import { Brand } from '@/components/navbar/brand';
-import { NavLinks } from '@/components/navbar/linksNavigation';
 import { ExternalLinks } from '@/components/navbar/linksExternal';
+import { NavLinks } from '@/components/navbar/linksNavigation';
 import { User } from '@/components/navbar/user';
-import { currentColorScheme, theme } from '@/utilities/theme';
+import { currentColorScheme } from '@/utilities/theme';
+import { Badge, Box, Navbar, Space, TextInput, createStyles } from '@mantine/core';
+import { useSpotlight } from '@mantine/spotlight';
+import { BaseSyntheticEvent } from 'react';
+import { Search } from 'tabler-icons-react';
 
 
 const navStyles = createStyles((theme) => ({
@@ -18,12 +19,14 @@ const navStyles = createStyles((theme) => ({
   }
 }));
 
+
 export function Nav() {
   const spotlight = useSpotlight();
+  const onSelectSearchInput = (e: BaseSyntheticEvent) => {
+    e.target.blur();
+    spotlight.openSpotlight()
+  }
   const { classes } = navStyles();
-  const { colors } = theme();
-  console.log(colors);
-  console.log(colors.dark[5]);
   return (
     <Navbar p="xs" width={{ base: 300 }}>
       <Navbar.Section mt="xs">
@@ -31,7 +34,7 @@ export function Nav() {
       </Navbar.Section>
       <Navbar.Section grow mx="-xs" px="xs">
         <Box py="md">
-          <TextInput onClick={() => spotlight.openSpotlight()} placeholder="Search" icon={<Search size="1rem" />} rightSection={<Badge size="sm" radius="xs" variant="filled" className={classes.searchInputShortcut} >/</Badge>} />
+          <TextInput onMouseDown={onSelectSearchInput} placeholder="Search" icon={<Search size="1rem" />} rightSection={<Badge size="sm" radius="xs" variant="filled" className={classes.searchInputShortcut} >/</Badge>} />
           <Space h="xs" />
           <NavLinks />
         </Box>

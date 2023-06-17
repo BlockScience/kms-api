@@ -1,17 +1,46 @@
-import { Component } from "react";
-import { Helmet } from "react-helmet";
+import { SetTitle } from "@/utilities/metadata";
+import { TypographyStylesProvider, Box, Title, Text, Skeleton, Space } from "@mantine/core";
+import InlineTag from "@/components/inlineTag";
 
-class Schema extends Component {
-  render() {
-    return (
-      <div>
-        <Helmet>
-          <title>KMS/Schema</title>
-        </Helmet>
-        Schema View...
-      </div>
-    );
-  }
+
+export default function Schema() {
+  const loading = false;
+  return (
+    <div>
+      <SetTitle text='Schema' />
+      <TypographyStylesProvider>
+        <Box maw={800} mx='auto'>
+          {loading ?
+            <div>
+              <Skeleton height={14} mt={20} radius="xl" width="15%" />
+              <Skeleton height={14} mt={10} width="90%" radius="xl" />
+              <Skeleton height={14} mt={10} width="70%" radius="xl" />
+              <Space h='xl' />
+              <Skeleton height={14} radius="xl" width="15%" />
+              <Skeleton height={14} mt={10} radius="xl" />
+              <Skeleton height={14} mt={10} width="90%" radius="xl" />
+              <Skeleton height={14} mt={10} width="70%" radius="xl" />
+              <Space h='xl' />
+              <Skeleton height={14} radius="xl" width="15%" />
+              <Skeleton height={14} mt={10} width="90%" radius="xl" />
+              <Skeleton height={14} mt={10} radius="xl" />
+              <Skeleton height={14} mt={10} width="90%" radius="xl" />
+              <Skeleton height={14} mt={10} width="70%" radius="xl" />
+            </div>
+            :
+            <div>
+              <Title order={3}>Schema</Title>
+              <Text>This schema is an informal guide to help contextualise and coordinate how we use tags in the KMS. The hope is that it will evolve alongside our knowledgebase, so please <strong>open a pull request</strong> with changes to start a discussion! Opt to separate words with dashes where possible, so for example use <InlineTag>automated-regressor-market</InlineTag> instead of <InlineTag>AutomatedRegressorMarket</InlineTag> as this lets us ignore capitalisation when comparing tags. Acronyms and initialisms are fine, so feel free to use <InlineTag>AMM</InlineTag> if you prefer but try and coordinate with others to keep things consistent, we can always merge tags in bulk if we need to.</Text>
+              <Title order={4}>Projects</Title>
+              <Text>You can tag things with their project to make them easily discoverable. For example you could add tags for <InlineTag>cadCAD</InlineTag> or <InlineTag>CATs</InlineTag> or tag a client such as <InlineTag>filecoin</InlineTag></Text>
+              <Title order={4}>Purpose</Title>
+              <Text>Add an intent or purpose to documents with tags like <InlineTag>publish</InlineTag> or <InlineTag>present</InlineTag></Text>
+              <Title order={4}>Audience</Title>
+              <Text>Indicate an intended audience with tags like <InlineTag>technical</InlineTag> or <InlineTag>layman</InlineTag> (or perhaps suggest a kinder tag name!)</Text>
+            </div>
+          }
+        </Box>
+      </TypographyStylesProvider>
+    </div>
+  );
 }
-
-export default Schema;

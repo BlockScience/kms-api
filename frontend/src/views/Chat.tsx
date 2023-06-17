@@ -1,17 +1,10 @@
-import { Component } from "react";
-import { Helmet } from "react-helmet";
+import { SetTitle } from "@/utilities/metadata";
 
-class Chat extends Component {
-  render() {
-    return (
-      <div>
-        <Helmet>
-          <title>KMS/Chat</title>
-        </Helmet>
-        Chat View...
-      </div>
-    );
-  }
+export default function Chat() {
+  return (
+    <div>
+      <SetTitle text='Chat' />
+      Chat View for KMS-GPT...
+    </div>
+  );
 }
-
-export default Chat;

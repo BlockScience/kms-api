@@ -23,9 +23,9 @@ const root = createRoot(container!);
 class App extends Component {
   render() {
     return (
-      <ThemeProvider>
-        <SpotlightProvider>
-          <BrowserRouter>
+      <BrowserRouter>
+        <ThemeProvider>
+          <SpotlightProvider>
             <AppShell padding="md" fixed={true} navbar={<Nav />}>
               <div>
                 <Routes>
@@ -41,9 +41,9 @@ class App extends Component {
                 </Routes>
               </div>
             </AppShell>
-          </BrowserRouter>
-        </SpotlightProvider>
-      </ThemeProvider>
+          </SpotlightProvider>
+        </ThemeProvider>
+      </BrowserRouter>
     );
   }
 }

@@ -1,18 +1,13 @@
-import { Component } from "react";
-import { Helmet } from "react-helmet";
+import { SetTitle } from "@/utilities/metadata";
+import { Button, Title } from "@mantine/core";
 
-class Dashboard extends Component {
-  render() {
-    return (
-      <div>
-        <Helmet>
-          <title>KMS/Dashboard</title>
-        </Helmet>
-        Dashboard View...
-        <button onClick={() => fetch('/api').then(resp => resp.json()).then(data => { alert(data.message) })}>Summon some data!</button>
-      </div>
-    );
-  }
+export default function Dashboard() {
+  return (
+    <div>
+      <SetTitle text='Dashboard' />
+      <Title order={2}>Dashboard</Title>
+      <Button onClick={() => fetch('/api').then(resp => resp.json()).then(data => { alert(data.message) })}>Summon some data!</Button>
+    </div>
+  );
 }
 
-export default Dashboard;
