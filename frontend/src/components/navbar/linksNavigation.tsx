@@ -55,7 +55,7 @@ const data = [
   { icon: <LayoutDashboard size="1rem" />, color: 'blue', label: 'Dashboard', path: '/dashboard' },
   { icon: <AlertCircle size="1rem" />, color: 'teal', label: 'Proposals', path: '/proposals' },
   { icon: <BinaryTree2 size="1rem" />, color: 'violet', label: 'Schema', path: '/schema' },
-  { icon: <Notification size="1rem" />, color: 'grape', label: 'Notifications', path: '/notifications' },
+  { icon: <Notification size="1rem" />, color: 'grape', label: 'Activity', path: '/activity' },
   { icon: <Messages size="1rem" />, color: 'pink', label: 'Chat', path: '/chat' },
 ];
 

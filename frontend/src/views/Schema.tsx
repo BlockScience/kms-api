@@ -6,7 +6,7 @@ class Schema extends Component {
     return (
       <div>
         <Helmet>
-          <title>KMS &gt; Schema</title>
+          <title>KMS/Schema</title>
         </Helmet>
         Schema View...
       </div>

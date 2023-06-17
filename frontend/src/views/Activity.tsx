@@ -1,14 +1,14 @@
 import { Component } from "react";
 import { Helmet } from "react-helmet";
 
-class Notifications extends Component {
+class Activity extends Component {
   render() {
     return (
       <div>
         <Helmet>
-          <title>KMS &gt; Notifications</title>
+          <title>KMS/Activity</title>
         </Helmet>
-        Notifications...
+        Activity...
         <ol>
           <li>Vestibulum vulputate</li>
           <li>Eget erat</li>
@@ -19,4 +19,4 @@ class Notifications extends Component {
   }
 }
 
-export default Notifications;
+export default Activity;

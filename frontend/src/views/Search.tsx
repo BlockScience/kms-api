@@ -6,7 +6,7 @@ class Search extends Component {
     return (
       <div>
         <Helmet>
-          <title>KMS &gt; Search</title>
+          <title>KMS/Search</title>
         </Helmet>
         Search View...
       </div>

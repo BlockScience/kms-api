@@ -6,7 +6,7 @@ class Settings extends Component {
     return (
       <div>
         <Helmet>
-          <title>KMS &gt; Settings</title>
+          <title>KMS/Settings</title>
         </Helmet>
         Settings View...
       </div>

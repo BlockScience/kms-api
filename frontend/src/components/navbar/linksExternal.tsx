@@ -52,9 +52,9 @@ function Link({ icon, label, href }: LinkProps) {
 }
 
 const data = [
-  { icon: <FileText size="1rem" />, label: 'Documentation', href: 'https://blockscience.github.io/kms/' },
   { icon: <BrandSlack size="1rem" />, label: 'Slack', href: 'https://blockscienceteam.slack.com/archives/C029RATAVTJ' },
   { icon: <BrandGithub size="1rem" />, label: 'Github', href: 'https://github.com/blockScience/kms' },
+  { icon: <FileText size="1rem" />, label: 'Documentation', href: 'https://blockscience.github.io/kms/' },
 ];
 
 export function ExternalLinks() {

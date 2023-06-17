@@ -6,7 +6,7 @@ class Chat extends Component {
     return (
       <div>
         <Helmet>
-          <title>KMS &gt; Chat</title>
+          <title>KMS/Chat</title>
         </Helmet>
         Chat View...
       </div>

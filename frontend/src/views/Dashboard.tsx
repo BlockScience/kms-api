@@ -6,9 +6,10 @@ class Dashboard extends Component {
     return (
       <div>
         <Helmet>
-          <title>KMS &gt; Dashboard</title>
+          <title>KMS/Dashboard</title>
         </Helmet>
         Dashboard View...
+        <button onClick={() => fetch('/api').then(resp => resp.json()).then(data => { alert(data.message) })}>Summon some data!</button>
       </div>
     );
   }

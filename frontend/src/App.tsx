@@ -11,7 +11,7 @@ import Home from "@/views/Home";
 import Dashboard from "@/views/Dashboard";
 import Proposals from "@/views/Proposals";
 import Schema from "@/views/Schema";
-import Notifications from "@/views/Notifications";
+import Activity from "@/views/Activity";
 import Search from "@/views/Search";
 import Settings from "@/views/Settings";
 import Chat from "@/views/Chat";
@@ -26,14 +26,14 @@ class App extends Component {
       <ThemeProvider>
         <SpotlightProvider>
           <BrowserRouter>
-            <AppShell padding="md" fixed={false} navbar={<Nav />}>
+            <AppShell padding="md" fixed={true} navbar={<Nav />}>
               <div>
                 <Routes>
                   <Route path="/" Component={Home} />
                   <Route path="/dashboard" Component={Dashboard} />
                   <Route path="/proposals" Component={Proposals} />
                   <Route path="/schema" Component={Schema} />
-                  <Route path="/notifications" Component={Notifications} />
+                  <Route path="/activity" Component={Activity} />
                   <Route path="/search" Component={Search} />
                   <Route path="/settings" Component={Settings} />
                   <Route path="/chat" Component={Chat} />

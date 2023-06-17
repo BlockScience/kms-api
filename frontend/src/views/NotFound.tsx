@@ -54,7 +54,7 @@ export default function NotFound() {
   return (
     <Container className={classes.root}>
       <Helmet>
-        <title>KMS &gt; 404</title>
+        <title>KMS/404</title>
       </Helmet>
       <Center>
         <SimpleGrid spacing={80} cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1, spacing: 40 }]}>
@@ -62,8 +62,7 @@ export default function NotFound() {
           <div>
             <Title className={classes.title}>Something is not right...</Title>
             <Text color="dimmed" size="lg">
-              Page you are trying to open does not exist. You may have mistyped the address, or the
-              page has been moved to another URL. If you think this is an error contact support.
+              Page you are trying to open does not exist. If you think this is an error hop into Slack and start shouting!
             </Text>
             <NavLink to="/">
               <Button variant="outline" size="md" mt="xl" className={classes.control}>
