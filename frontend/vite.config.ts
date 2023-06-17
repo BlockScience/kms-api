@@ -1,14 +1,14 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import vitePluginFaviconsInject from 'vite-plugin-favicons-inject';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
-// https://vitejs.dev/config/
+
 export default defineConfig({
   plugins: [
     react(),
-    vitePluginFaviconsInject('src/assets/logo-light.svg'), // change the path accordingly
-
-  ],
-
+    vitePluginFaviconsInject('src/assets/logo-dark.svg'),
+    tsconfigPaths()
+  ]
 })
 

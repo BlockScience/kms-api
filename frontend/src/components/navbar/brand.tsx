@@ -1,7 +1,7 @@
 import { Group, ActionIcon, useMantineColorScheme, Box, rem, Text, createStyles } from '@mantine/core';
 import { Sun, MoonStars } from 'tabler-icons-react';
-import { Logo } from './_logo';
 import { NavLink } from 'react-router-dom';
+import { Logo } from '@/components/navbar/logo';
 
 const useStyles = createStyles((theme) => ({
   logoText: {

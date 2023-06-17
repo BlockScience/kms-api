@@ -1,17 +1,17 @@
 import { Component } from "react";
 import { Helmet } from "react-helmet";
 
-class Search extends Component {
+class Dashboard extends Component {
   render() {
     return (
       <div>
         <Helmet>
-          <title>KMS &gt; Search</title>
+          <title>KMS &gt; Dashboard</title>
         </Helmet>
-        Search View...
+        Dashboard View...
       </div>
     );
   }
 }
 
-export default Search;
+export default Dashboard;

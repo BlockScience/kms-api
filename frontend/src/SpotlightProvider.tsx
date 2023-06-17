@@ -1,4 +1,4 @@
-import { SpotlightProvider, SpotlightAction } from '@mantine/spotlight';
+import { SpotlightProvider as Spotlight, SpotlightAction } from '@mantine/spotlight';
 import { Search, Home, Dashboard, FileText } from 'tabler-icons-react';
 
 interface SpotlightProps {
@@ -26,9 +26,9 @@ const actions: SpotlightAction[] = [
   },
 ];
 
-export function Spotlight({ children }: SpotlightProps) {
+export function SpotlightProvider({ children }: SpotlightProps) {
   return (
-    <SpotlightProvider
+    <Spotlight
       shortcut={['mod + P', 'mod + K', '/']}
       // actions={[]}
       actions={actions}
@@ -37,6 +37,6 @@ export function Spotlight({ children }: SpotlightProps) {
       nothingFoundMessage="Nothing found..."
     >
       {children}
-    </SpotlightProvider>
+    </Spotlight>
   );
 }

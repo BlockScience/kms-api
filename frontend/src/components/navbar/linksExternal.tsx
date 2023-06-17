@@ -1,29 +1,30 @@
 import {
-  GitPullRequest,
-  AlertCircle,
-  Messages,
-  Schema,
+  FileText,
+  BrandSlack,
+  BrandGithub,
 } from 'tabler-icons-react';
 import { ThemeIcon, UnstyledButton, Group, Text, createStyles } from '@mantine/core';
-import { NavLink } from 'react-router-dom';
 
 interface LinkProps {
   icon: React.ReactNode;
-  color: string;
   label: string;
-  path: string;
+  href: string;
 }
 
 const useStyles = createStyles((theme) => ({
   navText: {
     color: theme.colorScheme === 'dark' ? theme.colors.gray[0] : theme.colors.dark[8],
   },
+  hyperlink: {
+    textDecoration: 'none',
+  },
 }));
 
-function Link({ icon, color, label, path }: LinkProps) {
+function Link({ icon, label, href }: LinkProps) {
   const { classes } = useStyles();
+
   return (
-    <NavLink to={path} style={{ textDecoration: 'none' }}>
+    <a href={href} className={classes.hyperlink} target='_blank'>
       <UnstyledButton
         sx={(theme) => ({
           display: 'block',
@@ -39,25 +40,24 @@ function Link({ icon, color, label, path }: LinkProps) {
         })}
       >
         <Group>
-          <ThemeIcon color={color} variant="light">
+          <ThemeIcon color='gray' variant="light">
             {icon}
           </ThemeIcon>
 
           <Text size="sm" className={classes.navText}>{label}</Text>
         </Group>
       </UnstyledButton>
-    </NavLink>
+    </a>
   );
 }
 
 const data = [
-  { icon: <GitPullRequest size="1rem" />, color: 'blue', label: 'Console', path: '/console' },
-  { icon: <AlertCircle size="1rem" />, color: 'teal', label: 'Proposals', path: '/proposals' },
-  { icon: <Schema size="1rem" />, color: 'grape', label: 'Schema', path: '/schema' },
-  { icon: <Messages size="1rem" />, color: 'violet', label: 'Notifications', path: '/notifications' },
+  { icon: <FileText size="1rem" />, label: 'Documentation', href: 'https://blockscience.github.io/kms/' },
+  { icon: <BrandSlack size="1rem" />, label: 'Slack', href: 'https://blockscienceteam.slack.com/archives/C029RATAVTJ' },
+  { icon: <BrandGithub size="1rem" />, label: 'Github', href: 'https://github.com/blockScience/kms' },
 ];
 
-export function NavLinks() {
+export function ExternalLinks() {
   const links = data.map((link) => <Link {...link} key={link.label} />);
   return <div>{links}</div>;
 }
