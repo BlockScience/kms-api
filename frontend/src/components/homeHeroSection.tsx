@@ -113,7 +113,7 @@ export function HomeHeroSection() {
               <Button radius="xl" size="md" className={classes.control} onClick={() => trigger("guidedTour:start", {})}>
                 Take the tour
               </Button>
-              <Button variant="default" radius="xl" size="md" className={classes.control}>
+              <Button variant="default" radius="xl" size="md" className={classes.control} component="a" target='_blank' href='https://blockscience.github.io/kms/'>
                 Read the docs
               </Button>
             </Group>

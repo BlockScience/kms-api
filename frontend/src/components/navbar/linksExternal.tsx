@@ -55,5 +55,5 @@ const data = [
 
 export function ExternalLinks() {
   const links = data.map((link) => <Link {...link} key={link.label} />);
-  return <div>{links}</div>;
+  return <div id='tour-navExternal'>{links}</div>;
 }

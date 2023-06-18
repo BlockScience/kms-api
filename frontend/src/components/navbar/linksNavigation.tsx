@@ -61,5 +61,5 @@ const data = [
 
 export function NavLinks() {
   const links = data.map((link) => <NavLink {...link} key={link.label} />);
-  return <div>{links}</div>;
+  return <div id='tour-navInternal'>{links}</div>;
 }

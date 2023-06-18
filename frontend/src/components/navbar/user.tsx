@@ -13,7 +13,7 @@ export function User() {
           }`,
       }}
     >
-      <NavLink to="/settings" style={{ textDecoration: 'none' }}>
+      <NavLink to="/settings" style={{ textDecoration: 'none' }} id='tour-userSettings'>
         <UnstyledButton
           sx={{
             display: 'block',
