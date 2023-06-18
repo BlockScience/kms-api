@@ -1,7 +1,7 @@
 import { Paper, Text, Title, Divider, Group, Button } from '@mantine/core';
 import { currentColorScheme, useTheme } from '@/utilities/theme'
 
-interface ProposalCardProps {
+interface ProposalProps {
   title: string;
   description: string;
   author: string;
@@ -10,7 +10,7 @@ interface ProposalCardProps {
   resolvedBy: string | null;
 }
 
-export function ProposalCard(proposal: ProposalCardProps) {
+export function Proposal(proposal: ProposalProps) {
   const { colors } = useTheme();
   return (
     <Paper shadow="md" p="lg" withBorder radius="md">
@@ -24,8 +24,8 @@ export function ProposalCard(proposal: ProposalCardProps) {
             <Group>
               <Text size='sm' c="dimmed">{proposal.operations.toString()} operations pending</Text>
               <Button.Group>
-                <Button color="green" variant="light">Approve</Button>
-                <Button color="red" variant="light">Reject</Button>
+                <Button color="green" size='xs' variant="light">Approve</Button>
+                <Button color="red" size='xs' variant="light">Reject</Button>
               </Button.Group>
             </Group>
           }
