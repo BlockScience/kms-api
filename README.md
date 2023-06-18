@@ -3,6 +3,7 @@
 This is the repository for the Knowledge Management System API. It is currently in the process of being refactored from the old pipeline and contains endpoint for creating, reading, updating, deleting, and querying knowledge objects from the FireStore database.
 
 # Setup
+## API Backend
 
 This codebase requires Python 3.11 or higher and since most default Python installations are 3.9 or lower you may need to install a newer version. When I first built Python 3.11 from source I had some missing dependencies for libraries, so I've included some common libraries below that fixed the issues for me (I don't think all of them are necessary).
 
@@ -26,16 +27,16 @@ sudo make install
 Next create a virtual environment and install the required libraries.
 
 ```bash
-python3.11 -m venv kms-env
-source kms-env/bin/activate
 cd kms-api
+python3.11 -m venv .env
+source .env/bin/activate
 python -m pip install -r requirements.txt
 ```
 
-## Development
+### For Development
 For local testing, you can execute `python -m kms_api` to run a server on `localhost:8000`. You can also run `python -m generate_key` to create an API key for testing.
 
-## Production
+### For Production
 For production deployment, systemd is configured to run the API as a systemd service via Uvicorn also locally hosted at `localhost:8000`. Nginx is used as a reverse proxy to forward requests to the Uvicorn server.
 
 Setup systemd service for uvicorn process.
@@ -51,4 +52,31 @@ Install and configure nginx.
 sudo apt install nginx
 sudo ln -s ~/kms-api/config/nginx /etc/nginx/sites-enabled/kms-api
 sudo nginx -s reload
-``` 
+```
+
+## API Frontend
+
+Install Node.js to use Vite + React environment.
+```bash
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - &&\
+sudo apt-get install -y nodejs
+```
+(Instructions from https://github.com/nodesource/distributions)
+
+Install dependencies.
+```bash
+cd ~/kms-api/vite-project
+npm install
+```
+
+### For Development
+
+```bash
+npm run dev
+```
+
+### For Production
+
+```bash
+npm run build
+```
