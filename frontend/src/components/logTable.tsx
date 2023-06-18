@@ -43,7 +43,7 @@ export function LogTable({ data }: LogTableProps) {
   ));
 
   return (
-    <ScrollArea h={300} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
+    <ScrollArea h={400} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
       <Table miw={700}>
         <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
           <tr>

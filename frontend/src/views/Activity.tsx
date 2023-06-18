@@ -1,6 +1,7 @@
 import { PageTitle } from "@/components/typography";
 import { SetTitle } from "@/utilities/metadata";
 import { Timeline, Text, Button, Box, Divider, Container, Flex } from "@mantine/core";
+import { IconClock } from "@tabler/icons-react";
 
 export default function Activity(props: any) {
   return (
@@ -124,7 +125,7 @@ export default function Activity(props: any) {
           </Timeline.Item>
         </Timeline>
         <Flex justify="center">
-          <Button>
+          <Button leftIcon={<IconClock strokeWidth={1.5} />}>
             See more activity
           </Button>
         </Flex>
