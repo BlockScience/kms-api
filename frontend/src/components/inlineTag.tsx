@@ -1,5 +1,5 @@
-import { Badge, createStyles, DefaultMantineColor } from "@mantine/core";
-import { PropsWithChildren } from "react";
+import { Badge, createStyles, DefaultMantineColor } from '@mantine/core';
+import { PropsWithChildren } from 'react';
 
 const useStyles = createStyles((theme) => ({
   badge: {

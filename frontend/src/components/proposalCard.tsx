@@ -1,4 +1,4 @@
-import { Paper, Text, Title, Divider, Group, Button } from '@mantine/core';
+import { Paper, Text, Title, Group, Button } from '@mantine/core';
 import { currentColorScheme, useTheme } from '@/utilities/theme'
 
 interface ProposalProps {
@@ -13,7 +13,7 @@ interface ProposalProps {
 export function Proposal(proposal: ProposalProps) {
   const { colors } = useTheme();
   return (
-    <Paper shadow="sm" p="lg" withBorder radius="md">
+    <Paper shadow="sm" p="sm" withBorder radius="md">
       <Group position="apart">
         <Group>
           <Title order={5}>{proposal.title}</Title>
@@ -30,13 +30,13 @@ export function Proposal(proposal: ProposalProps) {
             </Group>
           }
           {proposal.status === 'approved' &&
-            <Text color='green'>
-              Approved <Text span c={currentColorScheme() === 'dark' ? colors.gray[6] : colors.gray[6]}>by {proposal.resolvedBy}</Text>
+            <Text color='green' fw={500}>
+              Approved <Text span fw={400} c={currentColorScheme() === 'dark' ? colors.gray[6] : colors.gray[6]}>by {proposal.resolvedBy}</Text>
             </Text>
           }
           {proposal.status === 'rejected' &&
-            <Text color='red'>
-              Rejected <Text span c={currentColorScheme() === 'dark' ? colors.gray[6] : colors.gray[6]}>by {proposal.resolvedBy}</Text>
+            <Text color='red' fw={500}>
+              Rejected <Text span fw={400} c={currentColorScheme() === 'dark' ? colors.gray[6] : colors.gray[6]}>by {proposal.resolvedBy}</Text>
             </Text>
           }
         </Group>

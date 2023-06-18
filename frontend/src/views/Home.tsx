@@ -1,7 +1,7 @@
-import { SetTitle as SetTitle } from "@/utilities/metadata";
-import { Box } from "@mantine/core";
-import HomeWelcomeSection from "@/components/homeWelcome";
-import HomeArchitectureSection from "@/components/homeArchitecture";
+import { SetTitle as SetTitle } from '@/utilities/metadata';
+import { Box } from '@mantine/core';
+import HomeWelcomeSection from '@/components/homeWelcome';
+import HomeArchitectureSection from '@/components/homeArchitecture';
 
 export default function Home() {
   return (

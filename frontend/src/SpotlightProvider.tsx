@@ -2,7 +2,7 @@ import { SpotlightProvider as Spotlight, SpotlightAction } from '@mantine/spotli
 import { Group, rem, Text, Anchor } from '@mantine/core';
 import { IconSearch, IconHome, IconDashboard, IconFileText } from '@tabler/icons-react';
 import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 
 interface SpotlightProps {
@@ -36,11 +36,11 @@ function ActionsWrapper({ children }: { children: React.ReactNode }) {
 export function SpotlightProvider({ children }: SpotlightProps) {
   const [query, setQuery] = useState('');
 
-  let commandPrefix = query.startsWith('/')
+  const commandPrefix = query.startsWith('/')
   const navigate = useNavigate();
   // const [searchParams, setSearchParams] = useSearchParams();
   function handleSearch(query: string) {
-    navigate("/search", { state: { q: query } });
+    navigate('/search', { state: { q: query } });
   }
   const actions: SpotlightAction[] =
     commandPrefix

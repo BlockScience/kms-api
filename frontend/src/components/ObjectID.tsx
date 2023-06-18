@@ -1,4 +1,4 @@
-import { Text, Group, CopyButton, Tooltip, Popover, ActionIcon, Badge } from "@mantine/core";
+import { Text, Group, CopyButton, Tooltip, Popover, ActionIcon, Badge } from '@mantine/core';
 import { IconCheck, IconCopy } from '@tabler/icons-react';
 import { Md5 } from 'ts-md5';
 

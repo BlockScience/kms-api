@@ -20,7 +20,7 @@ function Link({ icon, label, href }: LinkProps) {
   const { classes } = useStyles();
 
   return (
-    <a href={href} className={classes.hyperlink} target='_blank'>
+    <a href={href} className={classes.hyperlink} target='_blank' rel="noreferrer">
       <UnstyledButton
         sx={(theme) => ({
           display: 'block',

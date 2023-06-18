@@ -6,10 +6,14 @@ import {
   ThemeIcon,
   rem,
   SimpleGrid,
-  Divider
 } from '@mantine/core';
-import { IconGauge, IconCookie, IconUser, IconMessage2, IconLock } from '@tabler/icons-react';
-
+import {
+  IconGauge,
+  IconCookie,
+  IconUser,
+  IconMessage2,
+  IconLock,
+} from '@tabler/icons-react';
 
 export const MOCKDATA = [
   {
@@ -62,19 +66,20 @@ const useStyles = createStyles((theme) => ({
     paddingLeft: 0,
     paddingRight: 0,
   },
-
 }));
 
 export default function HomeArchitectureSection() {
-  const features = MOCKDATA.map((feature, index) => <Feature {...feature} key={index} />);
+  const features = MOCKDATA.map((feature, index) => (
+    <Feature {...feature} key={index} />
+  ));
   const { classes } = useStyles();
   return (
     <Container>
-      <Title className={classes.title}>
-        System Design
-      </Title>
-      <Text color="dimmed" mt="md" maw={rem(600)}>
-        KMS is designed as part of a broader Knowledge Organisation Infrastructure. In contrast to a software product, success for KMS means eventually melting away into the improved infrastructure of the future.
+      <Title className={classes.title}>System Design</Title>
+      <Text color='dimmed' mt='md' maw={rem(600)}>
+        KMS is designed as part of a broader Knowledge Organisation
+        Infrastructure. In contrast to a software product, success for KMS means
+        eventually melting away into the improved infrastructure of the future.
       </Text>
       <Container className={classes.wrapper}>
         <SimpleGrid
@@ -94,7 +99,7 @@ export default function HomeArchitectureSection() {
 }
 
 interface FeatureProps {
-  icon: React.FC<any>;
+  icon: React.FC<auny>;
   title: React.ReactNode;
   description: React.ReactNode;
 }
@@ -102,13 +107,13 @@ interface FeatureProps {
 export function Feature({ icon: Icon, title, description }: FeatureProps) {
   return (
     <div>
-      <ThemeIcon variant="light" size={40} radius={40}>
-        <Icon size="1.1rem" stroke={1.5} />
+      <ThemeIcon variant='light' size={40} radius={40}>
+        <Icon size='1.1rem' stroke={1.5} />
       </ThemeIcon>
-      <Text mt="sm" mb={7}>
+      <Text mt='sm' mb={7}>
         {title}
       </Text>
-      <Text size="sm" color="dimmed" sx={{ lineHeight: 1.6 }}>
+      <Text size='sm' color='dimmed' sx={{ lineHeight: 1.6 }}>
         {description}
       </Text>
     </div>

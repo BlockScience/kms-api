@@ -1,5 +1,5 @@
-import { Title, Space } from "@mantine/core";
-import { PropsWithChildren } from "react";
+import { Title, Space } from '@mantine/core';
+import { PropsWithChildren } from 'react';
 
 interface PageTitleProps {
   /* Whether to add space after the title */
