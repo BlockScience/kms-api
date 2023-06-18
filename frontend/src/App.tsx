@@ -4,6 +4,7 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { createRoot } from 'react-dom/client';
 
 import { Nav } from '@/components/navbar/Navbar';
+import { GuidedTour } from "@/components/guidedTour";
 import { ThemeProvider } from '@/ThemeProvider';
 import { SpotlightProvider } from "@/SpotlightProvider";
 
@@ -17,6 +18,7 @@ import Settings from "@/views/Settings";
 import Chat from "@/views/Chat";
 import NotFound from "@/views/NotFound";
 
+
 const container = document.getElementById('app');
 const root = createRoot(container!);
 
@@ -26,6 +28,7 @@ class App extends Component {
       <BrowserRouter>
         <ThemeProvider>
           <SpotlightProvider>
+            <GuidedTour />
             <AppShell padding="md" fixed={true} navbar={<Nav />}>
               <div>
                 <Routes>
