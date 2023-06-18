@@ -5,7 +5,7 @@ from kms_api.utils import url_normalize, encode_url, search_typesense, query
 from kms_api.auth import validate_key
 
 router = APIRouter(
-    prefix="/knowledge",
+    prefix="/object",
     dependencies=[Depends(validate_key)]
 )
 
