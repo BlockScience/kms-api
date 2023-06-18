@@ -1,6 +1,6 @@
 import { SpotlightProvider as Spotlight, SpotlightAction } from '@mantine/spotlight';
 import { Group, rem, Text, Anchor } from '@mantine/core';
-import { Search, Home, Dashboard, FileText } from 'tabler-icons-react';
+import { IconSearch, IconHome, IconDashboard, IconFileText } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
@@ -45,9 +45,9 @@ export function SpotlightProvider({ children }: SpotlightProps) {
   const actions: SpotlightAction[] =
     commandPrefix
       ? [
-        { title: '/command 1', onTrigger: () => { }, icon: <Home size="1.2rem" /> },
-        { title: '/command 2', onTrigger: () => { }, icon: <Dashboard size="1.2rem" /> },
-        { title: '/command 3', onTrigger: () => { }, icon: <FileText size="1.2rem" />, },
+        { title: '/command 1', onTrigger: () => { }, icon: <IconHome size="1.2rem" /> },
+        { title: '/command 2', onTrigger: () => { }, icon: <IconDashboard size="1.2rem" /> },
+        { title: '/command 3', onTrigger: () => { }, icon: <IconFileText size="1.2rem" />, },
       ]
       :
       query !== '' ? [{ title: `Search for "${query}"`, onTrigger: () => { handleSearch(query) } }] : [];
@@ -56,7 +56,7 @@ export function SpotlightProvider({ children }: SpotlightProps) {
     <Spotlight
       shortcut={['mod + P', 'mod + K', '/']}
       actions={actions}
-      searchIcon={<Search size="1.2rem" />}
+      searchIcon={<IconSearch size="1.2rem" />}
       searchPlaceholder="Search..."
       nothingFoundMessage="Hit 'Enter' to search..."
       query={query}
