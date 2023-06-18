@@ -6,6 +6,11 @@
     <title>KMS</title>
   </head>
   <body>
+    <script>
+      if (global === undefined) {
+        var global = window;
+      }
+    </script>
     <script type="module" src="/src/App.tsx"></script>
     <div id="app"></div>
   </body>
