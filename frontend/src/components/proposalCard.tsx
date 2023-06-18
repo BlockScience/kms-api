@@ -13,7 +13,7 @@ interface ProposalProps {
 export function Proposal(proposal: ProposalProps) {
   const { colors } = useTheme();
   return (
-    <Paper shadow="md" p="lg" withBorder radius="md">
+    <Paper shadow="sm" p="lg" withBorder radius="md">
       <Group position="apart">
         <Group>
           <Title order={5}>{proposal.title}</Title>
@@ -41,7 +41,6 @@ export function Proposal(proposal: ProposalProps) {
           }
         </Group>
       </Group>
-      <Divider my="sm" />
       <Text>
         {proposal.description}
       </Text>

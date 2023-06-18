@@ -67,7 +67,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function HomeHeroSection() {
+export default function HomeWelcomeSection() {
   const { classes } = useStyles();
   return (
     <div>
