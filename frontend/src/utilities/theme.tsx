@@ -4,6 +4,6 @@ export function currentColorScheme() {
   return useMantineTheme().colorScheme;
 }
 
-export function theme() {
+export function useTheme() {
   return useMantineTheme();
 }
