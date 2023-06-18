@@ -1,6 +1,7 @@
 import { SetTitle } from "@/utilities/metadata";
 import { useForm } from "@mantine/form";
-import { Box, Button, Group, NumberInput, Title } from "@mantine/core";
+import { Box, Button, Group, NumberInput, Title, Stack } from "@mantine/core";
+import { PageTitle } from "@/components/typography";
 
 
 export default function Settings() {
@@ -17,33 +18,28 @@ export default function Settings() {
   return (
     <div>
       <SetTitle text='Settings' />
-      <Box maw={500} mx="auto">
-        <Title order={2}>Settings</Title>
+      <Box maw={1000} mx="auto">
+        <PageTitle>Settings</PageTitle>
         <form onSubmit={settings.onSubmit((values) => console.log(values))}>
-          <NumberInput
-            min={0}
-            max={100}
-            label="Search results per page"
-            {...settings.getInputProps('resultsPerPage')}
-          />
-          <NumberInput
-            min={5}
-            max={100}
-            label="Number of words per result"
-            {...settings.getInputProps('contextPerResult')}
-          />
-
-          {/* <Checkbox
-            mt="md"
-            label="I agree to sell my privacy"
-            {...settings.getInputProps('termsOfService', { type: 'checkbox' })}
-          /> */}
-
-          <Group position="right" mt="md">
-            <Button type="submit">Submit</Button>
-          </Group>
+          <Stack spacing="sm">
+            <NumberInput
+              min={0}
+              max={100}
+              label="Search results per page"
+              {...settings.getInputProps('resultsPerPage')}
+            />
+            <NumberInput
+              min={5}
+              max={100}
+              label="Number of words per result"
+              {...settings.getInputProps('contextPerResult')}
+            />
+            <Group position="left" mt="md">
+              <Button type="submit">Submit</Button>
+            </Group>
+          </Stack>
         </form>
       </Box>
-    </div>
+    </div >
   );
 }
