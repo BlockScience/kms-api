@@ -29,10 +29,7 @@ export function User() {
           }}
         >
           <Group>
-            <Avatar
-              src="https://www.gateworld.net/wiki/images/7/77/Jacksondaniel.jpg"
-              radius="xl"
-            />
+            <Avatar src={null} radius="xl">DA</Avatar>
             <Box sx={{ flex: 1 }}>
               <Text size="sm" weight={500}>
                 Daniel

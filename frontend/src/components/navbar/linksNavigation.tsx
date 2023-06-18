@@ -3,7 +3,7 @@ import {
   IconAlertCircle,
   IconMessages,
   IconBinaryTree2,
-  IconNotification
+  IconTimeline
 } from '@tabler/icons-react';
 import { ThemeIcon, UnstyledButton, Group, Text, createStyles } from '@mantine/core';
 import { Link } from 'react-router-dom';
@@ -55,7 +55,7 @@ const data = [
   { icon: <IconLayoutDashboard size="1rem" />, color: 'blue', label: 'Dashboard', path: '/dashboard' },
   { icon: <IconAlertCircle size="1rem" />, color: 'teal', label: 'Proposals', path: '/proposals' },
   { icon: <IconBinaryTree2 size="1rem" />, color: 'violet', label: 'Schema', path: '/schema' },
-  { icon: <IconNotification size="1rem" />, color: 'grape', label: 'Activity', path: '/activity' },
+  { icon: <IconTimeline size="1rem" />, color: 'grape', label: 'Activity', path: '/activity' },
   { icon: <IconMessages size="1rem" />, color: 'pink', label: 'Chat', path: '/chat' },
 ];
 
