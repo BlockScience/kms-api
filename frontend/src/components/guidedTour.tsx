@@ -104,7 +104,7 @@ export function GuidedTour() {
     steps: tourSteps,
     stepIndex: 0,
   })
-  on("guidedTour:start", () => { setState({ ...state, run: true }); console.log("event start"); });
+  on("guidedTour:start", () => { setState({ ...state, run: true }); });
 
   const theme = useTheme();
 
@@ -122,7 +122,6 @@ export function GuidedTour() {
     }
   };
 
-  console.log(state);
   return (
     <Joyride
       steps={state.steps}
