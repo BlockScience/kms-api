@@ -6,7 +6,7 @@ import { currentColorScheme } from '@/utilities/theme';
 import { Badge, Box, Navbar, Space, TextInput, createStyles } from '@mantine/core';
 import { useSpotlight } from '@mantine/spotlight';
 import { BaseSyntheticEvent } from 'react';
-import { Search } from 'tabler-icons-react';
+import { IconSearch } from '@tabler/icons-react';
 
 
 const navStyles = createStyles((theme) => ({
@@ -34,7 +34,7 @@ export function Nav() {
       </Navbar.Section>
       <Navbar.Section grow mx="-xs" px="xs">
         <Box py="md">
-          <TextInput onMouseDown={onSelectSearchInput} placeholder="Search" icon={<Search size="1rem" />} rightSection={<Badge size="sm" radius="xs" variant="filled" className={classes.searchInputShortcut} >/</Badge>} />
+          <TextInput id="tour-searchInput" onMouseDown={onSelectSearchInput} placeholder="Search" icon={<IconSearch size="1rem" />} rightSection={<Badge size="sm" radius="xs" variant="filled" className={classes.searchInputShortcut} >/</Badge>} />
           <Space h="xs" />
           <NavLinks />
         </Box>

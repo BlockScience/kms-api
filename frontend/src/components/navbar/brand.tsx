@@ -1,5 +1,5 @@
-import { Group, ActionIcon, useMantineColorScheme, Box, rem, Text, createStyles } from '@mantine/core';
-import { Sun, MoonStars } from 'tabler-icons-react';
+import { Group, ActionIcon, useMantineColorScheme, Box, rem, Text, createStyles, Center } from '@mantine/core';
+import { IconSun, IconMoonStars } from '@tabler/icons-react';
 import { NavLink } from 'react-router-dom';
 import { Logo } from '@/components/navbar/logo';
 
@@ -27,11 +27,11 @@ export function Brand() {
         <NavLink to="/" style={{ textDecoration: 'none' }}>
           <Group>
             <Logo colorScheme={colorScheme} />
-            <Text className={classes.logoText} td="none">KMS <Text span inherit fz="sm" c="dimmed">v{kmsVersion}</Text></Text>
+            <Text className={classes.logoText} td="none">KMS <Center inline><Text span inherit fz="sm" c="dimmed">v{kmsVersion}</Text></Center></Text>
           </Group>
         </NavLink>
-        <ActionIcon variant="default" onClick={() => toggleColorScheme()} size={30}>
-          {colorScheme === 'dark' ? <Sun size="1rem" /> : <MoonStars size="1rem" />}
+        <ActionIcon id="tour-toggleDarkmode" variant="default" onClick={() => toggleColorScheme()} size={30}>
+          {colorScheme === 'dark' ? <IconSun size="1rem" /> : <IconMoonStars size="1rem" />}
         </ActionIcon>
       </Group>
     </Box>

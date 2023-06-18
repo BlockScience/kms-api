@@ -1,10 +1,10 @@
 import {
-  LayoutDashboard,
-  AlertCircle,
-  Messages,
-  BinaryTree2,
-  Notification
-} from 'tabler-icons-react';
+  IconLayoutDashboard,
+  IconAlertCircle,
+  IconMessages,
+  IconBinaryTree2,
+  IconNotification
+} from '@tabler/icons-react';
 import { ThemeIcon, UnstyledButton, Group, Text, createStyles } from '@mantine/core';
 import { Link } from 'react-router-dom';
 
@@ -52,11 +52,11 @@ function NavLink({ icon, color, label, path }: LinkProps) {
 }
 
 const data = [
-  { icon: <LayoutDashboard size="1rem" />, color: 'blue', label: 'Dashboard', path: '/dashboard' },
-  { icon: <AlertCircle size="1rem" />, color: 'teal', label: 'Proposals', path: '/proposals' },
-  { icon: <BinaryTree2 size="1rem" />, color: 'violet', label: 'Schema', path: '/schema' },
-  { icon: <Notification size="1rem" />, color: 'grape', label: 'Activity', path: '/activity' },
-  { icon: <Messages size="1rem" />, color: 'pink', label: 'Chat', path: '/chat' },
+  { icon: <IconLayoutDashboard size="1rem" />, color: 'blue', label: 'Dashboard', path: '/dashboard' },
+  { icon: <IconAlertCircle size="1rem" />, color: 'teal', label: 'Proposals', path: '/proposals' },
+  { icon: <IconBinaryTree2 size="1rem" />, color: 'violet', label: 'Schema', path: '/schema' },
+  { icon: <IconNotification size="1rem" />, color: 'grape', label: 'Activity', path: '/activity' },
+  { icon: <IconMessages size="1rem" />, color: 'pink', label: 'Chat', path: '/chat' },
 ];
 
 export function NavLinks() {

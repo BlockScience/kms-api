@@ -1,4 +1,4 @@
-import { Settings } from 'tabler-icons-react';
+import { IconSettings } from '@tabler/icons-react';
 import { UnstyledButton, Group, Avatar, Text, Box, useMantineTheme, rem } from '@mantine/core';
 import { NavLink } from 'react-router-dom';
 
@@ -35,13 +35,13 @@ export function User() {
             />
             <Box sx={{ flex: 1 }}>
               <Text size="sm" weight={500}>
-                Daniel Jackson
+                Daniel
               </Text>
               <Text color="dimmed" size="xs">
                 Daniel@sgc.gov
               </Text>
             </Box>
-            <Settings size={rem(18)} />
+            <IconSettings size={rem(18)} />
           </Group>
         </UnstyledButton>
       </NavLink>
