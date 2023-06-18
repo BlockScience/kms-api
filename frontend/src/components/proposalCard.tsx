@@ -1,5 +1,5 @@
-import { Paper, Text, Title, Divider, createStyles, Group, Button } from '@mantine/core';
-import { currentColorScheme, theme } from '@/utilities/theme'
+import { Paper, Text, Title, Divider, Group, Button } from '@mantine/core';
+import { currentColorScheme, useTheme } from '@/utilities/theme'
 
 interface ProposalCardProps {
   title: string;
@@ -10,17 +10,10 @@ interface ProposalCardProps {
   resolvedBy: string | null;
 }
 
-const useStyles = createStyles((theme) => ({
-  paper: {
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : 'white',
-  }
-}));
-
 export function ProposalCard(proposal: ProposalCardProps) {
-  const { classes } = useStyles();
-  const { colors } = theme();
+  const { colors } = useTheme();
   return (
-    <Paper shadow="md" p="lg" withBorder={currentColorScheme() !== 'dark'} className={classes.paper}>
+    <Paper shadow="md" p="lg" withBorder radius="md">
       <Group position="apart">
         <Group>
           <Title order={5}>{proposal.title}</Title>
