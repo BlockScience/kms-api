@@ -7,27 +7,27 @@ import { IconLayoutDashboard, IconAlertCircle, IconMessages, IconBinaryTree2, Ic
 
 const tourSteps = [
   {
-    title: 'A quick walkthrough of KMS',
+    title: 'A cybernetic implant for BlockScience',
     target: '#tour-welcome',
-    content: "Go ahead and hit 'Next' to tour the basic features of KMS.",
+    content: <Text align='left'>KMS is designed as an extension of the BlockScience org. It's designed to be <Text span fs="italic">pragmatic and useful</Text> while also being a testbed for novel research. Go ahead and hit 'Next' to explore the web interface.</Text>,
     disableBeacon: true,
   },
   {
     title: 'Toggling Dark Mode',
     target: '#tour-toggleDarkmode',
-    content: "Wether you're in a cave or on a beach, KMS has you covered. Try giving that button a click.",
+    content: <Text align='left'>Wether you're in a cave or on a beach, KMS has you covered. Try giving that button a click.</Text>,
     disableBeacon: true
   },
   {
     title: 'Searching the Knowledgebase',
     target: '#tour-searchInput',
-    content: <><Text>Search is as simple as hitting the search bar and entering your query.</Text><Text>You can also hit <Code color="gray">/</Code> or <Code color="gray">CTRL/CMD + P</Code> to open the search dialogue.</Text></>,
+    content: <><Text align='left'>Search is as simple as hitting the search bar and entering your query.</Text><Text align='left'>You can also hit <Code color="gray">/</Code> or <Code color="gray">CTRL/CMD + P</Code> to open the search dialogue.</Text></>,
     disableBeacon: true
   },
   {
     title: 'Changing your Preferences',
     target: '#tour-userSettings',
-    content: 'You can view and update your preferences here. E.g. to customise how many search results you see at once.',
+    content: <Text align='left'>You can view and update your preferences here. E.g. to customise how many search results you see at once.</Text>,
     disableBeacon: true
   },
   {
@@ -49,22 +49,15 @@ const tourSteps = [
     disableBeacon: true
   },
   {
-    title: 'Useful links',
+    title: 'Useful Links',
     target: '#tour-navExternal',
-    content: <Text>Down here are links if you want to jump into Slack, view the KMS repositories or dive deeper into the documentation.</Text>,
+    content: <Text align='left'>Down here are links if you want to jump into Slack, view the KMS repositories or dive deeper into the documentation.</Text>,
     disableBeacon: true
   },
 ];
 
-// { icon: <IconLayoutDashboard size="1rem" />, color: 'blue', label: 'Dashboard', path: '/dashboard' },
-// { icon: <IconAlertCircle size="1rem" />, color: 'teal', label: 'Proposals', path: '/proposals' },
-// { icon: <IconBinaryTree2 size="1rem" />, color: 'violet', label: 'Schema', path: '/schema' },
-// { icon: <IconNotification size="1rem" />, color: 'grape', label: 'Activity', path: '/activity' },
-// { icon: <IconMessages size="1rem" />, color: 'pink', label: 'Chat', path: '/chat' },
-
 function Tooltip({
   backProps,
-  continuous,
   index,
   isLastStep,
   primaryProps,
@@ -74,7 +67,7 @@ function Tooltip({
 }: TooltipRenderProps) {
   const theme = useTheme();
   return (
-    <Paper {...tooltipProps} maw={700} miw={500} bg={theme.colorScheme === 'dark' ? theme.colors.gray[9] : theme.colors.gray[1]}>
+    <Paper {...tooltipProps} maw={700} miw={500} bg={theme.colorScheme === 'dark' ? theme.colors.gray[9] : theme.colors.gray[0]}>
       <Box p="md">
         {step.title && (
           <Title order={4} mb="md" variant="primary" align="center">
