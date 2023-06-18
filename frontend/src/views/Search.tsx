@@ -4,6 +4,7 @@ import { PropsWithChildren } from "react";
 import { useMantineTheme } from '@mantine/core';
 import { IconX, IconCheck, IconMinus, IconCopy } from '@tabler/icons-react';
 import { Md5 } from 'ts-md5';
+import ObjectID from "@/components/ObjectID";
 
 interface SearchResultProps {
   title: string,
@@ -28,25 +29,7 @@ function SearchResult(props: PropsWithChildren<SearchResultProps>) {
     <Paper bg={bg} p='sm' radius="md">
       <Group position="apart">
         <Title order={5}><Anchor color="inherit" target="_blank" href={props.url} >{props.title}</Anchor></Title>
-        <Popover position="left" withArrow shadow="md" arrowSize={15}>
-          <Popover.Target>
-            <Badge style={{ cursor: 'pointer' }} radius='sm'>{hash.slice(0, 7)}</Badge>
-          </Popover.Target>
-          <Popover.Dropdown p={5} pl={10} m='xs'>
-            <Group>
-              <Text tt="uppercase" color='dimmed' size="xs" fw={500}>Object: {hash}</Text>
-              <CopyButton value={hash} timeout={2000}>
-                {({ copied, copy }) => (
-                  <Tooltip label={copied ? 'Copied' : 'Copy'} withArrow position="right">
-                    <ActionIcon color={copied ? 'teal' : 'gray'} onClick={copy}>
-                      {copied ? <IconCheck size="1rem" /> : <IconCopy size="1rem" />}
-                    </ActionIcon>
-                  </Tooltip>
-                )}
-              </CopyButton>
-            </Group>
-          </Popover.Dropdown>
-        </Popover>
+        <ObjectID id={props.text} />
       </Group>
       <Text c="dimmed" fz="sm">{props.type} from {props.platform}</Text>
       <Text>{props.text}</Text>

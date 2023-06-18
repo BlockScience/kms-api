@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { createStyles, Table, ScrollArea, rem, Anchor } from '@mantine/core';
+import ObjectID from './ObjectID';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -25,7 +26,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface LogTableProps {
-  data: { event: string; object: string; user: string; data: any, time: string }[];
+  data: { event: string; objectID: string; user: string; data: any, time: string }[];
 }
 
 export function LogTable({ data }: LogTableProps) {
@@ -33,9 +34,9 @@ export function LogTable({ data }: LogTableProps) {
   const [scrolled, setScrolled] = useState(false);
 
   const rows = data.map((row) => (
-    <tr key={row.object}>
+    <tr key={row.objectID}>
       <td>{row.event}</td>
-      <td><Anchor>{row.object}</Anchor></td>
+      <td><Anchor><ObjectID id={row.objectID} popoverPosition='top' /></Anchor></td>
       <td>{row.user}</td>
       <td>{row.data}</td>
       <td>{row.time}</td>
