@@ -23,9 +23,9 @@ function ActionsWrapper({ children }: { children: React.ReactNode }) {
         })}
       >
         <Text size="xs" color="dimmed">
-          You can filter results after searching
+          You can use the asterisk (*) to match everything
         </Text>
-        <Anchor size="xs" href="#">
+        <Anchor size="xs" href="https://blockscience.github.io/kms/start/advanced-search/" target='_blank'>
           Learn more
         </Anchor>
       </Group>
