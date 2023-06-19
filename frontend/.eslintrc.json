@@ -22,7 +22,6 @@
     }
   },
   "rules": {
-    "camelcase": "error",
     "max-len": [
       "error",
       {

@@ -11,6 +11,7 @@
     "lint:fix": "eslint --fix 'src/**/*.{js,jsx,ts,tsx,json}'"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.1.1",
     "@emotion/react": "^11.11.1",
     "@mantine/core": "^6.0.13",
     "@mantine/form": "^6.0.13",
