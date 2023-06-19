@@ -32,3 +32,24 @@ RESOLVE_PROPOSAL = {
     },
     "required": ["status", "resolved_by"]
 }
+
+CREATE_FEEDBACK = {
+    "type": "object",
+    "properties": {
+        "feedback": {"type": "string"},
+        "query": {"type": "string"},
+        "timestamp": {"type": "string", "format": "date-time"},
+        "user": {"type": "string"}
+    },
+    "required": ["feedback", "query", "timestamp"]
+}
+
+CREATE_USER = {
+    "type": "object",
+    "properties": {
+        "profile_name": {"type": "string"},
+        "per_page": {"type": "integer"},
+        "search_context_tokens" : {"type": "integer"}
+    },
+    "required": []
+}
