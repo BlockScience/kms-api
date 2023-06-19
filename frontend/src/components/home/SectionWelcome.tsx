@@ -10,10 +10,11 @@ import {
   rem,
   Code,
   Anchor,
+  Image,
 } from '@mantine/core';
 import { IconCheck } from '@tabler/icons-react';
-import HomeImage from '@/assets/homeImage';
 import { trigger } from '@/utilities/events';
+import ImageWelcome from '@/assets/homeImage';
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -142,7 +143,8 @@ export default function HomeWelcomeSection() {
               </Button>
             </Group>
           </div>
-          <HomeImage />
+          <ImageWelcome />
+          {/* <Image src='/homeImage.svg' maw={300} /> */}
         </div>
       </Container>
     </div>
