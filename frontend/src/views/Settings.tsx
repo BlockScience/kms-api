@@ -44,12 +44,8 @@ export default function Settings() {
               label='Number of words per result'
               {...settings.getInputProps('contextPerResult')}
             />
-            <Checkbox.Group defaultValue={['react', 'svelte']}>
-              <Checkbox value='react' label='React' />
-              <Checkbox value='svelte' label='Svelte' />
-            </Checkbox.Group>
             <Checkbox.Group
-              defaultValue={['react']}
+              defaultValue={['search', 'tag', 'governance']}
               label='Recording activity'
               description={
                 <>
@@ -64,9 +60,13 @@ export default function Settings() {
               }
             >
               <Group mt='xs'>
-                <Checkbox value='search' label='Searching' defaultChecked />
-                <Checkbox value='tag' label='Tagging' defaultChecked />
-                <Checkbox value='ng' label='Governance' defaultChecked />
+                <Checkbox value='search' label='Searching' />
+                <Checkbox value='tag' label='Tagging' />
+                <Checkbox
+                  value='governance'
+                  label='Governance'
+                  defaultChecked
+                />
               </Group>
             </Checkbox.Group>
             <Group position='left' mt='md'>

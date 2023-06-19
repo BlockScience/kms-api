@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { createStyles, Table, ScrollArea, rem, Anchor } from '@mantine/core';
+import { createStyles, Table, ScrollArea, rem } from '@mantine/core';
 import ObjectID from './ObjectID';
 
 const useStyles = createStyles((theme) => ({
   header: {
     position: 'sticky',
     top: 0,
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
+    backgroundColor:
+      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
     transition: 'box-shadow 150ms ease',
 
     '&::after': {
@@ -15,8 +16,11 @@ const useStyles = createStyles((theme) => ({
       left: 0,
       right: 0,
       bottom: 0,
-      borderBottom: `${rem(1)} solid ${theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[2]
-        }`,
+      borderBottom: `${rem(1)} solid ${
+        theme.colorScheme === 'dark'
+          ? theme.colors.dark[3]
+          : theme.colors.gray[2]
+      }`,
     },
   },
 
@@ -26,7 +30,13 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface LogTableProps {
-  data: { event: string; objectID: string; user: string; data: any, time: string }[];
+  data: {
+    event: string;
+    objectID: string;
+    user: string;
+    data: unknown;
+    time: string;
+  }[];
 }
 
 export function LogTable({ data }: LogTableProps) {
@@ -36,7 +46,9 @@ export function LogTable({ data }: LogTableProps) {
   const rows = data.map((row) => (
     <tr key={row.objectID}>
       <td>{row.event}</td>
-      <td><Anchor><ObjectID id={row.objectID} popoverPosition='top' /></Anchor></td>
+      <td>
+        <ObjectID id={row.objectID} popoverPosition='top' />
+      </td>
       <td>{row.user}</td>
       <td>{row.data}</td>
       <td>{row.time}</td>
@@ -44,7 +56,10 @@ export function LogTable({ data }: LogTableProps) {
   ));
 
   return (
-    <ScrollArea h={400} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
+    <ScrollArea
+      h={400}
+      onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
+    >
       <Table miw={700}>
         <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
           <tr>

@@ -14,7 +14,6 @@ export default function Dashboard() {
       <Box maw={1000} mx='auto'>
         <PageTitle>Dashboard</PageTitle>
         <Stack>
-          <AreaChart />
           <StatsGrid
             data={[
               { title: 'Tags Added', value: '17', diff: -7 },
@@ -48,6 +47,7 @@ export default function Dashboard() {
             label='Tags in schema & knowledgebase'
             data={['foo', 'bar', 'baz']}
           />
+          <AreaChart />
           <LogTable
             data={[
               {
