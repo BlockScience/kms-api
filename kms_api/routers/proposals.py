@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Body, Response, status
 from kms_api.core import firestore_db
 from kms_api.auth import validate_key
 from kms_api.utils import simplify_ops, check_for_missing_ids, md5_dict
-from kms_api.schema import CREATE_PROPOSAL, RESOLVE_PROPOSAL
+from kms_api.schema import PROPOSAL_SCHEMA, RESOLUTION_SCHEMA
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 from firebase_admin import firestore
@@ -16,7 +16,7 @@ router = APIRouter(
 @router.post("")
 def create_proposal(response: Response, proposal: dict = Body(...)):
     try:
-        validate(proposal, CREATE_PROPOSAL)
+        validate(proposal, PROPOSAL_SCHEMA)
     except ValidationError as e:
         print(e)
         response.status_code = status.HTTP_400_BAD_REQUEST
@@ -52,7 +52,7 @@ def get_proposal(proposal_id: str):
 @router.post("/{proposal_id}/resolve")
 def resolve_proposal(response: Response, proposal_id: str, resolution: dict = Body(...)):
     try:
-        validate(resolution, RESOLVE_PROPOSAL)
+        validate(resolution, RESOLUTION_SCHEMA)
     except ValidationError as e:
         print(e)
         response.status_code = status.HTTP_400_BAD_REQUEST

@@ -1,4 +1,15 @@
-CREATE_PROPOSAL = {
+KNOWLEDGE_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "url": {"type": "string"},
+        "title": {"type": "string"},
+        "text": {"type": "string"},
+        "platform": {"type": "string"}
+    },
+    "required": ["url"]
+}
+
+PROPOSAL_SCHEMA = {
     "type": "object",
     "properties": {
             "name": {"type": "string"},
@@ -24,7 +35,7 @@ CREATE_PROPOSAL = {
     "required": ["name", "status", "operations", "created_by"],
 }
 
-RESOLVE_PROPOSAL = {
+RESOLUTION_SCHEMA = {
     "type": "object",
     "properties": {
         "status": {"enum": ["pending", "accepted", "rejected", "applied"]},
@@ -33,7 +44,7 @@ RESOLVE_PROPOSAL = {
     "required": ["status", "resolved_by"]
 }
 
-CREATE_FEEDBACK = {
+FEEDBACK_SCHEMA = {
     "type": "object",
     "properties": {
         "feedback": {"type": "string"},
@@ -44,7 +55,7 @@ CREATE_FEEDBACK = {
     "required": ["feedback", "query", "timestamp"]
 }
 
-CREATE_USER = {
+USER_SCHEMA = {
     "type": "object",
     "properties": {
         "profile_name": {"type": "string"},

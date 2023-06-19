@@ -1,8 +1,10 @@
-from fastapi import APIRouter, Response, status, Depends
+from fastapi import APIRouter, Response, status, Depends, Body
 from kms_api.core import firestore_db
-from kms_api.models import KnowledgeObject, UpdateKnowledge
 from kms_api.utils import url_normalize, encode_url, search_typesense, query
 from kms_api.auth import validate_key
+from kms_api.schema import KNOWLEDGE_SCHEMA
+from jsonschema import validate
+from jsonschema.exceptions import ValidationError
 
 router = APIRouter(
     prefix="/object",
@@ -10,20 +12,17 @@ router = APIRouter(
 )
 
 @router.post("")
-def create_knowledge(kobj: KnowledgeObject, resp: Response):
-    url_normalized = url_normalize(kobj.url)
+def create_knowledge(response: Response, knowledge: dict = Body(...)):
+    try:
+        validate(knowledge, KNOWLEDGE_SCHEMA)
+    except ValidationError as e:
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return {"message": e.message}
+
+    url_normalized = url_normalize(knowledge["url"])
     url_encoded = encode_url(url_normalized)
-
-    blacklist = firestore_db.collection('meta').document('blacklist').get().to_dict().get('urls', [])
-
-    if url_normalized in blacklist:
-        resp.status_code = status.HTTP_202_ACCEPTED
-        return {
-            'status': 'failure',
-            'error': 'URL is blacklisted'
-        }
-        
-    firestore_db.collection('knowledge').document(url_encoded).set(kobj.dict(), merge=True)
+    
+    firestore_db.collection('knowledge').document(url_encoded).set(knowledge, merge=True)
 
     return {'status': 'success', 'id': url_encoded}
 
@@ -34,15 +33,13 @@ def get_knowledge(object_id: str):
 
 @router.get("")
 def query_knowledge(q: str, page: int = 1, per_page: int = 15):
-    if q == '':
-        return {'status': 'failure', 'error': 'missing query param: q'}
-
+    if q == '': return {'status': 'failure', 'error': 'missing query param: q'}
     return search_typesense(query(q, page, per_page))
 
 @router.put("/{object_id}")
-def update_knowledge(object_id: str, kobj: UpdateKnowledge):
-    changed_fields = kobj.dict(exclude_none=True)
-    firestore_db.collection('knowledge').document(object_id).set(changed_fields, merge=True)
+def update_knowledge(object_id: str, knowledge: dict = Body(...)):
+    # no validation here, may be need in the future
+    firestore_db.collection('knowledge').document(object_id).set(knowledge, merge=True)
     return {'status': 'success'}
 
 @router.delete("/{object_id}")
