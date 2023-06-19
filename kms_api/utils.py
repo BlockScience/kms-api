@@ -1,7 +1,9 @@
 from url_normalize import url_normalize
 from base64 import b64encode
-import re
-from kms_api.core import typesense_db
+import re, json
+from hashlib import md5
+from typing import Dict, Any
+from kms_api.core import typesense_db, firestore_db
 from kms_api import config
 
 def encode_url(string):
@@ -89,3 +91,54 @@ def split_sublists(tokens: list, delimiter: str) -> list:
         else:
             result.append([])
     return result
+
+def simplify_ops(operations: list) -> list:
+    simplified_ops: dict = {}
+
+    for proposed_op in operations:
+        target = proposed_op["id"]
+        action = proposed_op["action"]
+        payload = proposed_op["payload"]
+        if target not in simplified_ops:
+            simplified_ops[target] = {
+                "add": set(), "remove": set()}
+
+        if action == "remove_tags":
+            simplified_ops[target]["remove"] |= set(payload)
+        elif action == "add_tags":
+            simplified_ops[target]["add"] |= set(payload)
+        elif action == "replace_tags":
+            simplified_ops[target]["remove"] |= set(payload["tags"])
+            simplified_ops[target]["add"] |= set(payload["replacement"])
+
+    new_ops = []
+    for id, ops in simplified_ops.items():
+        new_ops.append({"id": id,
+                        "action": "remove_tags",
+                        "payload": list(ops["remove"])
+                        })
+        new_ops.append({"id": id,
+                        "action": "add_tags",
+                        "payload": list(ops["add"])
+                        })
+    return new_ops
+
+def check_for_missing_ids(proposal: dict) -> list:
+    """Returns a list of ids which are not in the knowledge base."""
+    ids = list({op["id"] for op in proposal["operations"]})
+    found = []
+    chunks = [ids[i:i + 10] for i in range(0, len(ids), 10)]
+    for chunk in chunks:
+        query = firestore_db.collection(u'knowledge').where(
+            '__name__', 'in', chunk)
+        for result in query.stream():
+            found.append(result.id)
+
+    return [x for x in ids if x not in found]
+
+def md5_dict(dictionary: Dict[str, Any]) -> str:
+        """MD5 hash of a dictionary."""
+        dhash = md5()
+        encoded = json.dumps(dictionary, sort_keys=True).encode()
+        dhash.update(encoded)
+        return dhash.hexdigest()
