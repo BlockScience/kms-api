@@ -1,5 +1,5 @@
-import { Paper, Text } from '@mantine/core';
-import { AreaChart as AC, Area, ResponsiveContainer, Tooltip } from 'recharts';
+import { Paper, Text } from '@mantine/core'
+import { AreaChart as AC, Area, ResponsiveContainer, Tooltip } from 'recharts'
 
 const data = [
   {
@@ -44,16 +44,15 @@ const data = [
     pv: 4300,
     amt: 2100,
   },
-];
+]
 
 export default function AreaChart() {
   return (
     <Paper withBorder radius='md' mih={100}>
-      {/* <Title order={4} m='sm'>Testing</Title> */}
-      <Text size='md' mt='md' ml='md' color='dimmed' tt='uppercase' fw={700}>
+      <Text size='xs' mt='md' ml='md' color='dimmed' tt='uppercase' fw={700}>
         Activity over the last 7 days
       </Text>
-      <ResponsiveContainer width='100%' aspect={1.6}>
+      <ResponsiveContainer width='100%' aspect={5}>
         <AC
           width={400}
           data={data}
@@ -75,12 +74,7 @@ export default function AreaChart() {
             </linearGradient>
           </defs>
           <Tooltip />
-          <Area
-            type='monotone'
-            dataKey='uv'
-            stroke='#8884d8'
-            fill='url(#colorPv)'
-          />
+          <Area type='monotone' dataKey='uv' stroke='#8884d8' fill='url(#colorPv)' />
           <Area
             type='monotone'
             dataKey='pv'
@@ -91,5 +85,5 @@ export default function AreaChart() {
         </AC>
       </ResponsiveContainer>
     </Paper>
-  );
+  )
 }

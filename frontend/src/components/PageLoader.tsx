@@ -1,19 +1,11 @@
-import {
-  Center,
-  Title,
-  LoadingOverlay,
-  Button,
-  Group,
-  Box,
-  Text,
-} from '@mantine/core';
+import { Center, Title, LoadingOverlay, Button, Group, Box, Text, Container } from '@mantine/core'
 
 export default function PageLoader() {
   return (
-    <>
-      <Box maw={400} pos='relative'>
-        <LoadingOverlay visible overlayBlur={2}></LoadingOverlay>
-      </Box>
-    </>
-  );
+    <Container fluid mih='100%'>
+      <Center>
+        <Text>Forwarding to login</Text>
+      </Center>
+    </Container>
+  )
 }
