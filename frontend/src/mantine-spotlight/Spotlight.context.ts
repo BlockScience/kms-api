@@ -1,43 +1,46 @@
-import { createContext, useContext } from 'react';
-import type { SpotlightAction } from './types';
+import { createContext, useContext } from 'react'
+import type { SpotlightAction } from './types'
 
 export interface SpotlightContextValue {
   /** Opens spotlight */
-  openSpotlight(): void;
+  openSpotlight(): void
+
+  /** Opens spotlight with a given query */
+  openSpotlightWithQuery(query: string): void
 
   /** Closes spotlight */
-  closeSpotlight(): void;
+  closeSpotlight(): void
 
   /** Toggles spotlight opened state */
-  toggleSpotlight(): void;
+  toggleSpotlight(): void
 
   /** Triggers action with given id */
-  triggerAction(actionId: string): void;
+  triggerAction(actionId: string): void
 
   /** Registers additional actions */
-  registerActions(actions: SpotlightAction[]): void;
+  registerActions(actions: SpotlightAction[]): void
 
   /** Removes actions with given ids */
-  removeActions(actionIds: string[]): void;
+  removeActions(actionIds: string[]): void
 
   /** Current opened state */
-  opened: boolean;
+  opened: boolean
 
   /** List of registered actions */
-  actions: SpotlightAction[];
+  actions: SpotlightAction[]
 
   /** Search query */
-  query: string;
+  query: string
 }
 
-export const SpotlightContext = createContext<SpotlightContextValue>(null);
+export const SpotlightContext = createContext<SpotlightContextValue>(null)
 
 export function useSpotlight() {
-  const ctx = useContext(SpotlightContext);
+  const ctx = useContext(SpotlightContext)
 
   if (!ctx) {
-    throw new Error('[@mantine/spotlight] SpotlightProvider was not found in tree');
+    throw new Error('[@mantine/spotlight] SpotlightProvider was not found in tree')
   }
 
-  return ctx;
+  return ctx
 }

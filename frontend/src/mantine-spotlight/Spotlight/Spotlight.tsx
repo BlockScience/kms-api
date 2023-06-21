@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   DefaultProps,
   Selectors,
@@ -12,23 +12,23 @@ import {
   useComponentDefaultProps,
   ScrollArea,
   ScrollAreaAutosizeProps,
-} from '@mantine/core';
-import { getGroupedOptions } from '@mantine/utils';
-import { useDidUpdate } from '@mantine/hooks';
-import { DefaultAction, DefaultActionProps } from '../DefaultAction/DefaultAction';
-import { ActionsList, ActionsListStylesNames } from '../ActionsList/ActionsList';
-import type { SpotlightAction } from '../types';
-import { filterActions } from './filter-actions/filter-actions';
-import useStyles from './Spotlight.styles';
+} from '@mantine/core'
+import { getGroupedOptions } from '@mantine/utils'
+import { useDidUpdate } from '@mantine/hooks'
+import { DefaultAction, DefaultActionProps } from '../DefaultAction/DefaultAction'
+import { ActionsList, ActionsListStylesNames } from '../ActionsList/ActionsList'
+import type { SpotlightAction } from '../types'
+import { filterActions } from './filter-actions/filter-actions'
+import useStyles from './Spotlight.styles'
 
 function SpotlightScrollArea(props: ScrollAreaAutosizeProps) {
-  return <ScrollArea.Autosize mah="calc(100vh - 18rem)" {...props} />;
+  return <ScrollArea.Autosize mah='calc(100vh - 18rem)' {...props} />
 }
 
 export type SpotlightStylesNames =
   | Selectors<typeof useStyles>
   | Exclude<ModalStylesNames, 'close' | 'header' | 'title'>
-  | ActionsListStylesNames;
+  | ActionsListStylesNames
 
 export interface InnerSpotlightProps
   extends Omit<
@@ -37,51 +37,51 @@ export interface InnerSpotlightProps
     >,
     DefaultProps<SpotlightStylesNames>,
     React.ComponentPropsWithoutRef<'div'> {
-  variant?: string;
+  variant?: string
 
   /** Search input placeholder */
-  searchPlaceholder?: string;
+  searchPlaceholder?: string
 
   /** Search input icon */
-  searchIcon?: React.ReactNode;
+  searchIcon?: React.ReactNode
 
   /** Function used to determine how actions will be filtered based on user input */
-  filter?(query: string, actions: SpotlightAction[]): SpotlightAction[];
+  filter?(query: string, actions: SpotlightAction[]): SpotlightAction[]
 
   /** Message displayed when actions were not found */
-  nothingFoundMessage?: React.ReactNode;
+  nothingFoundMessage?: React.ReactNode
 
   /** Number of actions displayed at a time */
-  limit?: number;
+  limit?: number
 
   /** Should spotlight be closed when action is triggered */
-  closeOnActionTrigger?: boolean;
+  closeOnActionTrigger?: boolean
 
   /** Component that is used to render actions */
-  actionComponent?: React.FC<DefaultActionProps>;
+  actionComponent?: React.FC<DefaultActionProps>
 
   /** Component that is used to wrap actions list */
-  actionsWrapperComponent?: React.FC<{ children: React.ReactNode }> | string;
+  actionsWrapperComponent?: React.FC<{ children: React.ReactNode }> | string
 
   /** Should user query be highlighted in actions title */
-  highlightQuery?: boolean;
+  highlightQuery?: boolean
 
   /** The highlight color */
-  highlightColor?: MantineColor;
+  highlightColor?: MantineColor
 
   /** Props spread to search input */
-  searchInputProps?: TextInputProps;
+  searchInputProps?: TextInputProps
 
   /** Component used as scrollable container for actions list, defaults to ScrollArea.Autosize */
-  scrollAreaComponent?: React.FC<{ children: React.ReactNode }>;
+  scrollAreaComponent?: React.FC<{ children: React.ReactNode }>
 }
 
 interface SpotlightProps extends InnerSpotlightProps {
-  actions: SpotlightAction[];
-  onClose(): void;
-  opened: boolean;
-  query: string;
-  onQueryChange(query: string): void;
+  actions: SpotlightAction[]
+  onClose(): void
+  opened: boolean
+  query: string
+  onQueryChange(query: string): void
 }
 
 const defaultProps: Partial<SpotlightProps> = {
@@ -96,7 +96,7 @@ const defaultProps: Partial<SpotlightProps> = {
   actionsWrapperComponent: 'div',
   zIndex: getDefaultZIndex('max'),
   overlayProps: { opacity: 0.2, blur: 7 },
-};
+}
 
 export function Spotlight(props: SpotlightProps) {
   const {
@@ -124,71 +124,71 @@ export function Spotlight(props: SpotlightProps) {
     target,
     radius,
     ...others
-  } = useComponentDefaultProps('Spotlight', defaultProps, props);
+  } = useComponentDefaultProps('Spotlight', defaultProps, props)
 
-  const [hovered, setHovered] = useState(-1);
-  const [IMEOpen, setIMEOpen] = useState(false);
-  const { classes, cx } = useStyles(null, { name: 'Spotlight', classNames, styles, variant });
+  const [hovered, setHovered] = useState(-1)
+  const [IMEOpen, setIMEOpen] = useState(false)
+  const { classes, cx } = useStyles(null, { name: 'Spotlight', classNames, styles, variant })
 
-  const resetHovered = () => setHovered(-1);
+  const resetHovered = () => setHovered(-1)
   const handleClose = () => {
-    resetHovered();
-    onClose();
-  };
+    resetHovered()
+    onClose()
+  }
 
-  const filteredActions = filter(query, actions).slice(0, limit);
-  const groupedWithLabels = getGroupedOptions(filteredActions).items;
+  const filteredActions = filter(query, actions).slice(0, limit)
+  const groupedWithLabels = getGroupedOptions(filteredActions).items
   const groupedActions = groupedWithLabels
     .map((item) => (item.type === 'item' ? item.item : undefined))
-    .filter((item) => item);
+    .filter((item) => item)
 
   useDidUpdate(() => {
     if (groupedActions.length - 1 < hovered) {
-      setHovered(groupedActions.length - 1);
+      setHovered(groupedActions.length - 1)
     }
-  }, [groupedActions.length]);
+  }, [groupedActions.length])
 
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (IMEOpen) {
-      return;
+      return
     }
 
     switch (event.key) {
       case 'ArrowDown': {
-        event.preventDefault();
-        setHovered((current) => (current < groupedActions.length - 1 ? current + 1 : 0));
-        break;
+        event.preventDefault()
+        setHovered((current) => (current < groupedActions.length - 1 ? current + 1 : 0))
+        break
       }
 
       case 'ArrowUp': {
-        event.preventDefault();
-        setHovered((current) => (current > 0 ? current - 1 : groupedActions.length - 1));
-        break;
+        event.preventDefault()
+        setHovered((current) => (current > 0 ? current - 1 : groupedActions.length - 1))
+        break
       }
 
       case 'Enter': {
-        event.preventDefault();
-        const action = groupedActions[hovered];
-        action?.onTrigger?.(action);
+        event.preventDefault()
+        const action = groupedActions[hovered]
+        action?.onTrigger?.(action)
         if ((action?.closeOnTrigger ?? closeOnActionTrigger) && action?.onTrigger) {
-          handleClose();
+          handleClose()
         }
-        break;
+        break
       }
 
       case 'Escape': {
-        event.preventDefault();
-        handleClose();
+        event.preventDefault()
+        handleClose()
       }
     }
-  };
+  }
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onQueryChange(event.currentTarget.value);
+    onQueryChange(event.currentTarget.value)
     if (hovered === -1) {
-      setHovered(0);
+      setHovered(0)
     }
-  };
+  }
 
   return (
     <Modal
@@ -206,7 +206,7 @@ export function Spotlight(props: SpotlightProps) {
       {...others}
     >
       <TextInput
-        size="lg"
+        size='lg'
         {...searchInputProps}
         value={query}
         onChange={handleInputChange}
@@ -228,8 +228,8 @@ export function Spotlight(props: SpotlightProps) {
             query={query}
             nothingFoundMessage={nothingFoundMessage}
             onActionTrigger={(action) => {
-              action.onTrigger(action);
-              (action.closeOnTrigger ?? closeOnActionTrigger) && handleClose();
+              action.onTrigger(action)
+              ;(action.closeOnTrigger ?? closeOnActionTrigger) && handleClose()
             }}
             styles={styles}
             classNames={classNames}
@@ -239,7 +239,7 @@ export function Spotlight(props: SpotlightProps) {
         </ScrollAreaComponent>
       </ActionsWrapper>
     </Modal>
-  );
+  )
 }
 
-Spotlight.displayName = '@mantine/spotlight/Spotlight';
+Spotlight.displayName = '@mantine/spotlight/Spotlight'
