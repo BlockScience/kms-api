@@ -1,5 +1,8 @@
+// @ts-nocheck
+
 import { ThemeIcon, UnstyledButton, Group, Text, createStyles } from '@mantine/core'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { MouseEventHandler } from 'react'
 
 const useStyles = createStyles((theme) => ({
   navText: {
@@ -13,57 +16,55 @@ interface BaseLinkProps {
   label: string
 }
 interface InternalLinkProps extends BaseLinkProps {
-  path: str
+  path: string
   href?: never
 }
 interface ExternalLinkProps extends BaseLinkProps {
   path?: never
-  href: str
+  href: string
 }
 export type NavLinkProps = InternalLinkProps | ExternalLinkProps
 
-const ConditionalWrapper = ({ condition, wrapper, children }) =>
-  condition ? wrapper(children) : children
+// const ConditionalWrapper = ({ condition, wrapper, children }) =>
+//   condition ? wrapper(children) : children
 
 export function NavLink({ icon, color, label, path, href }: NavLinkProps) {
   const { classes } = useStyles()
+  const navigate = useNavigate()
+  const handleNavigate = (event: MouseEventHandler<HTMLButtonElement>) => {
+    if (event.button === 0) {
+      console.log('handling')
+      if (path) navigate(path)
+      if (href) window.open(href, '_blank')
+    }
+  }
   return (
-    <ConditionalWrapper
-      condition={path}
-      wrapper={(children) => (
-        <Link to={path} style={{ textDecoration: 'none' }}>
-          {children}
-        </Link>
-      )}
+    <UnstyledButton
+      onMouseDown={handleNavigate}
+      sx={(theme) => ({
+        display: 'block',
+        width: '100%',
+        padding: theme.spacing.xs,
+        borderRadius: theme.radius.sm,
+        color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
+
+        '&:hover': {
+          backgroundColor:
+            theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
+        },
+      })}
     >
-      <UnstyledButton
-        component={href ? 'a' : 'button'}
-        href={href}
-        target={href ? '_blank' : ''}
-        sx={(theme) => ({
-          display: 'block',
-          width: '100%',
-          padding: theme.spacing.xs,
-          borderRadius: theme.radius.sm,
-          color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
+      <Group>
+        <ThemeIcon color={color} variant='light'>
+          {icon}
+        </ThemeIcon>
 
-          '&:hover': {
-            backgroundColor:
-              theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
-          },
-        })}
-      >
-        <Group>
-          <ThemeIcon color={color} variant='light'>
-            {icon}
-          </ThemeIcon>
-
-          <Text size='sm' className={classes.navText}>
-            {label}
-          </Text>
-        </Group>
-      </UnstyledButton>
-    </ConditionalWrapper>
+        <Text size='sm' className={classes.navText}>
+          {label}
+        </Text>
+      </Group>
+    </UnstyledButton>
+    // </ConditionalWrapper>
   )
 }
 

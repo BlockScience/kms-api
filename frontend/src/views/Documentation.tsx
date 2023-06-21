@@ -14,6 +14,7 @@ import {
   Button,
   createStyles,
   useMantineTheme,
+  TextInput,
 } from '@mantine/core'
 import { useCallback, useState } from 'react'
 
@@ -29,19 +30,8 @@ const docs = [
   { label: 'First-Class Relations', filename: 'research-relations', order: 2 },
 ]
 
-// TODO: organise this with the other utls
-function remToPx(rem: string) {
-  // TODO: make this robust against misuse
-  const regex = /^\d*/
-  const matches = rem.match(regex)
-  const match = matches ? matches[0] : '0'
-  return parseFloat(match) * parseFloat(getComputedStyle(document.documentElement).fontSize)
-}
-
 export default function Documentation() {
-  const navWidth = '20rem'
-  const leftMargin = useMantineTheme().spacing.md
-  const contentOffset = remToPx(navWidth) + remToPx(leftMargin)
+  const theme = useMantineTheme()
   const [currentDoc, setCurrentDoc] = useState(initialDoc)
 
   function handlePageChange(page: number, filename: string) {
@@ -51,27 +41,35 @@ export default function Documentation() {
   return (
     <>
       <SetTitle text='Docs' />
-      <Navbar
-        p='xs'
-        width={{ base: navWidth }}
-        style={{ visibility: 'visible' }}
-        fixed
-        position={{}}
-      >
-        <Navbar.Section mt={30}>
-          <DocsTOC
-            title='Documentation'
-            docs={docs}
-            onActiveChange={handlePageChange}
-            icons={[null, '*']}
-          />
-        </Navbar.Section>
-      </Navbar>
-      <Box style={{ marginLeft: contentOffset }}>
-        <Box mt={30} mx='xl'>
-          <Markdown filename={currentDoc} />
-        </Box>
-      </Box>
+      <Grid columns={24}>
+        <Grid.Col
+          span={6}
+          p='1rem'
+          pt='3rem'
+          style={{
+            borderRight:
+              theme.colorScheme === 'dark'
+                ? `1px solid ${theme.colors.dark[5]}`
+                : `1px solid ${theme.colors.gray[2]}`,
+          }}
+        >
+          <Box mt={theme.spacing.xl} ml={theme.spacing.xl}>
+            <DocsTOC
+              title='Documentation'
+              docs={docs}
+              onActiveChange={handlePageChange}
+              icons={[null, '#']}
+            />
+          </Box>
+        </Grid.Col>
+        <Grid.Col span={18}>
+          <ScrollArea h='100vh'>
+            <Box m='4em'>
+              <Markdown filename={currentDoc} />
+            </Box>
+          </ScrollArea>
+        </Grid.Col>
+      </Grid>
     </>
   )
 }

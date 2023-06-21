@@ -1,9 +1,9 @@
-import { Component, useState, useEffect } from 'react'
-import { AppShell } from '@mantine/core'
-import { Routes, Route, BrowserRouter } from 'react-router-dom'
+import { AppShell, Box } from '@mantine/core'
+import { Routes, Route, BrowserRouter, Outlet } from 'react-router-dom'
 import { createRoot } from 'react-dom/client'
-import { Auth0Provider, useAuth0 } from '@auth0/auth0-react'
+import { Auth0Provider } from '@auth0/auth0-react'
 
+import { Notifications } from '@mantine/notifications'
 import { AuthenticationGuard } from '@/components/AuthenticationGuard'
 import { GuidedTour } from '@/components/guidedTour'
 import { ThemeProvider } from '@/ThemeProvider'
@@ -22,8 +22,16 @@ import Settings from '@/views/Settings'
 import Chat from '@/views/Chat'
 import NotFound from '@/views/NotFound'
 import Documentation from '@/views/Documentation'
-import Login from '@/views/Login'
 import Shortcuts from '@/components/Shortcuts'
+import Morphic from '@/views/MorphicExperimental'
+
+const InnerShellContext = () => {
+  return (
+    <Box p='md'>
+      <Outlet />
+    </Box>
+  )
+}
 
 const container = document.getElementById('app')
 const root = container ? createRoot(container) : null
@@ -33,18 +41,22 @@ function guardedContent() {
     <CustomSpotlightProvider>
       <GuidedTour />
       <Shortcuts />
-      <AppShell padding='md' fixed={true} navbar={<Nav />}>
+      <Notifications />
+      <AppShell padding={0} fixed={true} navbar={<Nav />}>
         <Routes>
-          <Route path='/' Component={Home} />
-          <Route path='/dashboard' Component={Dashboard} />
-          <Route path='/proposals' Component={Proposals} />
-          <Route path='/schema' Component={Schema} />
-          <Route path='/activity' Component={Activity} />
-          <Route path='/search' Component={Search} />
-          <Route path='/settings' Component={Settings} />
-          <Route path='/chat' Component={Chat} />
+          <Route element={<InnerShellContext />}>
+            <Route path='/' Component={Home} />
+            <Route path='/dashboard' Component={Dashboard} />
+            <Route path='/proposals' Component={Proposals} />
+            <Route path='/schema' Component={Schema} />
+            <Route path='/activity' Component={Activity} />
+            <Route path='/search' Component={Search} />
+            <Route path='/settings' Component={Settings} />
+            <Route path='/chat' Component={Chat} />
+          </Route>
           <Route path='/docs' Component={Documentation} />
-          <Route path='*' element={<NotFound />} />
+          <Route path='/experimental' Component={Morphic} />
+          <Route path='*' Component={NotFound} />
         </Routes>
       </AppShell>
     </CustomSpotlightProvider>
@@ -54,7 +66,7 @@ function guardedContent() {
 function App() {
   return (
     <ThemeProvider>
-      {/* <AuthenticationGuard component={guardedContent} /> */}
+      {/* <AuthenticationGuard component={guardedContent}></AuthenticationGuard> */}
       {guardedContent()}
     </ThemeProvider>
   )

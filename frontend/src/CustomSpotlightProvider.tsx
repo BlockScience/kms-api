@@ -9,6 +9,7 @@ import { Group, rem, Text, Anchor, useMantineColorScheme } from '@mantine/core'
 import { useNavigate } from 'react-router-dom'
 import { IconSearch, IconSun, IconInfoCircle } from '@tabler/icons-react'
 import { useState } from 'react'
+import { notifications } from '@mantine/notifications'
 
 interface SpotlightProps {
   children: React.ReactNode
@@ -55,29 +56,32 @@ function removePrefix(string: string, prefix: string): string {
 }
 
 export function CustomSpotlightProvider({ children }: SpotlightProps) {
+  const navigate = useNavigate()
   const [query, setQuery] = useState('')
   const { toggleColorScheme } = useMantineColorScheme()
 
   const commandPrefix = '>'
-  const navigate = useNavigate()
-  function handleSearch(query: string) {
-    navigate('/search', { state: { q: query } })
-  }
 
   const opCommands = [
     {
       title: 'thing1',
       description: 'aegaeg this is a descriptiopn',
-      onTrigger: () => {},
+      onTrigger: () => {
+        // do nothing
+      },
     },
     {
       title: 'command 2',
       description: 'Something describing this',
-      onTrigger: () => {},
+      onTrigger: () => {
+        // do nothing
+      },
     },
     {
       title: 'command 3',
-      onTrigger: () => {},
+      onTrigger: () => {
+        // do nothing
+      },
     },
     {
       title: 'Toggle Darkmode',
@@ -86,12 +90,27 @@ export function CustomSpotlightProvider({ children }: SpotlightProps) {
         toggleColorScheme()
       },
     },
+    {
+      title: 'Dev - Notifications',
+      onTrigger: () => {
+        notifications.show({
+          title: 'Default notification',
+          message: 'Hey there, your code is awesome! 🤥',
+        })
+      },
+    },
+    {
+      title: 'Dev - Morphic',
+      onTrigger: () => {
+        navigate('/experimental')
+      },
+    },
   ]
   const opSearch = [
     {
       title: `Search for: ${query}`,
       onTrigger: () => {
-        handleSearch(query)
+        navigate('/search', { state: { q: query } })
       },
     },
   ]

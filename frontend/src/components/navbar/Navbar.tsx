@@ -21,8 +21,9 @@ const navStyles = createStyles((theme) => ({
 export function Nav() {
   const spotlight = useSpotlight()
   const onSelectSearchInput = (e: BaseSyntheticEvent) => {
+    e.preventDefault()
     e.target.blur()
-    spotlight.openSpotlightWithQuery('WOOP!')
+    spotlight.openSpotlight()
   }
   const { classes } = navStyles()
   return (
