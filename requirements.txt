@@ -6,3 +6,4 @@ google-crc32c~=1.0
 google-cloud-secret-manager~=2.16
 firebase-admin~=6.1.0
 fastapi~=0.97
+PyJWT~=2.7.0
