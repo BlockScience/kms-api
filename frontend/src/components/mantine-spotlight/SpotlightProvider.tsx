@@ -96,7 +96,6 @@ export function SpotlightProvider({
   })
 
   const openWithQuery = (query: string) => {
-    console.log(query)
     handleQueryChange(query)
     openSpotlight()
     window.clearTimeout(timeoutRef.current)

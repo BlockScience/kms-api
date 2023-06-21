@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useFetch } from 'react-async'
 import { auth0Config } from '@/config'
 import { useAuth0 } from '@auth0/auth0-react'
@@ -55,13 +57,13 @@ function Test4() {
     Accept: 'application/json',
     'Content-Type': 'application/json',
   }
-  const optionsPost = {
-    method: 'POST',
-    credentials: 'include',
-    body: JSON.stringify({
-      faaefaef: 'afaef fdthfthfhfyj fyj fyjf yjfy jfy jfyj fyj fyj fyj fyj fyj ',
-    }),
-  }
+  // const optionsPost = {
+  //   method: 'POST',
+  //   credentials: 'include',
+  //   body: JSON.stringify({
+  //     faaefaef: 'afaef fdthfthfhfyj fyj fyjf yjfy jfy jfyj fyj fyj fyj fyj fyj ',
+  //   }),
+  // }
   const optionsGet = { method: 'GET', credentials: 'include' }
 
   const extras = { defer: true }

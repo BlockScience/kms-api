@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
 import { createStyles, Table, ScrollArea, rem } from '@mantine/core'
 import ObjectRID from './ObjectRID'
 
@@ -31,7 +31,7 @@ interface LogTableProps {
     event: string
     objectRID: string
     user: string
-    data: unknown
+    data: ReactNode
     time: string
   }[]
 }

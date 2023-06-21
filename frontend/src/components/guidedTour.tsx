@@ -1,32 +1,15 @@
-import Joyride, {
-  ACTIONS,
-  EVENTS,
-  STATUS,
-  TooltipRenderProps,
-  CallBackProps,
-} from 'react-joyride';
-import { useState } from 'react';
-import { on } from '@/utilities/events';
-import { useTheme } from '@/utilities/theme';
-import {
-  Box,
-  Title,
-  Paper,
-  Button,
-  Text,
-  Group,
-  rem,
-  Code,
-  ThemeIcon,
-  List,
-} from '@mantine/core';
+import Joyride, { ACTIONS, EVENTS, STATUS, TooltipRenderProps, CallBackProps } from 'react-joyride'
+import { useState } from 'react'
+import { on } from '@/utilities/events'
+import { useTheme } from '@/utilities/theme'
+import { Box, Title, Paper, Button, Text, Group, rem, Code, ThemeIcon, List } from '@mantine/core'
 import {
   IconLayoutDashboard,
   IconAlertCircle,
   IconMessages,
   IconBinaryTree2,
   IconNotification,
-} from '@tabler/icons-react';
+} from '@tabler/icons-react'
 
 const tourSteps = [
   {
@@ -34,13 +17,12 @@ const tourSteps = [
     target: '#tour-welcome',
     content: (
       <Text align='left'>
-        KMS is designed as an extension of the BlockScience org. It's designed
-        to be{' '}
+        KMS is designed as an extension of the BlockScience org. It's designed to be{' '}
         <Text span fs='italic'>
           pragmatic and useful
         </Text>{' '}
-        while also being a testbed for novel research. Go ahead and hit 'Next'
-        to explore the web interface.
+        while also being a testbed for novel research. Go ahead and hit 'Next' to explore the web
+        interface.
       </Text>
     ),
     disableBeacon: true,
@@ -50,8 +32,7 @@ const tourSteps = [
     target: '#tour-toggleDarkmode',
     content: (
       <Text align='left'>
-        Wether you're in a cave or on a beach, KMS has you covered. Try giving
-        that button a click.
+        Wether you're in a cave or on a beach, KMS has you covered. Try giving that button a click.
       </Text>
     ),
     disableBeacon: true,
@@ -65,8 +46,8 @@ const tourSteps = [
           Search is as simple as hitting the search bar and entering your query.
         </Text>
         <Text align='left'>
-          You can also hit <Code color='gray'>/</Code> or{' '}
-          <Code color='gray'>CTRL/CMD + P</Code> to open the search dialogue.
+          You can also hit <Code color='gray'>/</Code> or <Code color='gray'>CTRL/CMD + P</Code> to
+          open the search dialogue.
         </Text>
       </>
     ),
@@ -77,8 +58,8 @@ const tourSteps = [
     target: '#tour-userSettings',
     content: (
       <Text align='left'>
-        You can view and update your preferences here. E.g. to customise how
-        many search results you see at once.
+        You can view and update your preferences here. E.g. to customise how many search results you
+        see at once.
       </Text>
     ),
     disableBeacon: true,
@@ -159,13 +140,13 @@ const tourSteps = [
     target: '#tour-navExternal',
     content: (
       <Text align='left'>
-        Down here are links if you want to jump into Slack, view the KMS
-        repositories or dive deeper into the documentation.
+        Down here are links if you want to jump into Slack, view the KMS repositories or dive deeper
+        into the documentation.
       </Text>
     ),
     disableBeacon: true,
   },
-];
+]
 
 function Tooltip({
   backProps,
@@ -176,17 +157,13 @@ function Tooltip({
   step,
   tooltipProps,
 }: TooltipRenderProps) {
-  const theme = useTheme();
+  const theme = useTheme()
   return (
     <Paper
       {...tooltipProps}
       maw={700}
       miw={500}
-      bg={
-        theme.colorScheme === 'dark'
-          ? theme.colors.gray[9]
-          : theme.colors.gray[0]
-      }
+      bg={theme.colorScheme === 'dark' ? theme.colors.gray[9] : theme.colors.gray[0]}
     >
       <Box p='md'>
         {step.title && (
@@ -217,7 +194,7 @@ function Tooltip({
         </Group>
       </Group>
     </Paper>
-  );
+  )
 }
 
 export function GuidedTour() {
@@ -225,27 +202,27 @@ export function GuidedTour() {
     run: false,
     steps: tourSteps,
     stepIndex: 0,
-  });
+  })
   on('guidedTour:start', () => {
-    setState({ ...state, run: true });
-  });
+    setState({ ...state, run: true })
+  })
 
-  const theme = useTheme();
+  const theme = useTheme()
 
   const handleJoyrideCallback = (data: CallBackProps) => {
-    const { action, index, status, type } = data;
+    const { action, index, status, type } = data
 
-    if ([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND].includes(type)) {
+    if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND] as string[]).includes(type)) {
       // Update state to advance the tour
       setState({
         ...state,
         stepIndex: index + (action === ACTIONS.PREV ? -1 : 1),
-      });
-    } else if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
+      })
+    } else if (([STATUS.FINISHED, STATUS.SKIPPED] as string[]).includes(status)) {
       // Need to set our running state to false, so we can restart if we click start again.
-      setState({ ...state, run: false, stepIndex: 0 });
+      setState({ ...state, run: false, stepIndex: 0 })
     }
-  };
+  }
 
   return (
     <Joyride
@@ -266,13 +243,10 @@ export function GuidedTour() {
       tooltipComponent={Tooltip}
       styles={{
         options: {
-          arrowColor:
-            theme.colorScheme === 'dark'
-              ? theme.colors.gray[9]
-              : theme.colors.gray[1],
+          arrowColor: theme.colorScheme === 'dark' ? theme.colors.gray[9] : theme.colors.gray[1],
           zIndex: 10000,
         },
       }}
     />
-  );
+  )
 }

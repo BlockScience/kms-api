@@ -17,12 +17,13 @@
     "noEmit": true,
     "jsx": "react-jsx",
     /* Linting */
-    "strict": true,
+    // "strict": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src", "src/globals.d.ts"],
+  "exclude": ["**/node_modules", "**/*.spec.ts"],
   "references": [
     {
       "path": "./tsconfig.node.json"

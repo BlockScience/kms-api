@@ -9,5 +9,5 @@ export default function Shortcuts() {
     ['mod+K', () => spotlight.openSpotlightWithQuery('>')],
     ['/', () => spotlight.openSpotlightWithQuery('')],
   ])
-  return
+  return <div />
 }
