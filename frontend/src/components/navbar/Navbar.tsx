@@ -4,7 +4,7 @@ import { LinksUpper } from '@/components/navbar/LinksUpper'
 import { User } from '@/components/navbar/user'
 import { currentColorScheme } from '@/utilities/theme'
 import { Badge, Box, Navbar, Space, TextInput, createStyles } from '@mantine/core'
-import { useSpotlight } from '@/mantine-spotlight'
+import { useSpotlight } from '@/components/mantine-spotlight'
 import { BaseSyntheticEvent } from 'react'
 import { IconSearch } from '@tabler/icons-react'
 

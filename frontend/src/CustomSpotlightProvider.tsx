@@ -3,7 +3,7 @@ import {
   SpotlightAction,
   // spotlight,
   useSpotlight,
-} from '@/mantine-spotlight'
+} from '@/components/mantine-spotlight'
 import { getHotkeyHandler } from '@mantine/hooks'
 import { Group, rem, Text, Anchor, useMantineColorScheme } from '@mantine/core'
 import { useNavigate } from 'react-router-dom'
