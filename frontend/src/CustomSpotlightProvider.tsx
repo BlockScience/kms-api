@@ -1,10 +1,4 @@
-import {
-  SpotlightProvider,
-  SpotlightAction,
-  // spotlight,
-  useSpotlight,
-} from '@/components/mantine-spotlight'
-import { getHotkeyHandler } from '@mantine/hooks'
+import { SpotlightProvider, SpotlightAction, useSpotlight } from '@/components/mantine-spotlight'
 import { Group, rem, Text, Anchor, useMantineColorScheme } from '@mantine/core'
 import { useNavigate } from 'react-router-dom'
 import { IconSearch, IconSun, IconInfoCircle } from '@tabler/icons-react'
