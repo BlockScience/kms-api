@@ -1,43 +1,30 @@
-import { Brand } from '@/components/navbar/brand';
-import { LinksLower } from '@/components/navbar/LinksLower';
-import { LinksUpper } from '@/components/navbar/LinksUpper';
-import { User } from '@/components/navbar/user';
-import { currentColorScheme } from '@/utilities/theme';
-import {
-  Badge,
-  Box,
-  Navbar,
-  Space,
-  TextInput,
-  createStyles,
-} from '@mantine/core';
-import { useSpotlight } from '@mantine/spotlight';
-import { BaseSyntheticEvent } from 'react';
-import { IconSearch } from '@tabler/icons-react';
+import { Brand } from '@/components/navbar/brand'
+import { LinksLower } from '@/components/navbar/LinksLower'
+import { LinksUpper } from '@/components/navbar/LinksUpper'
+import { User } from '@/components/navbar/user'
+import { currentColorScheme } from '@/utilities/theme'
+import { Badge, Box, Navbar, Space, TextInput, createStyles } from '@mantine/core'
+import { useSpotlight } from '@/mantine-spotlight'
+import { BaseSyntheticEvent } from 'react'
+import { IconSearch } from '@tabler/icons-react'
 
 const navStyles = createStyles((theme) => ({
   navText: {
     marginBottom: theme.spacing.xs,
   },
   searchInputShortcut: {
-    color:
-      currentColorScheme() === 'dark'
-        ? theme.colors.gray[1]
-        : theme.colors.gray[7],
-    backgroundColor:
-      currentColorScheme() === 'dark'
-        ? theme.colors.dark[8]
-        : theme.colors.gray[2],
+    color: currentColorScheme() === 'dark' ? theme.colors.gray[1] : theme.colors.gray[7],
+    backgroundColor: currentColorScheme() === 'dark' ? theme.colors.dark[8] : theme.colors.gray[2],
   },
-}));
+}))
 
 export function Nav() {
-  const spotlight = useSpotlight();
+  const spotlight = useSpotlight()
   const onSelectSearchInput = (e: BaseSyntheticEvent) => {
-    e.target.blur();
-    spotlight.openSpotlight();
-  };
-  const { classes } = navStyles();
+    e.target.blur()
+    spotlight.openSpotlightWithQuery('WOOP!')
+  }
+  const { classes } = navStyles()
   return (
     <Navbar p='xs' width={{ base: 300 }}>
       <Navbar.Section mt='xs'>
@@ -52,12 +39,7 @@ export function Nav() {
             placeholder='Search'
             icon={<IconSearch size='1rem' />}
             rightSection={
-              <Badge
-                size='sm'
-                radius='xs'
-                variant='filled'
-                className={classes.searchInputShortcut}
-              >
+              <Badge size='sm' radius='xs' variant='filled' className={classes.searchInputShortcut}>
                 /
               </Badge>
             }
@@ -73,5 +55,5 @@ export function Nav() {
         <User />
       </Navbar.Section>
     </Navbar>
-  );
+  )
 }

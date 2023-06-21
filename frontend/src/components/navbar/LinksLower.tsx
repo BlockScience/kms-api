@@ -1,12 +1,8 @@
-import {
-  IconFileText,
-  IconBrandSlack,
-  IconBrandGithub,
-} from '@tabler/icons-react';
+import { IconFileText, IconBrandSlack, IconBrandGithub } from '@tabler/icons-react'
 
-import NavLink from '@/components/navbar/NavLink';
+import { mapNavLinks, NavLinkProps } from '@/components/navbar/NavLink'
 
-const data = [
+const data: NavLinkProps[] = [
   {
     icon: <IconBrandSlack size='1rem' />,
     color: 'gray',
@@ -23,11 +19,10 @@ const data = [
     icon: <IconFileText size='1rem' />,
     color: 'gray',
     label: 'Documentation',
-    href: 'https://blockscience.github.io/kms/',
+    path: '/docs',
   },
-];
+]
 
 export function LinksLower() {
-  const links = data.map((link) => <NavLink {...link} key={link.label} />);
-  return <div id='tour-navExternal'>{links}</div>;
+  return <div id='tour-navExternal'>{mapNavLinks(data)}</div>
 }

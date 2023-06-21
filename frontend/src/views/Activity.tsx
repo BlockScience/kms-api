@@ -1,19 +1,11 @@
-import { PageTitle } from '@/components/typography';
-import { SetTitle } from '@/utilities/metadata';
-import {
-  Timeline,
-  Text,
-  Button,
-  Box,
-  Divider,
-  Flex,
-  Group,
-} from '@mantine/core';
-import { IconClock, IconSettings } from '@tabler/icons-react';
-import { useNavigate } from 'react-router-dom';
+import { PageTitle } from '@/components/typography'
+import { SetTitle } from '@/utilities/metadata'
+import { Timeline, Text, Button, Box, Divider, Flex, Group } from '@mantine/core'
+import { IconClock, IconSettings } from '@tabler/icons-react'
+import { useNavigate } from 'react-router-dom'
 
 export default function Activity() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   return (
     <div>
       <SetTitle text='Activity' />
@@ -25,7 +17,7 @@ export default function Activity() {
             leftIcon={<IconSettings />}
             onClick={() => navigate('/settings')}
           >
-            Logging Preferences
+            Change Preferences
           </Button>
         </Group>
         <Divider my='xs' label='Last 7 days' labelPosition='center' />
@@ -310,11 +302,9 @@ export default function Activity() {
           </Timeline.Item>
         </Timeline>
         <Flex justify='center'>
-          <Button leftIcon={<IconClock strokeWidth={1.5} />}>
-            See more activity
-          </Button>
+          <Button leftIcon={<IconClock strokeWidth={1.5} />}>See more activity</Button>
         </Flex>
       </Box>
     </div>
-  );
+  )
 }

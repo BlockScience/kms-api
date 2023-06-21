@@ -1,11 +1,11 @@
-import { SetTitle } from '@/utilities/metadata';
-import { Box, Button, Stack } from '@mantine/core';
-import { PageTitle } from '@/components/typography';
-import StatsGrid from '@/components/statsGrid';
-import { LogTable } from '@/components/logTable';
-import InlineTag from '@/components/inlineTag';
-import TagSet from '@/components/TagSet';
-import AreaChart from '@/components/AreaChart';
+import { SetTitle } from '@/utilities/metadata'
+import { Box, Button, Stack } from '@mantine/core'
+import { PageTitle } from '@/components/typography'
+import StatsGrid from '@/components/statsGrid'
+import { LogTable } from '@/components/logTable'
+import InlineTag from '@/components/inlineTag'
+import TagSet from '@/components/TagSet'
+import AreaChart from '@/components/AreaChart'
 
 export default function Dashboard() {
   return (
@@ -43,16 +43,13 @@ export default function Dashboard() {
             ]}
           />
           <TagSet label='Tags in schema' data={['foo', 'bar', 'baz']} />
-          <TagSet
-            label='Tags in schema & knowledgebase'
-            data={['foo', 'bar', 'baz']}
-          />
+          <TagSet label='Tags in schema & knowledgebase' data={['foo', 'bar', 'baz']} />
           <AreaChart />
           <LogTable
             data={[
               {
                 event: 'Tags Changed',
-                objectID: '8fa14cdd754f91cc6554c9e71929cce71',
+                objectRID: '8fa14cdd754f91cc6554c9e71929cce71',
                 user: 'tealc@sgc.com',
                 data: (
                   <div>
@@ -64,7 +61,7 @@ export default function Dashboard() {
               },
               {
                 event: 'Tags Changed',
-                objectID: '8fa14cdd754f91cc6554c9e71929cce72',
+                objectRID: '8fa14cdd754f91cc6554c9e71929cce72',
                 user: 'daniel@sgc.com',
                 data: (
                   <div>
@@ -76,7 +73,7 @@ export default function Dashboard() {
               },
               {
                 event: 'Tags Changed',
-                objectID: 'd86ec7ac67cf45f6205a8ed9080e6fc13',
+                objectRID: 'd86ec7ac67cf45f6205a8ed9080e6fc13',
                 user: 'steve@sgc.com',
                 data: (
                   <div>
@@ -88,7 +85,7 @@ export default function Dashboard() {
               },
               {
                 event: 'Tags Changed',
-                objectID: '8277e0910d750195b448797616e091ad4',
+                objectRID: '8277e0910d750195b448797616e091ad4',
                 user: 'tealc@sgc.com',
                 data: (
                   <div>
@@ -100,7 +97,7 @@ export default function Dashboard() {
               },
               {
                 event: 'Tags Changed',
-                objectID: '8fa14cdd754f91cc6554c9e71929cce75',
+                objectRID: '8fa14cdd754f91cc6554c9e71929cce75',
                 user: 'daniel@sgc.com',
                 data: (
                   <div>
@@ -112,7 +109,7 @@ export default function Dashboard() {
               },
               {
                 event: 'Tags Changed',
-                objectID: 'd86ec7ac67cf45f6205a8ed9080e6fc16',
+                objectRID: 'd86ec7ac67cf45f6205a8ed9080e6fc16',
                 user: 'steve@sgc.com',
                 data: (
                   <div>
@@ -124,7 +121,7 @@ export default function Dashboard() {
               },
               {
                 event: 'Tags Changed',
-                objectID: '8277e0910d750195b448797616e091ad7',
+                objectRID: '8277e0910d750195b448797616e091ad7',
                 user: 'tealc@sgc.com',
                 data: (
                   <div>
@@ -136,7 +133,7 @@ export default function Dashboard() {
               },
               {
                 event: 'Tags Changed',
-                objectID: '8fa14cdd754f91cc6554c9e71929cce78',
+                objectRID: '8fa14cdd754f91cc6554c9e71929cce78',
                 user: 'daniel@sgc.com',
                 data: (
                   <div>
@@ -148,7 +145,7 @@ export default function Dashboard() {
               },
               {
                 event: 'Tags Changed',
-                objectID: 'd86ec7ac67cf45f6205a8ed9080e6fc19',
+                objectRID: 'd86ec7ac67cf45f6205a8ed9080e6fc19',
                 user: 'steve@sgc.com',
                 data: (
                   <div>
@@ -160,7 +157,7 @@ export default function Dashboard() {
               },
               {
                 event: 'Tags Changed',
-                objectID: '8277e0910d750195b448797616e091ad11',
+                objectRID: '8277e0910d750195b448797616e091ad11',
                 user: 'tealc@sgc.com',
                 data: (
                   <div>
@@ -172,7 +169,7 @@ export default function Dashboard() {
               },
               {
                 event: 'Tags Changed',
-                objectID: '8fa14cdd754f91cc6554c9e71929cce712',
+                objectRID: '8fa14cdd754f91cc6554c9e71929cce712',
                 user: 'daniel@sgc.com',
                 data: (
                   <div>
@@ -184,7 +181,7 @@ export default function Dashboard() {
               },
               {
                 event: 'Tags Changed',
-                objectID: 'd86ec7ac67cf45f6205a8ed9080e6fc113',
+                objectRID: 'd86ec7ac67cf45f6205a8ed9080e6fc113',
                 user: 'steve@sgc.com',
                 data: (
                   <div>
@@ -196,7 +193,7 @@ export default function Dashboard() {
               },
               {
                 event: 'Tags Changed',
-                objectID: '8277e0910d750195b448797616e091ad14',
+                objectRID: '8277e0910d750195b448797616e091ad14',
                 user: 'tealc@sgc.com',
                 data: (
                   <div>
@@ -208,7 +205,7 @@ export default function Dashboard() {
               },
               {
                 event: 'Tags Changed',
-                objectID: '8fa14cdd754f91cc6554c9e71929cce715',
+                objectRID: '8fa14cdd754f91cc6554c9e71929cce715',
                 user: 'daniel@sgc.com',
                 data: (
                   <div>
@@ -220,7 +217,7 @@ export default function Dashboard() {
               },
               {
                 event: 'Tags Changed',
-                objectID: 'd86ec7ac67cf45f6205a8ed9080e6fc116',
+                objectRID: 'd86ec7ac67cf45f6205a8ed9080e6fc116',
                 user: 'steve@sgc.com',
                 data: (
                   <div>
@@ -232,7 +229,7 @@ export default function Dashboard() {
               },
               {
                 event: 'Tags Changed',
-                objectID: '8277e0910d750195b448797616e091ad17',
+                objectRID: '8277e0910d750195b448797616e091ad17',
                 user: 'tealc@sgc.com',
                 data: (
                   <div>
@@ -244,7 +241,7 @@ export default function Dashboard() {
               },
               {
                 event: 'Tags Changed',
-                objectID: '8fa14cdd754f91cc6554c9e71929cce718',
+                objectRID: '8fa14cdd754f91cc6554c9e71929cce718',
                 user: 'daniel@sgc.com',
                 data: (
                   <div>
@@ -256,7 +253,7 @@ export default function Dashboard() {
               },
               {
                 event: 'Tags Changed',
-                objectID: 'd86ec7ac67cf45f6205a8ed9080e6fc119',
+                objectRID: 'd86ec7ac67cf45f6205a8ed9080e6fc119',
                 user: 'steve@sgc.com',
                 data: (
                   <div>
@@ -268,19 +265,8 @@ export default function Dashboard() {
               },
             ]}
           />
-          <Button
-            onClick={() =>
-              fetch('/api')
-                .then((resp) => resp.json())
-                .then((data) => {
-                  console.log(data.message);
-                })
-            }
-          >
-            Summon some data!
-          </Button>
         </Stack>
       </Box>
     </div>
-  );
+  )
 }

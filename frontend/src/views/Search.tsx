@@ -1,5 +1,5 @@
-import ObjectID from '@/components/ObjectID';
-import { SetTitle } from '@/utilities/metadata';
+import ObjectRID from '@/components/ObjectRID'
+import { SetTitle } from '@/utilities/metadata'
 import {
   Anchor,
   Badge,
@@ -17,31 +17,29 @@ import {
   Title,
   rem,
   useMantineTheme,
-} from '@mantine/core';
-import { IconCheck, IconMinus, IconX } from '@tabler/icons-react';
-import { PropsWithChildren } from 'react';
+} from '@mantine/core'
+import { IconCheck, IconMinus, IconX } from '@tabler/icons-react'
+import { PropsWithChildren } from 'react'
 
 interface SearchResultProps {
-  title: string;
-  text: string;
-  url: string;
-  type: string;
-  platform: string;
-  tags: string[];
-  theme: MantineTheme;
+  title: string
+  text: string
+  url: string
+  type: string
+  platform: string
+  tags: string[]
+  theme: MantineTheme
 }
 
 interface FilterProps {
-  label: string;
-  data: string[];
-  noFilters?: boolean;
+  label: string
+  data: string[]
+  noFilters?: boolean
 }
 
 function SearchResult(props: PropsWithChildren<SearchResultProps>) {
   const bg =
-    props.theme.colorScheme === 'dark'
-      ? props.theme.colors.dark[6]
-      : props.theme.colors.gray[0];
+    props.theme.colorScheme === 'dark' ? props.theme.colors.dark[6] : props.theme.colors.gray[0]
   return (
     <Paper bg={bg} p='sm' radius='md'>
       <Group position='apart'>
@@ -50,14 +48,14 @@ function SearchResult(props: PropsWithChildren<SearchResultProps>) {
             {props.title}
           </Anchor>
         </Title>
-        <ObjectID id={props.text} />
+        <ObjectRID id={props.text} />
       </Group>
       <Text c='dimmed' fz='sm'>
         {props.type} from {props.platform}
       </Text>
       <Text>{props.text}</Text>
     </Paper>
-  );
+  )
 }
 
 function FilterState() {
@@ -72,7 +70,7 @@ function FilterState() {
         { label: <IconX size={rem(15)} />, value: 'exclude' },
       ]}
     />
-  );
+  )
 }
 
 function FilterDropdown(props: FilterProps) {
@@ -109,11 +107,11 @@ function FilterDropdown(props: FilterProps) {
         </Stack>
       </Popover.Dropdown>
     </Popover>
-  );
+  )
 }
 
 export default function Search() {
-  const theme = useMantineTheme();
+  const theme = useMantineTheme()
   return (
     <div>
       <SetTitle text='Search' />
@@ -136,255 +134,95 @@ export default function Search() {
         <Group spacing='xs'>
           <FilterDropdown
             label='Tags (5)'
-            data={[
-              'React',
-              'Angular',
-              'Svelte',
-              'Vue',
-              'Riot',
-              'Next.js',
-              'Blitz.js',
-            ]}
+            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
           />
           <FilterDropdown
             label='Platform (2)'
-            data={[
-              'React',
-              'Angular',
-              'Svelte',
-              'Vue',
-              'Riot',
-              'Next.js',
-              'Blitz.js',
-            ]}
+            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
           />
           <FilterDropdown
             label='Type (0)'
             noFilters
-            data={[
-              'React',
-              'Angular',
-              'Svelte',
-              'Vue',
-              'Riot',
-              'Next.js',
-              'Blitz.js',
-            ]}
+            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
           />
           <FilterDropdown
             label='URL (5)'
-            data={[
-              'React',
-              'Angular',
-              'Svelte',
-              'Vue',
-              'Riot',
-              'Next.js',
-              'Blitz.js',
-            ]}
+            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
           />
           <FilterDropdown
             label='Rank (2)'
-            data={[
-              'React',
-              'Angular',
-              'Svelte',
-              'Vue',
-              'Riot',
-              'Next.js',
-              'Blitz.js',
-            ]}
+            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
           />
           <FilterDropdown
             label='Tags (5)'
             noFilters
-            data={[
-              'React',
-              'Angular',
-              'Svelte',
-              'Vue',
-              'Riot',
-              'Next.js',
-              'Blitz.js',
-            ]}
+            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
           />
           <FilterDropdown
             label='Platform (2)'
-            data={[
-              'React',
-              'Angular',
-              'Svelte',
-              'Vue',
-              'Riot',
-              'Next.js',
-              'Blitz.js',
-            ]}
+            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
           />
           <FilterDropdown
             label='Type (0)'
             noFilters
-            data={[
-              'React',
-              'Angular',
-              'Svelte',
-              'Vue',
-              'Riot',
-              'Next.js',
-              'Blitz.js',
-            ]}
+            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
           />
           <FilterDropdown
             label='URL (5)'
-            data={[
-              'React',
-              'Angular',
-              'Svelte',
-              'Vue',
-              'Riot',
-              'Next.js',
-              'Blitz.js',
-            ]}
+            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
           />
           <FilterDropdown
             label='Rank (2)'
             noFilters
-            data={[
-              'React',
-              'Angular',
-              'Svelte',
-              'Vue',
-              'Riot',
-              'Next.js',
-              'Blitz.js',
-            ]}
+            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
           />
           <FilterDropdown
             label='Tags (5)'
             noFilters
-            data={[
-              'React',
-              'Angular',
-              'Svelte',
-              'Vue',
-              'Riot',
-              'Next.js',
-              'Blitz.js',
-            ]}
+            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
           />
           <FilterDropdown
             label='Platform (2)'
-            data={[
-              'React',
-              'Angular',
-              'Svelte',
-              'Vue',
-              'Riot',
-              'Next.js',
-              'Blitz.js',
-            ]}
+            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
           />
           <FilterDropdown
             label='Type (0)'
             noFilters
-            data={[
-              'React',
-              'Angular',
-              'Svelte',
-              'Vue',
-              'Riot',
-              'Next.js',
-              'Blitz.js',
-            ]}
+            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
           />
           <FilterDropdown
             label='URL (5)'
             noFilters
-            data={[
-              'React',
-              'Angular',
-              'Svelte',
-              'Vue',
-              'Riot',
-              'Next.js',
-              'Blitz.js',
-            ]}
+            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
           />
           <FilterDropdown
             label='Rank (2)'
             noFilters
-            data={[
-              'React',
-              'Angular',
-              'Svelte',
-              'Vue',
-              'Riot',
-              'Next.js',
-              'Blitz.js',
-            ]}
+            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
           />
           <FilterDropdown
             label='Tags (5)'
             noFilters
-            data={[
-              'React',
-              'Angular',
-              'Svelte',
-              'Vue',
-              'Riot',
-              'Next.js',
-              'Blitz.js',
-            ]}
+            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
           />
           <FilterDropdown
             label='Platform (2)'
-            data={[
-              'React',
-              'Angular',
-              'Svelte',
-              'Vue',
-              'Riot',
-              'Next.js',
-              'Blitz.js',
-            ]}
+            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
           />
           <FilterDropdown
             label='Type (0)'
             noFilters
-            data={[
-              'React',
-              'Angular',
-              'Svelte',
-              'Vue',
-              'Riot',
-              'Next.js',
-              'Blitz.js',
-            ]}
+            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
           />
           <FilterDropdown
             label='URL (5)'
             noFilters
-            data={[
-              'React',
-              'Angular',
-              'Svelte',
-              'Vue',
-              'Riot',
-              'Next.js',
-              'Blitz.js',
-            ]}
+            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
           />
           <FilterDropdown
             label='Rank (2)'
             noFilters
-            data={[
-              'React',
-              'Angular',
-              'Svelte',
-              'Vue',
-              'Riot',
-              'Next.js',
-              'Blitz.js',
-            ]}
+            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
           />
         </Group>
         <Divider label='showing 20/231 results' labelPosition='center' />
@@ -457,5 +295,5 @@ export default function Search() {
         </Container>
       </Stack>
     </div>
-  );
+  )
 }
