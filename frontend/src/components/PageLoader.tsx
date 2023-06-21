@@ -1,11 +1,16 @@
-import { Center, Title, LoadingOverlay, Button, Group, Box, Text, Container } from '@mantine/core'
+import { Center, Text, Loader, Stack } from '@mantine/core'
+import { useViewportSize } from '@mantine/hooks'
 
 export default function PageLoader() {
+  const { height } = useViewportSize()
   return (
-    <Container fluid mih='100%'>
-      <Center>
-        <Text>Forwarding to login</Text>
-      </Center>
-    </Container>
+    <Center style={{ height: height }}>
+      <Stack align='center'>
+        <Text size='xs' color='dimmed' tt='uppercase'>
+          hold on a moment
+        </Text>
+        <Loader variant='dots' />
+      </Stack>
+    </Center>
   )
 }

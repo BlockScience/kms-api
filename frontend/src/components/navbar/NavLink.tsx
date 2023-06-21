@@ -1,34 +1,32 @@
-import {
-  ThemeIcon,
-  UnstyledButton,
-  Group,
-  Text,
-  createStyles,
-} from '@mantine/core';
-import { Link } from 'react-router-dom';
+import { ThemeIcon, UnstyledButton, Group, Text, createStyles } from '@mantine/core'
+import { Link } from 'react-router-dom'
 
 const useStyles = createStyles((theme) => ({
   navText: {
-    color:
-      theme.colorScheme === 'dark'
-        ? theme.colors.gray[0]
-        : theme.colors.dark[8],
+    color: theme.colorScheme === 'dark' ? theme.colors.gray[0] : theme.colors.dark[8],
   },
-}));
+}))
 
-interface LinkProps {
-  icon: React.ReactNode;
-  color: string;
-  label: string;
-  path?: string;
-  href?: string;
+interface BaseLinkProps {
+  icon: React.ReactNode
+  color: string
+  label: string
 }
+interface InternalLinkProps extends BaseLinkProps {
+  path: str
+  href?: never
+}
+interface ExternalLinkProps extends BaseLinkProps {
+  path?: never
+  href: str
+}
+export type NavLinkProps = InternalLinkProps | ExternalLinkProps
 
 const ConditionalWrapper = ({ condition, wrapper, children }) =>
-  condition ? wrapper(children) : children;
+  condition ? wrapper(children) : children
 
-export default function NavLink({ icon, color, label, path, href }: LinkProps) {
-  const { classes } = useStyles();
+export function NavLink({ icon, color, label, path, href }: NavLinkProps) {
+  const { classes } = useStyles()
   return (
     <ConditionalWrapper
       condition={path}
@@ -47,14 +45,11 @@ export default function NavLink({ icon, color, label, path, href }: LinkProps) {
           width: '100%',
           padding: theme.spacing.xs,
           borderRadius: theme.radius.sm,
-          color:
-            theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
+          color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
 
           '&:hover': {
             backgroundColor:
-              theme.colorScheme === 'dark'
-                ? theme.colors.dark[6]
-                : theme.colors.gray[0],
+              theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
           },
         })}
       >
@@ -69,5 +64,9 @@ export default function NavLink({ icon, color, label, path, href }: LinkProps) {
         </Group>
       </UnstyledButton>
     </ConditionalWrapper>
-  );
+  )
+}
+
+export function mapNavLinks(links: NavLinkProps[]) {
+  return links.map((link) => <NavLink {...link} key={link.label} />)
 }

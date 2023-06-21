@@ -4,8 +4,8 @@ import {
   IconMessages,
   IconBinaryTree2,
   IconTimeline,
-} from '@tabler/icons-react';
-import NavLink from '@/components/navbar/NavLink';
+} from '@tabler/icons-react'
+import { mapNavLinks } from '@/components/navbar/NavLink'
 
 const data = [
   {
@@ -38,9 +38,8 @@ const data = [
     label: 'Chat',
     path: '/chat',
   },
-];
+]
 
 export function LinksUpper() {
-  const links = data.map((link) => <NavLink {...link} key={link.label} />);
-  return <div id='tour-navInternal'>{links}</div>;
+  return <div id='tour-navInternal'>{mapNavLinks(data)}</div>
 }
