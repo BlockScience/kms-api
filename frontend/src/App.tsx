@@ -8,7 +8,7 @@ import { AuthenticationGuard } from '@/components/AuthenticationGuard'
 import { GuidedTour } from '@/components/guidedTour'
 import { ThemeProvider } from '@/ThemeProvider'
 import { CustomSpotlightProvider } from '@/CustomSpotlightProvider'
-import { Nav } from '@/components/navbar/Navbar'
+import { Navbar, NavbarMinimal } from '@/components/navbar/Navbar'
 
 import { auth0Config } from '@/config'
 
@@ -42,7 +42,7 @@ function guardedContent() {
       <GuidedTour />
       <Shortcuts />
       <Notifications />
-      <AppShell padding={0} fixed={true} navbar={<Nav />}>
+      <AppShell padding={0} navbar={<Navbar />}>
         <Routes>
           <Route element={<InnerShellContext />}>
             <Route path='/' Component={Home} />

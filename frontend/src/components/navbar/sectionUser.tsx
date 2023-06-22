@@ -1,4 +1,4 @@
-import { IconSettings } from '@tabler/icons-react';
+import { IconSettings } from '@tabler/icons-react'
 import {
   UnstyledButton,
   Group,
@@ -8,13 +8,11 @@ import {
   useMantineTheme,
   rem,
   Skeleton,
-  Center,
-} from '@mantine/core';
-import { NavLink } from 'react-router-dom';
-import { useAuth0 } from '@auth0/auth0-react';
-import LoginButton from '@/components/navbar/Login';
-import { PropsWithChildren } from 'react';
-import Logout from '@/components/navbar/Logout';
+  Button,
+} from '@mantine/core'
+import { NavLink } from 'react-router-dom'
+import { PropsWithChildren } from 'react'
+import { useAuth0 } from '@auth0/auth0-react'
 
 function Boxy(props: PropsWithChildren<{ theme }>) {
   return (
@@ -30,12 +28,12 @@ function Boxy(props: PropsWithChildren<{ theme }>) {
     >
       {props.children}
     </Box>
-  );
+  )
 }
 
 export function User() {
-  const theme = useMantineTheme();
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const theme = useMantineTheme()
+  const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0()
   return isLoading ? (
     <Boxy theme={theme}>
       <Group align='center'>
@@ -50,30 +48,25 @@ export function User() {
   ) : !isAuthenticated ? (
     <Boxy theme={theme}>
       <Group grow>
-        <LoginButton />
+        <Button color='green' onClick={() => loginWithRedirect()}>
+          Log In
+        </Button>
       </Group>
     </Boxy>
   ) : (
     <Boxy theme={theme}>
-      <NavLink
-        to='/settings'
-        style={{ textDecoration: 'none' }}
-        id='tour-userSettings'
-      >
+      <NavLink to='/settings' style={{ textDecoration: 'none' }} id='tour-userSettings'>
         <UnstyledButton
           sx={{
             display: 'block',
             width: '100%',
             padding: theme.spacing.xs,
             borderRadius: theme.radius.sm,
-            color:
-              theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
+            color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
 
             '&:hover': {
               backgroundColor:
-                theme.colorScheme === 'dark'
-                  ? theme.colors.dark[6]
-                  : theme.colors.gray[0],
+                theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
             },
           }}
         >
@@ -92,5 +85,5 @@ export function User() {
         </UnstyledButton>
       </NavLink>
     </Boxy>
-  );
+  )
 }

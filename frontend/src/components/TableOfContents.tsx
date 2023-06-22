@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react'
-import { createStyles, Box, Text, Group, rem, Divider, useMantineTheme } from '@mantine/core'
+import { useState } from 'react'
+import { createStyles, Box, Text, Group, rem, useMantineTheme } from '@mantine/core'
 import { IconListSearch } from '@tabler/icons-react'
 import { closestWithCondition } from '@/utilities/math'
 
@@ -19,6 +19,8 @@ const useStyles = createStyles((theme) => ({
     height: rem(LINK_HEIGHT),
     borderTopRightRadius: theme.radius.sm,
     borderBottomRightRadius: theme.radius.sm,
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
     borderLeft: `${rem(2)} solid ${
       theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2]
     }`,
@@ -82,16 +84,17 @@ export default function DocsTOC({ docs, icons, title, onActiveChange }: TableOfC
         }
       }}
       key={item.label}
+      // TODO: See where else I can use this trick
       className={cx(classes.link, {
         [classes.linkActive]: active === index,
         [classes.linkSection]: !item.filename,
       })}
-      sx={(theme) => ({
+      sx={() => ({
         paddingLeft: `calc(${item.order} * ${INDENT})`,
         cursor: 'pointer',
       })}
     >
-      <Group>
+      <Group noWrap>
         {icons && (<div>{icons[item.order - 1]}</div> || null)}
         {item.label}
       </Group>
@@ -102,9 +105,11 @@ export default function DocsTOC({ docs, icons, title, onActiveChange }: TableOfC
 
   return (
     <div>
-      <Group mb='sm'>
+      <Group mb='sm' noWrap>
         <IconListSearch size={`${searchIconSize}rem`} stroke={1.5} color={dimmed} />
-        <Text color={dimmed}>{title}</Text>
+        <Text sx={{ overflow: 'hidden', whiteSpace: 'nowrap' }} color={dimmed}>
+          {title}
+        </Text>
       </Group>
       <div className={classes.links} style={{ marginLeft: `${searchIconSize / 2}rem` }}>
         <div
