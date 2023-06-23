@@ -85,7 +85,7 @@ export function CustomSpotlightProvider({ children }: SpotlightProps) {
       },
     },
     {
-      title: 'Dev - Notifications',
+      title: 'dev/notify',
       onTrigger: () => {
         notifications.show({
           title: 'Default notification',
@@ -94,7 +94,7 @@ export function CustomSpotlightProvider({ children }: SpotlightProps) {
       },
     },
     {
-      title: 'Dev - Morphic',
+      title: 'dev/graph view',
       onTrigger: () => {
         navigate('/experimental')
       },
@@ -117,7 +117,6 @@ export function CustomSpotlightProvider({ children }: SpotlightProps) {
 
   return (
     <SpotlightProvider
-      // Custom shortcuts for nice prefixing
       actions={actions}
       searchIcon={<IconSearch size='1.2rem' />}
       searchPlaceholder='Search...'
@@ -126,9 +125,10 @@ export function CustomSpotlightProvider({ children }: SpotlightProps) {
       nothingFoundMessage="Hit 'Enter' to search..."
       query={query}
       onQueryChange={setQuery}
-      transitionProps={{ duration: 100 }}
+      transitionProps={{ duration: 0 }}
       limit={7}
       actionsWrapperComponent={ActionsWrapper}
+      // TODO: Improve filtering, perhaps something similar to VS code
       filter={(query, actions) => {
         const isCommand = query.startsWith(commandPrefix)
         if (isCommand) {

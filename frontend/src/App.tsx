@@ -1,4 +1,4 @@
-import { AppShell, Box } from '@mantine/core'
+import { AppShell, Box, ScrollArea } from '@mantine/core'
 import { Routes, Route, BrowserRouter, Outlet } from 'react-router-dom'
 import { createRoot } from 'react-dom/client'
 import { Auth0Provider } from '@auth0/auth0-react'
@@ -8,7 +8,7 @@ import { AuthenticationGuard } from '@/components/AuthenticationGuard'
 import { GuidedTour } from '@/components/guidedTour'
 import { ThemeProvider } from '@/ThemeProvider'
 import { CustomSpotlightProvider } from '@/CustomSpotlightProvider'
-import { Navbar, NavbarMinimal } from '@/components/navbar/Navbar'
+import { Navbar } from '@/components/navbar/Navbar'
 
 import { auth0Config } from '@/config'
 
@@ -23,13 +23,15 @@ import Chat from '@/views/Chat'
 import NotFound from '@/views/NotFound'
 import Documentation from '@/views/Documentation'
 import Shortcuts from '@/components/Shortcuts'
-import Morphic from '@/views/MorphicExperimental'
+import Graph from '@/views/Graph'
 
 const InnerShellContext = () => {
   return (
-    <Box p='md'>
-      <Outlet />
-    </Box>
+    <ScrollArea h='100vh'>
+      <Box p='md'>
+        <Outlet />
+      </Box>
+    </ScrollArea>
   )
 }
 
@@ -42,7 +44,7 @@ function guardedContent() {
       <GuidedTour />
       <Shortcuts />
       <Notifications />
-      <AppShell padding={0} navbar={<Navbar />}>
+      <AppShell padding={0} fixed navbar={<Navbar />}>
         <Routes>
           <Route element={<InnerShellContext />}>
             <Route path='/' Component={Home} />
@@ -54,8 +56,8 @@ function guardedContent() {
             <Route path='/settings' Component={Settings} />
             <Route path='/chat' Component={Chat} />
           </Route>
+          <Route path='/experimental' Component={Graph} />
           <Route path='/docs' Component={Documentation} />
-          <Route path='/experimental' Component={Morphic} />
           <Route path='*' Component={NotFound} />
         </Routes>
       </AppShell>

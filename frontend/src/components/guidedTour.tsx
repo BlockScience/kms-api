@@ -1,5 +1,5 @@
 import Joyride, { ACTIONS, EVENTS, STATUS, TooltipRenderProps, CallBackProps } from 'react-joyride'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { on } from '@/utilities/events'
 import { useTheme } from '@/utilities/theme'
 import { Box, Title, Paper, Button, Text, Group, rem, Code, ThemeIcon, List } from '@mantine/core'
@@ -28,17 +28,7 @@ const tourSteps = [
     disableBeacon: true,
   },
   {
-    title: 'Toggling Dark Mode',
-    target: '#tour-toggleDarkmode',
-    content: (
-      <Text align='left'>
-        Wether you're in a cave or on a beach, KMS has you covered. Try giving that button a click.
-      </Text>
-    ),
-    disableBeacon: true,
-  },
-  {
-    title: 'Searching the Knowledgebase',
+    title: 'Searching the knowledgebase',
     target: '#tour-searchInput',
     content: (
       <>
@@ -50,17 +40,6 @@ const tourSteps = [
           open the search dialogue.
         </Text>
       </>
-    ),
-    disableBeacon: true,
-  },
-  {
-    title: 'Changing your Preferences',
-    target: '#tour-userSettings',
-    content: (
-      <Text align='left'>
-        You can view and update your preferences here. E.g. to customise how many search results you
-        see at once.
-      </Text>
     ),
     disableBeacon: true,
   },
@@ -136,7 +115,18 @@ const tourSteps = [
     disableBeacon: true,
   },
   {
-    title: 'Useful Links',
+    title: 'Changing your preferences',
+    target: '#tour-userSettings',
+    content: (
+      <Text align='left'>
+        You can view and update your preferences here. E.g. to customise how many search results you
+        see at once.
+      </Text>
+    ),
+    disableBeacon: true,
+  },
+  {
+    title: 'Useful links',
     target: '#tour-navExternal',
     content: (
       <Text align='left'>
@@ -144,6 +134,22 @@ const tourSteps = [
         into the documentation.
       </Text>
     ),
+    disableBeacon: true,
+  },
+  {
+    title: 'Toggling dark mode',
+    target: '#tour-toggleDarkmode',
+    content: (
+      <Text align='left'>
+        Wether you're in a cave or on a beach, KMS has you covered. Try giving that button a click.
+      </Text>
+    ),
+    disableBeacon: true,
+  },
+  {
+    title: 'Collapsing the sidebar',
+    target: '#tour-toggleSidebar',
+    content: <Text align='left'>If you prefer more space you can toggle the sidebar here.</Text>,
     disableBeacon: true,
   },
 ]
@@ -227,6 +233,7 @@ export function GuidedTour() {
   return (
     <Joyride
       steps={state.steps}
+      stepIndex={state.stepIndex}
       callback={handleJoyrideCallback}
       run={state.run}
       scrollToFirstStep

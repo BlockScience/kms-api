@@ -1,12 +1,8 @@
-import { rem } from '@mantine/core';
+import { rem } from '@mantine/core'
 
 function LogoLight() {
   return (
-    <svg
-      xmlns='http://www.w3.org/2000/svg'
-      viewBox='0 0 500 500'
-      width={rem(30)}
-    >
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500' width={rem(35)}>
       <g fillRule='evenodd' stroke='none'>
         <path
           fill='#e0e0e0'
@@ -26,7 +22,7 @@ function LogoLight() {
         ></path>
       </g>
     </svg>
-  );
+  )
 }
 
-export default LogoLight;
+export default LogoLight

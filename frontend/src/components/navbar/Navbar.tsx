@@ -1,31 +1,31 @@
 import { Header } from '@/components/navbar/sectionHeader'
-import { User } from '@/components/navbar/sectionUser'
-import { Navigation, NavLinkProps } from '@/components/navbar/sectionNavigation'
-import { currentColorScheme } from '@/utilities/theme'
-import { useSpotlight } from '@/components/mantine-spotlight'
+import Navigation, { NavigationProps } from '@/components/navbar/sectionNavigation'
+import Search from '@/components/navbar/sectionSearch'
+import User from '@/components/navbar/sectionUser'
 import {
-  Badge,
   Box,
-  Navbar as MantineNavbar,
+  Divider,
   Space,
-  TextInput,
+  Stack,
+  Tooltip,
   createStyles,
-  rem,
+  getStylesRef,
+  useMantineTheme,
 } from '@mantine/core'
-import { BaseSyntheticEvent, useState } from 'react'
+import { useDisclosure, useMediaQuery } from '@mantine/hooks'
 import {
-  IconSearch,
-  IconFileText,
-  IconBrandSlack,
-  IconBrandGithub,
-  IconLayoutDashboard,
   IconAlertCircle,
-  IconMessages,
   IconBinaryTree2,
+  IconBrandGithub,
+  IconBrandSlack,
+  IconFileText,
+  IconLayoutDashboard,
+  IconMessages,
   IconTimeline,
 } from '@tabler/icons-react'
+import { ReactNode, useState } from 'react'
 
-const upperNavigation: NavLinkProps[] = [
+const upperNavigation: NavigationProps[] = [
   {
     icon: <IconLayoutDashboard size='1rem' />,
     color: 'blue',
@@ -58,7 +58,7 @@ const upperNavigation: NavLinkProps[] = [
   },
 ]
 
-const lowerNavigation: NavLinkProps[] = [
+const lowerNavigation: NavigationProps[] = [
   {
     icon: <IconBrandSlack size='1rem' />,
     color: 'gray',
@@ -79,89 +79,105 @@ const lowerNavigation: NavLinkProps[] = [
   },
 ]
 
-const navbarStyles = createStyles((theme) => ({
-  searchInputShortcut: {
-    color: currentColorScheme() === 'dark' ? theme.colors.gray[1] : theme.colors.gray[7],
-    backgroundColor: currentColorScheme() === 'dark' ? theme.colors.dark[8] : theme.colors.gray[2],
-  },
-  link: {
-    width: rem(50),
-    height: rem(50),
-    borderRadius: theme.radius.md,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.colors.gray[7],
+interface NavTooltipProps {
+  label: string
+  visible: string
+  children?: ReactNode
+}
+export const NavTooltip = ({ label, visible, children }: NavTooltipProps) => {
+  return visible ? <Tooltip label={label}>{children}</Tooltip> : { children }
+}
 
-    '&:hover': {
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[0],
-    },
+const useStyles = createStyles((theme, { opened }: { opened: boolean }) => ({
+  container: {
+    position: 'relative',
   },
+  stack: {
+    height: '100%',
+    borderRight: `1px solid ${
+      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
+    }`,
+    padding: theme.spacing.xs,
+    paddingTop: theme.spacing.lg,
+    justifyContent: 'space-between',
 
-  active: {
-    '&, &:hover': {
-      backgroundColor: theme.fn.variant({ variant: 'light', color: theme.primaryColor }).background,
-      color: theme.fn.variant({ variant: 'light', color: theme.primaryColor }).color,
+    '#navbar': {},
+
+    '#navbarDivider': {
+      width: '5px',
+      right: '-2px', // should be -((width/2)-0.5)
+      position: 'absolute',
+      top: '0px',
+      height: '100%',
+      // border: '17px solid red',
+      // padding: '20px',
+      opacity: 0.9,
+      zIndex: 999,
+      transition: '0.2s background-color',
+      userSelect: 'none',
+      '&:hover': {
+        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.blue[8] : theme.colors.blue[3],
+        transitionDelay: '0.2s',
+        cursor: 'col-resize',
+      },
     },
   },
 }))
 
 export function Navbar() {
-  const { classes } = navbarStyles()
   const [active, setActive] = useState([null, null])
-  const spotlight = useSpotlight()
+  // const [width, setWidth] = useState(280)
+  // const [isDragging, setIsDragging] = useState(false)
+  const [opened, { toggle, close }] = useDisclosure(true)
+  const theme = useMantineTheme()
+  const bigScreen = useMediaQuery(`(min-width: ${theme.breakpoints.sm})`)
+  const fullWidthNav = bigScreen ? opened : false
+  const { classes } = useStyles({ opened })
 
-  const onSelectSearchInput = (e: BaseSyntheticEvent) => {
-    e.preventDefault()
-    e.target.blur()
-    spotlight.openSpotlight()
+  // TODO: find a viable way to do drag-based events in react
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    const flags = event.buttons !== undefined ? event.buttons : event.which
+    const primaryMouseButtonDown = (flags & 1) === 1
+    if (!primaryMouseButtonDown) {
+      return
+    }
+    setWidth(event.clientX)
   }
-
-  const lowerNavLinks = lowerNavigation.map((link, index) => (
-    <Navigation
-      {...link}
-      key={link.label}
-      active={index === active[0]}
-      onLinkActive={() => link.path && setActive([index, null])}
-    />
-  ))
 
   const upperNavLinks = upperNavigation.map((link, index) => (
     <Navigation
       {...link}
       key={link.label}
       active={index === active[1]}
+      fullwidth={fullWidthNav}
       onLinkActive={() => link.path && setActive([null, index])}
     />
   ))
-
+  const lowerNavLinks = lowerNavigation.map((link, index) => (
+    <Navigation
+      {...link}
+      key={link.label}
+      active={index === active[0]}
+      fullwidth={fullWidthNav}
+      onLinkActive={() => link.path && setActive([index, null])}
+    />
+  ))
   return (
-    <MantineNavbar p='xs' width={{ base: 300 }} fixed={true} position={{ top: 0, left: 0 }}>
-      <MantineNavbar.Section mt='xs'>
-        <Header />
-      </MantineNavbar.Section>
-      <MantineNavbar.Section grow mx='-xs' px='xs'>
-        <Box py='md'>
-          <TextInput
-            id='tour-searchInput'
-            onMouseDown={onSelectSearchInput}
-            style={{ cursor: 'pointer' }}
-            placeholder='Search'
-            icon={<IconSearch size='1rem' />}
-            rightSection={
-              <Badge size='xs' radius='xs' variant='filled' className={classes.searchInputShortcut}>
-                /
-              </Badge>
-            }
-          />
-          <Space h='xs' />
-          {upperNavLinks}
-        </Box>
-      </MantineNavbar.Section>
-      <MantineNavbar.Section>{lowerNavLinks}</MantineNavbar.Section>
-      <MantineNavbar.Section>
-        <User />
-      </MantineNavbar.Section>
-    </MantineNavbar>
+    <Box id='navbarContainer' className={classes.container}>
+      <Stack id='navbar' spacing='xs' className={classes.stack} maw={400}>
+        <Box id='navbarDivider' onClick={toggle} />
+        <Stack spacing='xs'>
+          <Header fullwidth={fullWidthNav} onToggle={toggle} />
+          <Divider />
+          <Search fullwidth={fullWidthNav} />
+          <Stack spacing={0}>{upperNavLinks}</Stack>
+        </Stack>
+        <Stack spacing='xs'>
+          <Stack spacing={0}>{lowerNavLinks}</Stack>
+          <Divider />
+          <User fullwidth={fullWidthNav} />
+        </Stack>
+      </Stack>
+    </Box>
   )
 }

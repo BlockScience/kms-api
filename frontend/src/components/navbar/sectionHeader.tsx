@@ -7,16 +7,15 @@ import {
   Text,
   createStyles,
   Center,
-  ThemeIcon,
-  UnstyledButton,
+  useMantineTheme,
+  Stack,
 } from '@mantine/core'
-import { IconSun, IconMoonStars, IconLogout } from '@tabler/icons-react'
+import { IconSun, IconMoonStars, IconX, IconMenu2 } from '@tabler/icons-react'
 import { NavLink } from 'react-router-dom'
 import LogoLight from '@/assets/logoLight'
 import LogoDark from '@/assets/logoDark'
-import { useAuth0 } from '@auth0/auth0-react'
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles((theme, { fullwidth }: { fullwidth?: boolean }) => ({
   logoText: {
     color: theme.colorScheme === 'dark' ? theme.colors.gray[0] : theme.colors.dark[8],
     fontSize: theme.fontSizes.xl,
@@ -25,61 +24,55 @@ const useStyles = createStyles((theme) => ({
   box: {
     paddingLeft: theme.spacing.xs,
     paddingRight: theme.spacing.xs,
-    paddingBottom: theme.spacing.lg,
-    borderBottom: `${rem(1)} solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2]
-    }`,
   },
   navText: {
     color: theme.colorScheme === 'dark' ? theme.colors.gray[0] : theme.colors.dark[8],
   },
+  navLink: {
+    marginBottom: 0,
+  },
 }))
 
-interface LogoutProps {
-  color: string
-  label: string
-}
-export default function Logout({ color, label }: LogoutProps) {
-  const { classes } = useStyles()
-  const { logout } = useAuth0()
-  return (
-    <UnstyledButton
-      onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
-      sx={(theme) => ({
-        display: 'block',
-        width: '100%',
-        padding: theme.spacing.xs,
-        borderRadius: theme.radius.sm,
-        color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
-
-        '&:hover': {
-          backgroundColor: theme.fn.rgba(theme.fn.darken(theme.fn.themeColor(color), 0.2), 0.1),
-        },
-      })}
-    >
-      <Group>
-        <ThemeIcon color='gray' variant='light'>
-          <IconLogout size='1rem' />
-        </ThemeIcon>
-        <Text size='sm' className={classes.navText}>
-          {label}
-        </Text>
-      </Group>
-    </UnstyledButton>
-  )
-}
-
-export function Header() {
+export function Header({ fullwidth, onToggle }: { fullwidth?: boolean; onToggle(): void }) {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme()
-  const { classes } = useStyles()
-  const { isAuthenticated, logout } = useAuth0()
+  const { classes } = useStyles({ fullwidth })
+  const theme = useMantineTheme()
   const kmsVersion = 1.1
-  return (
-    <Box className={classes.box}>
-      <Group position='apart'>
+
+  const logoIcon = () => {
+    return colorScheme === 'dark' ? <LogoLight /> : <LogoDark />
+  }
+  const darkmodeButton = () => {
+    return (
+      <ActionIcon
+        id='tour-toggleDarkmode'
+        variant='default'
+        onClick={() => toggleColorScheme()}
+        size={30}
+      >
+        {theme.colorScheme === 'dark' ? <IconSun size='1rem' /> : <IconMoonStars size='1rem' />}
+      </ActionIcon>
+    )
+  }
+  const sidebarButton = (icon) => {
+    return (
+      <ActionIcon
+        className='tour-toggleSidebar'
+        variant='default'
+        onClick={onToggle}
+        size={30}
+        color={theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[7]}
+      >
+        {icon}
+      </ActionIcon>
+    )
+  }
+  const wideHeader = () => {
+    return (
+      <Group position='apart' className={classes.box}>
         <NavLink to='/' style={{ textDecoration: 'none' }}>
           <Group>
-            {colorScheme === 'dark' ? <LogoLight /> : <LogoDark />}
+            {logoIcon()}
             <Text className={classes.logoText} td='none'>
               KMS{' '}
               <Center inline>
@@ -91,27 +84,32 @@ export function Header() {
           </Group>
         </NavLink>
         <Group spacing='xs'>
+          {darkmodeButton()}
+          {sidebarButton(<IconX size='1rem' />)}
+          {/* <IconX size='1rem' /> */}
+          {/* </ActionIcon> */}
+          {/* </Group> */}
+        </Group>
+      </Group>
+    )
+  }
+  const narrowHeader = () => {
+    return (
+      <Box className={classes.box}>
+        <Stack align='center'>
+          <NavLink to='/'>{logoIcon}</NavLink>
+          {sidebarButton(<IconMenu2 size='1rem' />)}
           <ActionIcon
             id='tour-toggleDarkmode'
             variant='default'
             onClick={() => toggleColorScheme()}
             size={30}
           >
-            {colorScheme === 'dark' ? <IconSun size='1rem' /> : <IconMoonStars size='1rem' />}
+            {darkmodeButton()}
           </ActionIcon>
-          {isAuthenticated ? (
-            <ActionIcon
-              variant='default'
-              size={30}
-              onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
-            >
-              <IconLogout size='1rem' />
-            </ActionIcon>
-          ) : (
-            <></>
-          )}
-        </Group>
-      </Group>
-    </Box>
-  )
+        </Stack>
+      </Box>
+    )
+  }
+  return fullwidth ? wideHeader() : narrowHeader()
 }

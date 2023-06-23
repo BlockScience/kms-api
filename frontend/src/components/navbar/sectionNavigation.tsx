@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router-dom'
-import { createStyles, UnstyledButton, ThemeIcon, Group, Text } from '@mantine/core'
+import { createStyles, UnstyledButton, ThemeIcon, Group, Text, Center } from '@mantine/core'
 
 interface NavLinkStyle {
   active?: boolean
+  fullwidth?: boolean
 }
 
 interface BaseLinkProps {
@@ -10,6 +11,8 @@ interface BaseLinkProps {
   color: string
   label: string
   active?: boolean
+  fullwidth?: boolean
+  id?: string
   //* * Called after link has navigated or opened link */
   onLinkActive?(): void
 }
@@ -21,9 +24,9 @@ interface ExternalLinkProps extends BaseLinkProps {
   path?: never
   href: string
 }
-export type NavLinkProps = InternalLinkProps | ExternalLinkProps
+export type NavigationProps = InternalLinkProps | ExternalLinkProps
 
-const navLinkStyles = createStyles((theme, { active }: NavLinkStyle) => ({
+const navLinkStyles = createStyles((theme, { active, fullwidth }: NavLinkStyle) => ({
   button: {
     display: 'block',
     width: '100%',
@@ -48,10 +51,19 @@ const navLinkStyles = createStyles((theme, { active }: NavLinkStyle) => ({
   },
 }))
 
-export function Navigation({ icon, color, label, path, href, active, onLinkActive }: NavLinkProps) {
-  const { classes } = navLinkStyles({ active })
+export default function Navigation({
+  icon,
+  color,
+  label,
+  path,
+  href,
+  active,
+  fullwidth,
+  onLinkActive,
+  ...props
+}: NavigationProps) {
+  const { classes } = navLinkStyles({ active, fullwidth })
   const navigate = useNavigate()
-
   const handleNavigate = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (event.button === 0) {
       if (path) navigate(path)
@@ -61,14 +73,16 @@ export function Navigation({ icon, color, label, path, href, active, onLinkActiv
   }
 
   return (
-    <UnstyledButton className={classes.button} onMouseDown={handleNavigate}>
-      <Group>
+    <UnstyledButton className={classes.button} onMouseDown={handleNavigate} id={props.id}>
+      <Group position={fullwidth ? 'left' : 'center'}>
         <ThemeIcon color={color} variant='light' className={classes.icon}>
           {icon}
         </ThemeIcon>
-        <Text size='sm' className={classes.label}>
-          {label}
-        </Text>
+        {fullwidth && (
+          <Text size='sm' className={classes.label}>
+            {label}
+          </Text>
+        )}
       </Group>
     </UnstyledButton>
   )
