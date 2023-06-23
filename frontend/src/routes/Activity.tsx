@@ -1,4 +1,4 @@
-import { PageTitle } from '@/components/typography'
+import { PageTitle } from '@/components/typography/PageTitle'
 import { SetTitle } from '@/utilities/metadata'
 import { Timeline, Text, Button, Box, Divider, Flex, Group } from '@mantine/core'
 import { IconClock, IconSettings } from '@tabler/icons-react'

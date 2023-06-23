@@ -12,8 +12,8 @@ import {
 } from '@mantine/core'
 import { IconSun, IconMoonStars, IconX, IconMenu2 } from '@tabler/icons-react'
 import { NavLink } from 'react-router-dom'
-import LogoLight from '@/assets/logoLight'
-import LogoDark from '@/assets/logoDark'
+import LogoLight from '@/assets/images/logoLight'
+import LogoDark from '@/assets/images/logoDark'
 
 const useStyles = createStyles((theme, { fullwidth }: { fullwidth?: boolean }) => ({
   logoText: {

@@ -6,7 +6,6 @@ import {
   Text,
   Box,
   useMantineTheme,
-  rem,
   Skeleton,
   Button,
   ActionIcon,
@@ -75,16 +74,14 @@ export default function User({ fullwidth }: { fullwidth: boolean }) {
       </Button>
     </Group>
   )
-  const userAvater = () => {
-    return (
-      <Avatar alt='' radius='xl' color='gray' variant='filled'>
-        {user.name.slice(0, 2).toUpperCase()}
-      </Avatar>
-    )
-  }
+  const userAvater = (
+    <Avatar alt='' radius='xl' color='gray' variant='filled'>
+      {user?.name.slice(0, 2).toUpperCase()}
+    </Avatar>
+  )
   const userLoggedInSmall = () => {
     return (
-      <Stack spacing='xs' className={classes.base}>
+      <Stack spacing='xs' pt='sm' className={classes.base}>
         <Center>
           <ActionIcon
             variant='default'
@@ -101,7 +98,7 @@ export default function User({ fullwidth }: { fullwidth: boolean }) {
         <NavLink to='/settings' style={{ textDecoration: 'none' }} id='tour-userSettings'>
           <Center>
             <UnstyledButton className={classes.baseButton}>
-              <Center>{userAvater()}</Center>
+              <Center>{userAvater}</Center>
             </UnstyledButton>
           </Center>
         </NavLink>
@@ -117,13 +114,13 @@ export default function User({ fullwidth }: { fullwidth: boolean }) {
             style={{ whiteSpace: 'nowrap', overflow: 'auto', textOverflow: 'ellipsis' }}
           >
             <Group noWrap spacing='xs'>
-              {userAvater()}
+              {userAvater}
               <Box>
                 <Text size='sm' weight={500}>
-                  {user.name}
+                  {user?.name}
                 </Text>
                 <Text color='dimmed' size='xs'>
-                  {user.email}
+                  {user?.email}
                 </Text>
               </Box>
             </Group>

@@ -1,7 +1,13 @@
 import { SpotlightProvider, SpotlightAction, useSpotlight } from '@/components/mantine-spotlight'
 import { Group, rem, Text, Anchor, useMantineColorScheme } from '@mantine/core'
 import { useNavigate } from 'react-router-dom'
-import { IconSearch, IconSun, IconInfoCircle } from '@tabler/icons-react'
+import {
+  IconSearch,
+  IconSun,
+  IconInfoCircle,
+  IconArrowRight,
+  IconTerminal2,
+} from '@tabler/icons-react'
 import { useState } from 'react'
 import { notifications } from '@mantine/notifications'
 
@@ -55,30 +61,60 @@ export function CustomSpotlightProvider({ children }: SpotlightProps) {
   const { toggleColorScheme } = useMantineColorScheme()
 
   const commandPrefix = '>'
-
+  const opNavigation = [
+    {
+      title: 'Dashboard',
+      description: 'Go to dashboard',
+      icon: <IconArrowRight size='1.2rem' />,
+      onTrigger: () => {
+        navigate('/dashboard')
+      },
+    },
+    {
+      title: 'Governance',
+      description: 'Go to governance',
+      icon: <IconArrowRight size='1.2rem' />,
+      onTrigger: () => {
+        navigate('/governance')
+      },
+    },
+    {
+      title: 'Schema',
+      description: 'Go to schema',
+      icon: <IconArrowRight size='1.2rem' />,
+      onTrigger: () => {
+        navigate('/schema')
+      },
+    },
+    {
+      title: 'Activity',
+      description: 'Go to activity',
+      icon: <IconArrowRight size='1.2rem' />,
+      onTrigger: () => {
+        navigate('/activity')
+      },
+    },
+    {
+      title: 'Chat',
+      description: 'Go to chat',
+      icon: <IconArrowRight size='1.2rem' />,
+      onTrigger: () => {
+        navigate('/chat')
+      },
+    },
+    {
+      title: 'Documentation',
+      description: 'Go to documentation',
+      icon: <IconArrowRight size='1.2rem' />,
+      onTrigger: () => {
+        navigate('/docs')
+      },
+    },
+  ]
   const opCommands = [
     {
-      title: 'thing1',
-      description: 'aegaeg this is a descriptiopn',
-      onTrigger: () => {
-        // do nothing
-      },
-    },
-    {
-      title: 'command 2',
-      description: 'Something describing this',
-      onTrigger: () => {
-        // do nothing
-      },
-    },
-    {
-      title: 'command 3',
-      onTrigger: () => {
-        // do nothing
-      },
-    },
-    {
       title: 'Toggle Darkmode',
+      description: 'Switch between light and dark themes',
       icon: <IconSun size='1.2rem' />,
       onTrigger: () => {
         toggleColorScheme()
@@ -86,6 +122,8 @@ export function CustomSpotlightProvider({ children }: SpotlightProps) {
     },
     {
       title: 'dev/notify',
+      description: 'Show a notification',
+      icon: <IconTerminal2 size='1.2rem' />,
       onTrigger: () => {
         notifications.show({
           title: 'Default notification',
@@ -95,6 +133,8 @@ export function CustomSpotlightProvider({ children }: SpotlightProps) {
     },
     {
       title: 'dev/graph view',
+      description: 'Show the graph view',
+      icon: <IconTerminal2 size='1.2rem' />,
       onTrigger: () => {
         navigate('/experimental')
       },
@@ -102,7 +142,8 @@ export function CustomSpotlightProvider({ children }: SpotlightProps) {
   ]
   const opSearch = [
     {
-      title: `Search for: ${query}`,
+      title: `Search for "${query}"`,
+      description: 'Search will match any title, text, or tags in the knowledgebase',
       onTrigger: () => {
         navigate('/search', { state: { q: query } })
       },
@@ -110,10 +151,10 @@ export function CustomSpotlightProvider({ children }: SpotlightProps) {
   ]
 
   const actions: SpotlightAction[] = query.startsWith(commandPrefix)
-    ? opCommands
+    ? opCommands.concat(opNavigation)
     : query
-    ? opSearch.concat(opCommands)
-    : opCommands
+    ? opSearch.concat(opCommands, opNavigation)
+    : opCommands.concat(opNavigation)
 
   return (
     <SpotlightProvider

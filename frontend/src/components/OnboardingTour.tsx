@@ -69,9 +69,9 @@ const tourSteps = [
             }
           >
             <Text span fw={700}>
-              Proposals
+              Governance
             </Text>{' '}
-            are changes which have been created programmatically
+            is where collective decisions are made
           </List.Item>
           <List.Item
             icon={
@@ -203,7 +203,7 @@ function Tooltip({
   )
 }
 
-export function GuidedTour() {
+export function OnboardingTour() {
   const [state, setState] = useState({
     run: false,
     steps: tourSteps,

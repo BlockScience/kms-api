@@ -1,6 +1,6 @@
-import { PageTitle } from '@/components/typography';
-import { SetTitle } from '@/utilities/metadata';
-import { Box, Center, Skeleton, Space, Stack, Text } from '@mantine/core';
+import { PageTitle } from '@/components/typography/PageTitle'
+import { SetTitle } from '@/utilities/metadata'
+import { Box, Center, Skeleton, Space, Stack, Text } from '@mantine/core'
 
 export default function Chat() {
   return (
@@ -12,14 +12,7 @@ export default function Chat() {
             <Center>View for KMS-GPT</Center>
           </PageTitle>
           <Center>
-            <Text
-              size='sm'
-              mt='md'
-              ml='md'
-              color='dimmed'
-              tt='uppercase'
-              fw={700}
-            >
+            <Text size='sm' mt='md' ml='md' color='dimmed' tt='uppercase' fw={700}>
               Work in progress, Watch this space
             </Text>
           </Center>
@@ -42,5 +35,5 @@ export default function Chat() {
         </Stack>
       </Box>
     </div>
-  );
+  )
 }

@@ -5,25 +5,25 @@ import { Auth0Provider } from '@auth0/auth0-react'
 
 import { Notifications } from '@mantine/notifications'
 import { AuthenticationGuard } from '@/components/AuthenticationGuard'
-import { GuidedTour } from '@/components/guidedTour'
-import { ThemeProvider } from '@/ThemeProvider'
-import { CustomSpotlightProvider } from '@/CustomSpotlightProvider'
+import { OnboardingTour } from '@/components/OnboardingTour'
+import { ThemeProvider } from '@/components/providers/ThemeProvider'
+import { CustomSpotlightProvider } from '@/components/providers/CustomSpotlightProvider'
 import { Navbar } from '@/components/navbar/Navbar'
 
-import { auth0Config } from '@/config'
+import { auth0Config } from '@/configs/auth'
 
-import Home from '@/views/Home'
-import Dashboard from '@/views/Dashboard'
-import Proposals from '@/views/Proposals'
-import Schema from '@/views/Schema'
-import Activity from '@/views/Activity'
-import Search from '@/views/Search'
-import Settings from '@/views/Settings'
-import Chat from '@/views/Chat'
-import NotFound from '@/views/NotFound'
-import Documentation from '@/views/Documentation'
+import Home from '@/routes/Home'
+import Dashboard from '@/routes/Dashboard'
+import Governance from '@/routes/Governance'
+import Schema from '@/routes/Schema'
+import Activity from '@/routes/Activity'
+import Search from '@/routes/Search'
+import Settings from '@/routes/Settings'
+import Chat from '@/routes/Chat'
+import NotFound from '@/routes/NotFound'
+import Documentation from '@/routes/Documentation'
 import Shortcuts from '@/components/Shortcuts'
-import Graph from '@/views/Graph'
+import Graph from '@/routes/Graph'
 
 const InnerShellContext = () => {
   return (
@@ -41,15 +41,15 @@ const root = container ? createRoot(container) : null
 function guardedContent() {
   return (
     <CustomSpotlightProvider>
-      <GuidedTour />
+      <OnboardingTour />
       <Shortcuts />
       <Notifications />
       <AppShell padding={0} fixed navbar={<Navbar />}>
         <Routes>
           <Route element={<InnerShellContext />}>
             <Route path='/' Component={Home} />
+            <Route path='/governance' Component={Governance} />
             <Route path='/dashboard' Component={Dashboard} />
-            <Route path='/proposals' Component={Proposals} />
             <Route path='/schema' Component={Schema} />
             <Route path='/activity' Component={Activity} />
             <Route path='/search' Component={Search} />

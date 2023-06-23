@@ -27,16 +27,16 @@ import { ReactNode, useState } from 'react'
 
 const upperNavigation: NavigationProps[] = [
   {
+    icon: <IconAlertCircle size='1rem' />,
+    color: 'teal',
+    label: 'Governance',
+    path: '/governance',
+  },
+  {
     icon: <IconLayoutDashboard size='1rem' />,
     color: 'blue',
     label: 'Dashboard',
     path: '/dashboard',
-  },
-  {
-    icon: <IconAlertCircle size='1rem' />,
-    color: 'teal',
-    label: 'Proposals',
-    path: '/proposals',
   },
   {
     icon: <IconBinaryTree2 size='1rem' />,

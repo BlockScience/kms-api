@@ -1,4 +1,4 @@
-import { MantineProvider, ColorSchemeProvider, ColorScheme } from '@mantine/core'
+import { MantineProvider, ColorSchemeProvider, ColorScheme, rem } from '@mantine/core'
 import { useLocalStorage } from '@mantine/hooks'
 
 interface ThemeProviderProps {
@@ -16,7 +16,14 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 
   return (
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-      <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
+      <MantineProvider
+        theme={{
+          colorScheme,
+          focusRing: 'never',
+        }}
+        withGlobalStyles
+        withNormalizeCSS
+      >
         {children}
       </MantineProvider>
     </ColorSchemeProvider>

@@ -1,9 +1,9 @@
 import { SetTitle } from '@/utilities/metadata'
 import { Box, Button, Stack } from '@mantine/core'
-import { PageTitle } from '@/components/typography'
-import StatsGrid from '@/components/statsGrid'
-import { LogTable } from '@/components/logTable'
-import InlineTag from '@/components/inlineTag'
+import { PageTitle } from '@/components/typography/PageTitle'
+import StatsGrid from '@/components/StatsGrid'
+import { LogTable } from '@/components/LogTable'
+import InlineTag from '@/components/InlineTag'
 import TagSet from '@/components/TagSet'
 import AreaChart from '@/components/AreaChart'
 

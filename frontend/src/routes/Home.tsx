@@ -14,7 +14,7 @@ import {
 } from '@mantine/core'
 import { IconCheck } from '@tabler/icons-react'
 import { trigger } from '@/utilities/events'
-import ImageWelcome from '@/assets/homeImage'
+import ImageWelcome from '@/assets/images/homeImage'
 
 import { SetTitle } from '@/utilities/metadata'
 import ApiTestButton from '@/components/ApiTestButton'

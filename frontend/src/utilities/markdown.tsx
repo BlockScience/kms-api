@@ -9,7 +9,7 @@ interface MarkdownParserProps {
 
 export default function Markdown(props: MarkdownParserProps) {
   const [markdown, setState] = useState('')
-  import(`../docs/${props.filename}.md`)
+  import(`../assets/docs/${props.filename}.md`)
     .then((module) =>
       fetch(module.default)
         .then((res) => res.text())

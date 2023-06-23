@@ -1,7 +1,7 @@
 import { SetTitle } from '@/utilities/metadata'
 import { useForm } from '@mantine/form'
 import { Box, Button, Group, NumberInput, Checkbox, Stack, Text, Divider } from '@mantine/core'
-import { PageTitle } from '@/components/typography'
+import { PageTitle } from '@/components/typography/PageTitle'
 import { useAuth0 } from '@auth0/auth0-react'
 
 export default function Settings() {
