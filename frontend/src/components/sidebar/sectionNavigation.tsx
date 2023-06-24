@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { createStyles, UnstyledButton, ThemeIcon, Group, Text, Center } from '@mantine/core'
+import { NavTooltip } from '@/components/sidebar/Tooltip'
 
 interface NavLinkStyle {
   active?: boolean
@@ -73,17 +74,19 @@ export default function Navigation({
   }
 
   return (
-    <UnstyledButton className={classes.button} onMouseDown={handleNavigate} id={props.id}>
-      <Group position={fullwidth ? 'left' : 'center'}>
-        <ThemeIcon color={color} variant='light' className={classes.icon}>
-          {icon}
-        </ThemeIcon>
-        {fullwidth && (
-          <Text size='sm' className={classes.label}>
-            {label}
-          </Text>
-        )}
-      </Group>
-    </UnstyledButton>
+    <NavTooltip label={label} disable={fullwidth}>
+      <UnstyledButton className={classes.button} onMouseDown={handleNavigate} id={props.id}>
+        <Group position={fullwidth ? 'left' : 'center'}>
+          <ThemeIcon color={color} variant='light' className={classes.icon}>
+            {icon}
+          </ThemeIcon>
+          {fullwidth && (
+            <Text size='sm' className={classes.label}>
+              {label}
+            </Text>
+          )}
+        </Group>
+      </UnstyledButton>
+    </NavTooltip>
   )
 }

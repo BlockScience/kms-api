@@ -1,18 +1,9 @@
-import { Header } from '@/components/navbar/sectionHeader'
-import Navigation, { NavigationProps } from '@/components/navbar/sectionNavigation'
-import Search from '@/components/navbar/sectionSearch'
-import User from '@/components/navbar/sectionUser'
-import {
-  Box,
-  Divider,
-  Space,
-  Stack,
-  Tooltip,
-  createStyles,
-  getStylesRef,
-  useMantineTheme,
-} from '@mantine/core'
-import { useDisclosure, useMediaQuery } from '@mantine/hooks'
+import { Header } from '@/components/sidebar/sectionHeader'
+import Navigation, { NavigationProps } from '@/components/sidebar/sectionNavigation'
+import Search from '@/components/sidebar/sectionSearch'
+import User from '@/components/sidebar/sectionUser'
+import { Box, Divider, Stack, Tooltip, createStyles, useMantineTheme } from '@mantine/core'
+import { useLocalStorage, useMediaQuery } from '@mantine/hooks'
 import {
   IconAlertCircle,
   IconBinaryTree2,
@@ -79,15 +70,6 @@ const lowerNavigation: NavigationProps[] = [
   },
 ]
 
-interface NavTooltipProps {
-  label: string
-  visible: string
-  children?: ReactNode
-}
-export const NavTooltip = ({ label, visible, children }: NavTooltipProps) => {
-  return visible ? <Tooltip label={label}>{children}</Tooltip> : { children }
-}
-
 const useStyles = createStyles((theme, { opened }: { opened: boolean }) => ({
   container: {
     position: 'relative',
@@ -101,16 +83,12 @@ const useStyles = createStyles((theme, { opened }: { opened: boolean }) => ({
     paddingTop: theme.spacing.lg,
     justifyContent: 'space-between',
 
-    '#navbar': {},
-
     '#navbarDivider': {
-      width: '5px',
-      right: '-2px', // should be -((width/2)-0.5)
+      width: '3px',
+      right: '-1px', // should be -((width/2)-0.5)
       position: 'absolute',
       top: '0px',
       height: '100%',
-      // border: '17px solid red',
-      // padding: '20px',
       opacity: 0.9,
       zIndex: 999,
       transition: '0.2s background-color',
@@ -118,37 +96,31 @@ const useStyles = createStyles((theme, { opened }: { opened: boolean }) => ({
       '&:hover': {
         backgroundColor: theme.colorScheme === 'dark' ? theme.colors.blue[8] : theme.colors.blue[3],
         transitionDelay: '0.2s',
-        cursor: 'col-resize',
+        cursor: 'pointer',
       },
     },
   },
 }))
 
-export function Navbar() {
-  const [active, setActive] = useState([null, null])
-  // const [width, setWidth] = useState(280)
-  // const [isDragging, setIsDragging] = useState(false)
-  const [opened, { toggle, close }] = useDisclosure(true)
+export function Sidebar() {
+  const [activeView, setActive] = useState([null, null])
+  const [expanded, setExpanded] = useLocalStorage<boolean>({
+    key: 'sidebar-prefer-expanded',
+    defaultValue: true,
+    getInitialValueInEffect: true,
+  })
+
+  const toggle = () => setExpanded((v) => !v)
   const theme = useMantineTheme()
   const bigScreen = useMediaQuery(`(min-width: ${theme.breakpoints.sm})`)
-  const fullWidthNav = bigScreen ? opened : false
-  const { classes } = useStyles({ opened })
-
-  // TODO: find a viable way to do drag-based events in react
-  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    const flags = event.buttons !== undefined ? event.buttons : event.which
-    const primaryMouseButtonDown = (flags & 1) === 1
-    if (!primaryMouseButtonDown) {
-      return
-    }
-    setWidth(event.clientX)
-  }
+  const fullWidthNav = bigScreen ? expanded : false
+  const { classes } = useStyles({ opened: expanded })
 
   const upperNavLinks = upperNavigation.map((link, index) => (
     <Navigation
       {...link}
       key={link.label}
-      active={index === active[1]}
+      active={index === activeView[1]}
       fullwidth={fullWidthNav}
       onLinkActive={() => link.path && setActive([null, index])}
     />
@@ -157,14 +129,14 @@ export function Navbar() {
     <Navigation
       {...link}
       key={link.label}
-      active={index === active[0]}
+      active={index === activeView[0]}
       fullwidth={fullWidthNav}
       onLinkActive={() => link.path && setActive([index, null])}
     />
   ))
   return (
     <Box id='navbarContainer' className={classes.container}>
-      <Stack id='navbar' spacing='xs' className={classes.stack} maw={400}>
+      <Stack id='navbar' spacing='xs' className={classes.stack} w={expanded ? 280 : 65}>
         <Box id='navbarDivider' onClick={toggle} />
         <Stack spacing='xs'>
           <Header fullwidth={fullWidthNav} onToggle={toggle} />

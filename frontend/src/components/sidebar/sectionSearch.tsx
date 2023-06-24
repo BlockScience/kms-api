@@ -2,6 +2,7 @@ import { ActionIcon, Badge, Center, TextInput, createStyles } from '@mantine/cor
 import { useSpotlight } from '@/components/mantine-spotlight'
 import { IconSearch } from '@tabler/icons-react'
 import { BaseSyntheticEvent } from 'react'
+import { NavTooltip } from './Tooltip'
 
 const useStyles = createStyles((theme) => ({
   searchInputShortcut: {
@@ -36,11 +37,13 @@ export default function Search({ fullwidth }: { fullwidth: boolean }) {
   }
   const searchSmall = () => {
     return (
-      <Center>
-        <ActionIcon size={30} onMouseDown={handleSearch} variant='default'>
-          <IconSearch size='1rem' />
-        </ActionIcon>
-      </Center>
+      <NavTooltip label='Search'>
+        <Center>
+          <ActionIcon size={30} onMouseDown={handleSearch} variant='default'>
+            <IconSearch size='1rem' />
+          </ActionIcon>
+        </Center>
+      </NavTooltip>
     )
   }
 

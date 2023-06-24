@@ -13,12 +13,15 @@ import {
   Stack,
   createStyles,
   Loader,
+  Tooltip,
 } from '@mantine/core'
 import { NavLink } from 'react-router-dom'
 import { useAuth0 } from '@auth0/auth0-react'
+import { NavTooltip } from './Tooltip'
 
 const useStyles = createStyles((theme) => ({
   base: {
+    paddingRight: theme.spacing.xs,
     a: {
       overflow: 'hidden',
       whiteSpace: 'nowrap',
@@ -43,14 +46,16 @@ export default function User({ fullwidth }: { fullwidth: boolean }) {
 
   const loginButton = (
     <Center>
-      <ActionIcon
-        size={30}
-        variant='filled'
-        color={theme.colorScheme == 'dark' ? 'green.9' : 'green.3'}
-        onClick={() => loginWithRedirect()}
-      >
-        <IconLogin size='1rem' color={theme.colorScheme == 'dark' ? 'white' : 'black'} />
-      </ActionIcon>
+      <NavTooltip label='Log In'>
+        <ActionIcon
+          size={30}
+          variant='filled'
+          color={theme.colorScheme == 'dark' ? 'green.9' : 'green.3'}
+          onClick={() => loginWithRedirect()}
+        >
+          <IconLogin size='1rem' color={theme.colorScheme == 'dark' ? 'white' : 'black'} />
+        </ActionIcon>
+      </NavTooltip>
     </Center>
   )
   const loadingWide = (
@@ -83,17 +88,19 @@ export default function User({ fullwidth }: { fullwidth: boolean }) {
     return (
       <Stack spacing='xs' pt='sm' className={classes.base}>
         <Center>
-          <ActionIcon
-            variant='default'
-            color='red'
-            size={30}
-            onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
-          >
-            <IconLogout
-              size='1rem'
-              color={theme.colorScheme === 'dark' ? theme.colors.gray[0] : 'black'}
-            />
-          </ActionIcon>
+          <Tooltip label='Log Out'>
+            <ActionIcon
+              variant='default'
+              color='red'
+              size={30}
+              onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
+            >
+              <IconLogout
+                size='1rem'
+                color={theme.colorScheme === 'dark' ? theme.colors.gray[0] : 'black'}
+              />
+            </ActionIcon>
+          </Tooltip>
         </Center>
         <NavLink to='/settings' style={{ textDecoration: 'none' }} id='tour-userSettings'>
           <Center>

@@ -14,6 +14,7 @@ import { IconSun, IconMoonStars, IconX, IconMenu2 } from '@tabler/icons-react'
 import { NavLink } from 'react-router-dom'
 import LogoLight from '@/assets/images/logoLight'
 import LogoDark from '@/assets/images/logoDark'
+import { NavTooltip } from './Tooltip'
 
 const useStyles = createStyles((theme, { fullwidth }: { fullwidth?: boolean }) => ({
   logoText: {
@@ -86,9 +87,6 @@ export function Header({ fullwidth, onToggle }: { fullwidth?: boolean; onToggle(
         <Group spacing='xs'>
           {darkmodeButton()}
           {sidebarButton(<IconX size='1rem' />)}
-          {/* <IconX size='1rem' /> */}
-          {/* </ActionIcon> */}
-          {/* </Group> */}
         </Group>
       </Group>
     )
@@ -98,15 +96,17 @@ export function Header({ fullwidth, onToggle }: { fullwidth?: boolean; onToggle(
       <Box className={classes.box}>
         <Stack align='center'>
           <NavLink to='/'>{logoIcon}</NavLink>
-          {sidebarButton(<IconMenu2 size='1rem' />)}
-          <ActionIcon
-            id='tour-toggleDarkmode'
-            variant='default'
-            onClick={() => toggleColorScheme()}
-            size={30}
-          >
-            {darkmodeButton()}
-          </ActionIcon>
+          <NavTooltip label='Expand Sidebar'>{sidebarButton(<IconMenu2 size='1rem' />)}</NavTooltip>
+          <NavTooltip label='Toggle Dark Mode'>
+            <ActionIcon
+              id='tour-toggleDarkmode'
+              variant='default'
+              onClick={() => toggleColorScheme()}
+              size={30}
+            >
+              {darkmodeButton()}
+            </ActionIcon>
+          </NavTooltip>
         </Stack>
       </Box>
     )
