@@ -14,6 +14,8 @@ function once(eventType: string, listener: CallableFunction) {
 }
 
 function trigger(eventType: string, data: unknown) {
+  console.log('trigger', eventType, data)
+
   const event = new CustomEvent(eventType, { detail: data })
   document.dispatchEvent(event)
 }
