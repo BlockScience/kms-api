@@ -1,2 +1,2 @@
-export { Sidebar as default } from './Sidebar'
+export { Sidebar } from './Sidebar'
 export { NavTooltip } from './Tooltip'

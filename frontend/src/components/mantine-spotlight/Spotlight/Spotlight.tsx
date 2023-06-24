@@ -50,7 +50,7 @@ export interface InnerSpotlightProps
   filter?(query: string, actions: SpotlightAction[]): SpotlightAction[]
 
   /** Message displayed when actions were not found */
-  nothingFoundMessage?: VNode
+  nothingFoundMessage?:  string
 
   /** Number of actions displayed at a time */
   limit?: number

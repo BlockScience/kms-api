@@ -1,4 +1,8 @@
-import { SpotlightProvider, SpotlightAction, useSpotlight } from '@/components/mantine-spotlight'
+import {
+  SpotlightProvider as MantineSpotlightProvider,
+  SpotlightAction,
+  useSpotlight,
+} from '@/components/mantine-spotlight'
 import { Group, rem, Text, Anchor, useMantineColorScheme, px } from '@mantine/core'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -10,12 +14,9 @@ import {
 } from '@tabler/icons-react'
 import { useState } from 'preact/hooks'
 import { notifications } from '@mantine/notifications'
+import { VNode } from 'preact'
 
-interface SpotlightProps {
-  children: React.ReactNode
-}
-
-function ActionsWrapper({ children }: { children: React.ReactNode }) {
+function ActionsWrapper({ children }: { children: VNode[] | VNode }) {
   const navigate = useNavigate()
   const spotlight = useSpotlight()
   return (
@@ -55,7 +56,10 @@ function removePrefix(string: string, prefix: string): string {
   return string.startsWith(prefix) ? string.slice(prefix.length) : string
 }
 
-export function CustomSpotlightProvider({ children }: SpotlightProps) {
+interface SpotlightProps {
+  children: VNode[] | VNode | string
+}
+export function SpotlightProvider({ children }: SpotlightProps) {
   const navigate = useNavigate()
   const [query, setQuery] = useState('')
   const { toggleColorScheme } = useMantineColorScheme()
@@ -157,7 +161,7 @@ export function CustomSpotlightProvider({ children }: SpotlightProps) {
     : opCommands.concat(opNavigation)
 
   return (
-    <SpotlightProvider
+    <MantineSpotlightProvider
       actions={actions}
       searchIcon={<IconSearch size={px('1.2rem')} />}
       searchPlaceholder='Search...'
@@ -187,6 +191,6 @@ export function CustomSpotlightProvider({ children }: SpotlightProps) {
       }}
     >
       {children}
-    </SpotlightProvider>
+    </MantineSpotlightProvider>
   )
 }
