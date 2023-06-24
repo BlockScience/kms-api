@@ -1,156 +1,83 @@
-import Layout from '@/components/reactCola'
-import { Box } from '@mantine/core'
-import { useState } from 'react'
-import { Line } from 'react-lineto'
+import { ExperimentalWarning } from '@/components/ExperimentalWarning'
+import { Affix, rem } from '@mantine/core'
+import CytoscapeComponent from 'react-cytoscapejs'
+import Cola from 'cytoscape-cola'
+import Cytoscape from 'cytoscape'
+
+Cytoscape.use(Cola)
+
+function createGraph(n: number) {
+  const nodes = new Array(n)
+  const edges = new Array(n)
+  for (let i = 0; i < n; i++) {
+    nodes[i] = {
+      data: {
+        id: i.toString(),
+        // label: `Node ${i}`,
+      },
+    }
+    edges[i] = {
+      data: {
+        source: Math.floor(Math.sqrt(i)).toString(),
+        target: (i + 1).toString(),
+      },
+    }
+  }
+  console.log(nodes.concat(edges))
+  edges.pop()
+
+  return nodes.concat(edges)
+}
 
 export default function Graph() {
-  const [bounds, setBounds] = useState({ xMin: 0, yMin: 0, xMax: 0, yMax: 0 })
+  const elements = createGraph(200)
+  const layout = {
+    name: 'cola',
+    animate: true, // whether to show the layout as it's running
+    refresh: 1, // number of ticks per frame; higher is faster but more jerky
+    maxSimulationTime: 30000, // max length in ms to run the layout
+    ungrabifyWhileSimulating: false, // so you can't drag nodes during layout
+    fit: true, // on every layout reposition of nodes, fit the viewport
+    padding: 30, // padding around the simulation
+    boundingBox: undefined, // constrain layout bounds; { x1, y1, x2, y2 } or { x1, y1, w, h }
+    nodeDimensionsIncludeLabels: false, // whether labels should be included in determining the space used by a node
+
+    // layout event callbacks
+    ready: function () {}, // on layoutready
+    stop: function () {}, // on layoutstop
+
+    // positioning options
+    randomize: true, // use random node positions at beginning of layout
+    avoidOverlap: true, // if true, prevents overlap of node bounding boxes
+    handleDisconnected: true, // if true, avoids disconnected components from overlapping
+    convergenceThreshold: 0.01, // when the alpha value (system energy) falls below this value, the layout stops
+    nodeSpacing: function (node) {
+      return 10
+    }, // extra spacing around nodes
+    flow: undefined, // use DAG/tree flow layout if specified, e.g. { axis: 'y', minSeparation: 30 }
+    alignment: undefined, // relative alignment constraints on nodes, e.g. {vertical: [[{node: node1, offset: 0}, {node: node2, offset: 5}]], horizontal: [[{node: node3}, {node: node4}], [{node: node5}, {node: node6}]]}
+    gapInequalities: undefined, // list of inequality constraints for the gap between the nodes, e.g. [{"axis":"y", "left":node1, "right":node2, "gap":25}]
+    centerGraph: true, // adjusts the node positions initially to center the graph (pass false if you want to start the layout from the current position)
+
+    // different methods of specifying edge length
+    // each can be a constant numerical value or a function like `function( edge ){ return 2; }`
+    edgeLength: undefined, // sets edge length directly in simulation
+    edgeSymDiffLength: undefined, // symmetric diff edge length in simulation
+    edgeJaccardLength: undefined, // jaccard edge length in simulation
+
+    // iterations of cola algorithm; uses default values on undefined
+    unconstrIter: undefined, // unconstrained initial layout iterations
+    userConstIter: undefined, // initial layout iterations with user-specified constraints
+    allConstIter: undefined, // initial layout iterations with all constraints including non-overlap
+  }
+  const style = { width: '100%', height: '100%' }
+
   return (
-    <Box
-      style={{ border: '1px solid red', background: 'gray', height: '100%' }}
-      ref={(el) => {
-        if (!el) return
-        console.log('initial width', el.getBoundingClientRect().width)
-        let prevValue = JSON.stringify(el.getBoundingClientRect())
-        const start = Date.now()
-        const handle = setInterval(() => {
-          const rect = el.getBoundingClientRect()
-          const nextValue = JSON.stringify(rect)
-          if (nextValue === prevValue) {
-            clearInterval(handle)
-            console.log(
-              `width stopped changing in ${Date.now() - start}ms. final width:`,
-              rect.width,
-            )
-            // setBounds(rect.left, rect.top, rect.right, rect.bottom)
-            console.log('bounds', rect.left, rect.top, rect.right, rect.bottom)
-            console.log(bounds)
-          } else {
-            prevValue = nextValue
-          }
-        }, 100)
-      }}
-    >
-      <Layout
-        // width={40}
-        // height={40}
-        ref={(el) => {
-          if (!el) return
-          console.log('initial graph width', el.getBoundingClientRect().width)
-          let prevValue = JSON.stringify(el.getBoundingClientRect())
-          const start = Date.now()
-          const handle = setInterval(() => {
-            const rect = el.getBoundingClientRect()
-            const nextValue = JSON.stringify(rect)
-            if (nextValue === prevValue) {
-              clearInterval(handle)
-              console.log(
-                `graph width stopped changing in ${Date.now() - start}ms. final width:`,
-                rect.width,
-              )
-              // setBounds(rect.left, rect.top, rect.right, rect.bottom)
-              console.log('bounds', rect.left, rect.top, rect.right, rect.bottom)
-              console.log(bounds)
-            } else {
-              prevValue = nextValue
-            }
-          }, 100)
-        }}
-        renderLayout={(layout) => (
-          <>
-            {layout.groups().map(({ bounds: { x, X, y, Y } }, i) => {
-              const width = X - x
-              const height = Y - y
-              return (
-                <div
-                  key={i}
-                  style={{
-                    position: 'absolute',
-                    left: x,
-                    top: y,
-                    width,
-                    height,
-                    backgroundColor: 'orange',
-                    borderRadius: 10,
-                    zIndex: 0,
-                  }}
-                />
-              )
-            })}
-            {layout.links().map(({ source, target }, i) => {
-              const { x, y } = source
-              const { x: x2, y: y2 } = target
-              return <Line key={i} x0={x} y0={y} x1={x2} y1={y2} borderColor='blue' zIndex={1} />
-            })}
-            {layout.nodes().map(({ x, y, width, height, name }, i) => (
-              <div
-                key={i}
-                style={{
-                  position: 'absolute',
-                  left: x - width * 0.5,
-                  top: y - height * 0.5,
-                  width,
-                  height,
-                  backgroundColor: 'red',
-                  borderRadius: 5,
-                  zIndex: 2,
-                }}
-              >
-                {name}
-              </div>
-            ))}
-          </>
-        )}
-        nodes={[
-          {
-            width: 60,
-            height: 40,
-            name: 'a',
-          },
-          {
-            width: 60,
-            height: 40,
-            name: 'b',
-          },
-          {
-            width: 60,
-            height: 40,
-            name: 'c',
-          },
-          {
-            width: 60,
-            height: 40,
-            name: 'd',
-          },
-          {
-            width: 60,
-            height: 40,
-            name: 'e',
-          },
-          {
-            width: 60,
-            height: 40,
-            name: 'f',
-          },
-          {
-            width: 60,
-            height: 40,
-            name: 'g',
-          },
-        ]}
-        links={[
-          { source: 1, target: 2 },
-          { source: 2, target: 3 },
-          { source: 3, target: 4 },
-          { source: 0, target: 1 },
-          { source: 2, target: 0 },
-          { source: 3, target: 5 },
-          { source: 0, target: 5 },
-        ]}
-        groups={[{ leaves: [0], groups: [1] }, { leaves: [1, 2] }, { leaves: [3, 4] }]}
-        width={540}
-        height={760}
-      />
-    </Box>
+    <>
+      <Affix position={{ top: rem(20), right: rem(20) }}>
+        <ExperimentalWarning />
+      </Affix>
+      <CytoscapeComponent elements={elements} style={style} layout={layout} />
+    </>
   )
 }
