@@ -1,7 +1,7 @@
 import { auth0Config } from '@/config'
 import { useAuth0 } from '@auth0/auth0-react'
 import { useQueryClient, useQuery } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'preact/hooks'
 
 const fetchData = async (token: string) => {
   const res = await fetch('http://127.0.0.1:8000/test', {
