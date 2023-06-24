@@ -80,7 +80,7 @@ export default function Home() {
     <>
       <SetTitle text='KMS' noPrefix />
       <Box maw={1000} mx='auto'>
-        {/* <ApiTestButton /> */}
+        <ApiTestButton />
         <Container>
           <div className={classes.inner}>
             <div className={classes.content}>

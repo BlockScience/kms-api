@@ -1,8 +1,7 @@
-import { Component, useState, useEffect } from 'react'
 import { AppShell } from '@mantine/core'
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import { createRoot } from 'react-dom/client'
-import { Auth0Provider, useAuth0 } from '@auth0/auth0-react'
+import { Auth0Provider } from '@auth0/auth0-react'
 
 import { AuthenticationGuard } from '@/components/AuthenticationGuard'
 import { GuidedTour } from '@/components/guidedTour'
@@ -25,8 +24,11 @@ import Documentation from '@/views/Documentation'
 import Login from '@/views/Login'
 import Shortcuts from '@/components/Shortcuts'
 
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
+
 const container = document.getElementById('app')
 const root = container ? createRoot(container) : null
+const queryClient = new QueryClient()
 
 function guardedContent() {
   return (
@@ -73,7 +75,9 @@ if (root) {
           // scope: 'read:current_user update:current_user_metadata',
         }}
       >
-        <App />
+        <QueryClientProvider client={queryClient}>
+          <App />
+        </QueryClientProvider>
       </Auth0Provider>
     </BrowserRouter>,
   )
