@@ -1,12 +1,13 @@
+// Must be the first import
+import 'preact/debug'
 import { render } from 'preact'
 import { AppShell, Box, ScrollArea } from '@mantine/core'
 import { Routes, Route, BrowserRouter, Outlet } from 'react-router-dom'
-import { Auth0Provider } from '@auth0/auth0-react'
+import { withAuthenticationRequired } from '@auth0/auth0-react'
 import { auth0Config } from '@/configs/auth'
-import { ThemeProvider, SpotlightProvider } from '@/components/providers'
-import { AuthenticationGuard } from '@/components/AuthenticationGuard'
+import { ThemeProvider, SpotlightProvider, Auth0RedirectProvider } from '@/components/providers'
 
-import { ErrorBoundary } from '@/components/ErrorBoundary'
+import { PageLoading } from '@/components/PageLoading'
 import { Sidebar } from '@/components/sidebar'
 import { Notifications } from '@mantine/notifications'
 import { OnboardingTour } from '@/components/OnboardingTour'
@@ -24,7 +25,7 @@ import NotFound from '@/routes/NotFound'
 import Documentation from '@/routes/Documentation'
 import Graph from '@/routes/Graph'
 
-const InnerShellContext = () => {
+const DefaultShell = () => {
   return (
     <ScrollArea h='100vh'>
       <Box p='md'>
@@ -34,7 +35,33 @@ const InnerShellContext = () => {
   )
 }
 
-function GuardedContent() {
+const ProtectedRoute = ({ component, ...args }) => {
+  const Component = withAuthenticationRequired(component, {
+    onRedirecting: () => <PageLoading />,
+  })
+  return <Component />
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Auth0RedirectProvider
+        domain={auth0Config.domain}
+        clientId={auth0Config.clientID}
+        authorizationParams={{
+          redirect_uri: window.location.origin,
+          prompt: 'login',
+        }}
+      >
+        <ThemeProvider>
+          <ProtectedRoute component={Protected} />
+        </ThemeProvider>
+      </Auth0RedirectProvider>
+    </BrowserRouter>
+  )
+}
+
+function Protected() {
   return (
     <SpotlightProvider>
       <OnboardingTour />
@@ -42,7 +69,7 @@ function GuardedContent() {
       <Notifications />
       <AppShell padding={0} fixed navbar={<Sidebar />}>
         <Routes>
-          <Route element={<InnerShellContext />}>
+          <Route element={<DefaultShell />}>
             <Route path='/' Component={Home} />
             <Route path='/governance' Component={Governance} />
             <Route path='/dashboard' Component={Dashboard} />
@@ -58,30 +85,6 @@ function GuardedContent() {
         </Routes>
       </AppShell>
     </SpotlightProvider>
-  )
-}
-
-function App() {
-  return (
-    // <ErrorBoundary>
-    <BrowserRouter>
-      <Auth0Provider
-        domain={auth0Config.domain}
-        clientId={auth0Config.clientID}
-        authorizationParams={{
-          redirect_uri: window.location.origin,
-          prompt: 'login',
-        }}
-      >
-        <ThemeProvider>
-          {/* <AuthenticationGuard> */}
-          <GuardedContent />
-          {/* </AuthenticationGuard> */}
-          {/* {GuardedContent} */}
-        </ThemeProvider>
-      </Auth0Provider>
-      {/* </ErrorBoundary> */}
-    </BrowserRouter>
   )
 }
 

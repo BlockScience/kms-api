@@ -104,7 +104,7 @@ export default function User({ fullwidth }: { fullwidth: boolean }) {
           </NavTooltip>
         </Center>
         <NavLink to='/settings' style={{ textDecoration: 'none' }} id='tour-userSettings'>
-          <NavTooltip label='Your Settings'>
+          <NavTooltip label='Settings'>
             <Center style={{ cursor: 'pointer' }}>{userAvater}</Center>
           </NavTooltip>
         </NavLink>
