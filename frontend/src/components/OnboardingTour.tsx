@@ -1,5 +1,5 @@
 import Joyride, { ACTIONS, EVENTS, STATUS, TooltipRenderProps, CallBackProps } from 'react-joyride'
-import { useState } from 'react'
+import { useState } from 'preact/hooks'
 import { on } from '@/utils'
 import {
   Box,

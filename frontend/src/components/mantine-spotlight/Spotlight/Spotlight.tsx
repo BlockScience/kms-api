@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'preact/hooks'
 import {
   DefaultProps,
   Selectors,
@@ -20,6 +20,7 @@ import { ActionsList, ActionsListStylesNames } from '../ActionsList/ActionsList'
 import type { SpotlightAction } from '../types'
 import { filterActions } from './filter-actions/filter-actions'
 import useStyles from './Spotlight.styles'
+import { VNode } from 'preact'
 
 function SpotlightScrollArea(props: ScrollAreaAutosizeProps) {
   return <ScrollArea.Autosize mah='calc(100vh - 18rem)' {...props} />
@@ -43,13 +44,13 @@ export interface InnerSpotlightProps
   searchPlaceholder?: string
 
   /** Search input icon */
-  searchIcon?: React.ReactNode
+  searchIcon?: VNode
 
   /** Function used to determine how actions will be filtered based on user input */
   filter?(query: string, actions: SpotlightAction[]): SpotlightAction[]
 
   /** Message displayed when actions were not found */
-  nothingFoundMessage?: React.ReactNode
+  nothingFoundMessage?:  string
 
   /** Number of actions displayed at a time */
   limit?: number
@@ -61,7 +62,7 @@ export interface InnerSpotlightProps
   actionComponent?: React.FC<DefaultActionProps>
 
   /** Component that is used to wrap actions list */
-  actionsWrapperComponent?: React.FC<{ children: React.ReactNode }> | string
+  actionsWrapperComponent?: React.FC<{ children: VNode }> | string
 
   /** Should user query be highlighted in actions title */
   highlightQuery?: boolean
@@ -73,7 +74,7 @@ export interface InnerSpotlightProps
   searchInputProps?: TextInputProps
 
   /** Component used as scrollable container for actions list, defaults to ScrollArea.Autosize */
-  scrollAreaComponent?: React.FC<{ children: React.ReactNode }>
+  scrollAreaComponent?: React.FC<{ children: VNode }>
 }
 
 interface SpotlightProps extends InnerSpotlightProps {
@@ -148,7 +149,7 @@ export function Spotlight(props: SpotlightProps) {
     }
   }, [groupedActions.length])
 
-  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleInputKeyDown = (event: KeyboardEvent) => {
     if (IMEOpen) {
       return
     }

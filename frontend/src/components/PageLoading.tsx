@@ -1,7 +1,7 @@
 import { Center, Text, Loader, Stack } from '@mantine/core'
 import { useViewportSize } from '@mantine/hooks'
 
-export default function PageLoading() {
+export function PageLoading() {
   const { height } = useViewportSize()
   return (
     <Center style={{ height: height }}>

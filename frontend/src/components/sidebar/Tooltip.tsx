@@ -1,5 +1,5 @@
 import { Tooltip } from '@mantine/core'
-import { ReactNode } from 'react'
+import { ReactNode } from 'preact'
 
 interface NavTooltipProps {
   label: string

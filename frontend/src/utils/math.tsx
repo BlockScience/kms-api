@@ -1,4 +1,5 @@
 type ConditionFunction = (obj: any) => boolean
+
 export function closestWithCondition(
   arr: any[],
   startIndex: number,

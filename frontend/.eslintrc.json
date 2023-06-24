@@ -15,7 +15,7 @@
     "sourceType": "module"
   },
   "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
-  "ignorePatterns": ["node_modules/*", "dist/*"],
+  "ignorePatterns": ["node_modules/*", "dist/*", "src/components/mantine-spotlight/*"],
   "settings": {
     "import/resolver": {
       "typescript": {}
@@ -32,10 +32,11 @@
         "ignoreTemplateLiterals": true
       }
     ],
-    "no-duplicate-imports": "error",
     "quotes": ["error", "single"],
-    "react/react-in-jsx-scope": "off",
-    "spaced-comment": "error",
-    "react/no-unescaped-entities": 0
+    "no-duplicate-imports": 2,
+    "spaced-comment": 2,
+    "react/react-in-jsx-scope": 0,
+    "react/no-unescaped-entities": 0,
+    "@typescript-eslint/no-empty-function": 0
   }
 }

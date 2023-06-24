@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'preact/hooks'
 import ReactMarkdown from 'react-markdown'
 import { Anchor, Image, Title } from '@mantine/core'
 

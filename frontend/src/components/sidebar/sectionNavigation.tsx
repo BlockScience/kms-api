@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { createStyles, UnstyledButton, ThemeIcon, Group, Text } from '@mantine/core'
 import { NavTooltip } from './Tooltip'
+import type { VNode } from 'preact'
 
 interface NavLinkStyle {
   active?: boolean
@@ -8,7 +9,7 @@ interface NavLinkStyle {
 }
 
 interface BaseLinkProps {
-  icon: React.ReactNode
+  icon: VNode
   color: string
   label: string
   active?: boolean
@@ -27,7 +28,7 @@ interface ExternalLinkProps extends BaseLinkProps {
 }
 export type NavigationProps = InternalLinkProps | ExternalLinkProps
 
-const navLinkStyles = createStyles((theme, { active, fullwidth }: NavLinkStyle) => ({
+const navLinkStyles = createStyles((theme, { active }: NavLinkStyle) => ({
   button: {
     display: 'block',
     width: '100%',

@@ -4,7 +4,7 @@ interface ProposalProps {
   title: string
   description: string
   author: string
-  operations: bigint
+  operations: number
   status: string
   resolvedBy: string | null
 }

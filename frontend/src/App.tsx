@@ -1,16 +1,17 @@
-import { AppShell, Box, ScrollArea, px, rem } from '@mantine/core'
+// Must be the first import
+import 'preact/debug'
+import { render } from 'preact'
+import { AppShell, Box, ScrollArea } from '@mantine/core'
 import { Routes, Route, BrowserRouter, Outlet } from 'react-router-dom'
-import { createRoot } from 'react-dom/client'
-import { Auth0Provider } from '@auth0/auth0-react'
-
-import { Notifications } from '@mantine/notifications'
-import { AuthenticationGuard } from '@/components/AuthenticationGuard'
-import { OnboardingTour } from '@/components/OnboardingTour'
-import { ThemeProvider } from '@/components/providers/ThemeProvider'
-import { CustomSpotlightProvider } from '@/components/providers/CustomSpotlightProvider'
-import Sidebar from '@/components/sidebar'
-
+import { withAuthenticationRequired } from '@auth0/auth0-react'
 import { auth0Config } from '@/configs/auth'
+import { ThemeProvider, SpotlightProvider, Auth0RedirectProvider } from '@/components/providers'
+
+import { PageLoading } from '@/components/PageLoading'
+import { Sidebar } from '@/components/sidebar'
+import { Notifications } from '@mantine/notifications'
+import { OnboardingTour } from '@/components/OnboardingTour'
+import { Shortcuts } from '@/components/Shortcuts'
 
 import Home from '@/routes/Home'
 import Dashboard from '@/routes/Dashboard'
@@ -22,10 +23,9 @@ import Settings from '@/routes/Settings'
 import Chat from '@/routes/Chat'
 import NotFound from '@/routes/NotFound'
 import Documentation from '@/routes/Documentation'
-import Shortcuts from '@/components/Shortcuts'
 import Graph from '@/routes/Graph'
 
-const InnerShellContext = () => {
+const DefaultShell = () => {
   return (
     <ScrollArea h='100vh'>
       <Box p='md'>
@@ -35,18 +35,41 @@ const InnerShellContext = () => {
   )
 }
 
-const container = document.getElementById('app')
-const root = container ? createRoot(container) : null
+const ProtectedRoute = ({ component, ...args }) => {
+  const Component = withAuthenticationRequired(component, {
+    onRedirecting: () => <PageLoading />,
+  })
+  return <Component />
+}
 
-function guardedContent() {
+function App() {
   return (
-    <CustomSpotlightProvider>
+    <BrowserRouter>
+      <Auth0RedirectProvider
+        domain={auth0Config.domain}
+        clientId={auth0Config.clientID}
+        authorizationParams={{
+          redirect_uri: window.location.origin,
+          prompt: 'login',
+        }}
+      >
+        <ThemeProvider>
+          <ProtectedRoute component={Protected} />
+        </ThemeProvider>
+      </Auth0RedirectProvider>
+    </BrowserRouter>
+  )
+}
+
+function Protected() {
+  return (
+    <SpotlightProvider>
       <OnboardingTour />
       <Shortcuts />
       <Notifications />
       <AppShell padding={0} fixed navbar={<Sidebar />}>
         <Routes>
-          <Route element={<InnerShellContext />}>
+          <Route element={<DefaultShell />}>
             <Route path='/' Component={Home} />
             <Route path='/governance' Component={Governance} />
             <Route path='/dashboard' Component={Dashboard} />
@@ -61,34 +84,8 @@ function guardedContent() {
           <Route path='*' Component={NotFound} />
         </Routes>
       </AppShell>
-    </CustomSpotlightProvider>
+    </SpotlightProvider>
   )
 }
 
-function App() {
-  return (
-    <ThemeProvider>
-      {/* <AuthenticationGuard component={guardedContent}></AuthenticationGuard> */}
-      {guardedContent()}
-    </ThemeProvider>
-  )
-}
-
-if (root) {
-  root.render(
-    <BrowserRouter>
-      <Auth0Provider
-        domain={auth0Config.domain}
-        clientId={auth0Config.clientID}
-        authorizationParams={{
-          redirect_uri: window.location.origin,
-          prompt: 'login',
-          // audience: 'https://dev-67fgpygy2qoenl7r.us.auth0.com/api/v2/',
-          // scope: 'read:current_user update:current_user_metadata',
-        }}
-      >
-        <App />
-      </Auth0Provider>
-    </BrowserRouter>,
-  )
-}
+render(<App />, document.body)

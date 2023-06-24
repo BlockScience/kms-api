@@ -3,7 +3,7 @@ import { Affix, rem, useMantineTheme } from '@mantine/core'
 import CytoscapeComponent from 'react-cytoscapejs'
 import Cola from 'cytoscape-cola'
 import Cytoscape from 'cytoscape'
-import { useState } from 'react'
+import { useState } from 'preact/hooks'
 
 Cytoscape.use(Cola)
 
