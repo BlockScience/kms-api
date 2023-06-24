@@ -1,7 +1,7 @@
 import { ActionIcon, Badge, Center, TextInput, createStyles, px } from '@mantine/core'
 import { useSpotlight } from '@/components/mantine-spotlight'
 import { IconSearch } from '@tabler/icons-react'
-import { BaseSyntheticEvent } from 'react'
+import { BaseSyntheticEvent } from 'preact'
 import { NavTooltip } from './Tooltip'
 
 const useStyles = createStyles((theme) => ({

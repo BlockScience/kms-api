@@ -1,8 +1,9 @@
-import { MantineProvider, ColorSchemeProvider, ColorScheme, rem } from '@mantine/core'
+import { MantineProvider, ColorSchemeProvider, ColorScheme } from '@mantine/core'
 import { useLocalStorage } from '@mantine/hooks'
+import type { VNode } from 'preact'
 
 interface ThemeProviderProps {
-  children: React.ReactNode
+  children: VNode
 }
 
 export function ThemeProvider({ children }: ThemeProviderProps) {

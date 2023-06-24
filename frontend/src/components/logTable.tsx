@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react'
+import { useState } from 'preact/hooks'
 import { createStyles, Table, ScrollArea, rem } from '@mantine/core'
 import ObjectRID from './ObjectRID'
 
@@ -31,7 +31,7 @@ interface LogTableProps {
     event: string
     objectRID: string
     user: string
-    data: ReactNode
+    data: preact.JSX.Element
     time: string
   }[]
 }

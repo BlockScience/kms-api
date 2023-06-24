@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'preact'
 
 function ImageWelcome() {
   return (
@@ -383,14 +383,10 @@ function ImageWelcome() {
           fillRule='nonzero'
           d='M168.452 707.107l-34.563-49.934 8.222-5.693 25.437 36.747 38.31-68.56 8.729 4.88-46.135 82.56'
         ></path>
-        <path
-          fill='#1B1B43'
-          fillRule='nonzero'
-          d='M2116.587 2051.387H68v-5h2048.587v5'
-        ></path>
+        <path fill='#1B1B43' fillRule='nonzero' d='M2116.587 2051.387H68v-5h2048.587v5'></path>
       </g>
     </svg>
-  );
+  )
 }
 
-export default ImageWelcome;
+export default ImageWelcome

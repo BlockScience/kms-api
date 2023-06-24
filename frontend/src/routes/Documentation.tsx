@@ -2,7 +2,7 @@ import DocsTOC from '@/components/TableOfContents'
 import Markdown from '@/components/DocMarkdown'
 import { SetTitle } from '@/utils'
 import { Box, Grid, ScrollArea, useMantineTheme } from '@mantine/core'
-import { useState } from 'react'
+import { useState } from 'preact/hooks'
 
 const initialDoc = 'index'
 const docs = [

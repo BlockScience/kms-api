@@ -8,7 +8,7 @@ import {
   IconArrowRight,
   IconTerminal2,
 } from '@tabler/icons-react'
-import { useState } from 'react'
+import { useState } from 'preact/hooks'
 import { notifications } from '@mantine/notifications'
 
 interface SpotlightProps {

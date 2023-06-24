@@ -1,5 +1,5 @@
 import { SetTitle } from '@/utils'
-import { Box, Button, Stack } from '@mantine/core'
+import { Box, Stack } from '@mantine/core'
 import { PageTitle } from '@/components/typography/PageTitle'
 import StatsGrid from '@/components/StatsGrid'
 import { LogTable } from '@/components/LogTable'

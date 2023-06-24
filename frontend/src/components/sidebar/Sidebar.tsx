@@ -14,8 +14,7 @@ import {
   IconMessages,
   IconTimeline,
 } from '@tabler/icons-react'
-import { useState } from 'react'
-
+import { useState } from 'preact/hooks'
 const upperNavigation: NavigationProps[] = [
   {
     icon: <IconAlertCircle size={px('1rem')} />,

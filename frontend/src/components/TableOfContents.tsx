@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from 'preact/hooks'
 import { createStyles, Box, Text, Group, rem, useMantineTheme, px } from '@mantine/core'
 import { IconListSearch } from '@tabler/icons-react'
 import { closestWithCondition } from '@/utils'

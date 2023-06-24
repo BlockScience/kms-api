@@ -3,7 +3,6 @@ import { SetTitle } from '@/utils'
 import {
   Anchor,
   Badge,
-  Center,
   Container,
   Divider,
   Group,
@@ -21,7 +20,6 @@ import {
   useMantineTheme,
 } from '@mantine/core'
 import { IconCheck, IconMinus, IconX } from '@tabler/icons-react'
-import { PropsWithChildren } from 'react'
 
 interface SearchResultProps {
   title: string
@@ -39,7 +37,7 @@ interface FilterProps {
   noFilters?: boolean
 }
 
-function SearchResult(props: PropsWithChildren<SearchResultProps>) {
+function SearchResult(props: SearchResultProps) {
   const bg =
     props.theme.colorScheme === 'dark' ? props.theme.colors.dark[6] : props.theme.colors.gray[0]
   return (

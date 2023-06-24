@@ -29,7 +29,7 @@ export default function Schema() {
             target='_blank'
             leftIcon={<IconBrandGithub />}
           >
-            View schema on GitHub
+            Edit schema on GitHub
           </Button>
         </Group>
         {/* <Divider my="xs" label="Last updated 7 days ago" labelPosition="center" /> */}

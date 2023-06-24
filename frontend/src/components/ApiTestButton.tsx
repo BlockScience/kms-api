@@ -1,9 +1,7 @@
-// @ts-nocheck
-
 import { useFetch } from 'react-async'
 import { auth0Config } from '@/configs/auth'
 import { useAuth0 } from '@auth0/auth0-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'preact/hooks'
 
 // const Test5 = () => {
 //   const headers = {

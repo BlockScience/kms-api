@@ -1,6 +1,6 @@
-import { AppShell, Box, ScrollArea, px, rem } from '@mantine/core'
+import { render } from 'preact'
+import { AppShell, Box, ScrollArea, } from '@mantine/core'
 import { Routes, Route, BrowserRouter, Outlet } from 'react-router-dom'
-import { createRoot } from 'react-dom/client'
 import { Auth0Provider } from '@auth0/auth0-react'
 
 import { Notifications } from '@mantine/notifications'
@@ -35,9 +35,6 @@ const InnerShellContext = () => {
   )
 }
 
-const container = document.getElementById('app')
-const root = container ? createRoot(container) : null
-
 function guardedContent() {
   return (
     <CustomSpotlightProvider>
@@ -67,15 +64,6 @@ function guardedContent() {
 
 function App() {
   return (
-    <ThemeProvider>
-      {/* <AuthenticationGuard component={guardedContent}></AuthenticationGuard> */}
-      {guardedContent()}
-    </ThemeProvider>
-  )
-}
-
-if (root) {
-  root.render(
     <BrowserRouter>
       <Auth0Provider
         domain={auth0Config.domain}
@@ -87,8 +75,15 @@ if (root) {
           // scope: 'read:current_user update:current_user_metadata',
         }}
       >
-        <App />
+        <ThemeProvider>
+          {/* <AuthenticationGuard component={guardedContent}></AuthenticationGuard> */}
+          {guardedContent()}
+        </ThemeProvider>
       </Auth0Provider>
-    </BrowserRouter>,
+    </BrowserRouter>
   )
 }
+
+// const container = document.getElementById('app')
+// const root = container ? createRoot(container) : null
+render(<App />, document.body)

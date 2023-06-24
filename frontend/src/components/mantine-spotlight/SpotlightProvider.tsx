@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import { useRef } from 'preact/hooks'
 import { useDisclosure, useUncontrolled } from '@mantine/hooks'
 import { openSpotlight, useSpotlightEvents } from './events'
 import { SpotlightContext } from './Spotlight.context'

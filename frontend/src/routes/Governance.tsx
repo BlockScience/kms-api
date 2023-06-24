@@ -26,7 +26,7 @@ export default function Governance() {
             title="Rename 'cats' to 'CATs'"
             description='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
             author='orion@block.science'
-            operations={5n}
+            operations={5}
             status='pending'
             resolvedBy={null}
           />
@@ -34,7 +34,7 @@ export default function Governance() {
             title='Do another thing'
             description='lorum ipsum dolor sit amet dolor sit amet dolor sit amet'
             author='orion@block.science'
-            operations={81n}
+            operations={81}
             status='pending'
             resolvedBy={null}
           />
@@ -42,7 +42,7 @@ export default function Governance() {
             title="Rename 'cats' to 'CATs'"
             description='lorum ipsum dolor sit amet dolor sit amet dolor sit amet'
             author='orion@block.science'
-            operations={129n}
+            operations={129}
             status='pending'
             resolvedBy={null}
           />
@@ -50,7 +50,7 @@ export default function Governance() {
             title='Do another thing'
             description='lorum ipsum dolor sit amet dolor sit amet dolor sit amet'
             author='orion@block.science'
-            operations={3n}
+            operations={3}
             status='pending'
             resolvedBy={null}
           />
@@ -58,7 +58,7 @@ export default function Governance() {
             title="Rename 'cats' to 'CATs'"
             description='lorum ipsum dolor sit amet dolor sit amet dolor sit amet'
             author='orion@block.science'
-            operations={5n}
+            operations={5}
             status='pending'
             resolvedBy={null}
           />
@@ -66,7 +66,7 @@ export default function Governance() {
             title='Do another thing'
             description='lorum ipsum dolor sit amet dolor sit amet dolor sit amet'
             author='orion@block.science'
-            operations={5n}
+            operations={5}
             status='pending'
             resolvedBy={null}
           />
@@ -74,7 +74,7 @@ export default function Governance() {
             title="Rename 'cats' to 'CATs'"
             description='lorum ipsum dolor sit amet dolor sit amet dolor sit amet'
             author='orion@block.science'
-            operations={14n}
+            operations={14}
             status='pending'
             resolvedBy={null}
           />
@@ -82,7 +82,7 @@ export default function Governance() {
             title='Do another thing'
             description='lorum ipsum dolor sit amet dolor sit amet dolor sit amet'
             author='orion@block.science'
-            operations={25n}
+            operations={25}
             status='pending'
             resolvedBy={null}
           />
@@ -90,7 +90,7 @@ export default function Governance() {
             title="Rename 'cats' to 'CATs'"
             description='lorum ipsum dolor sit amet dolor sit amet dolor sit amet'
             author='orion@block.science'
-            operations={31n}
+            operations={31}
             status='approved'
             resolvedBy='steve@block.science'
           />
@@ -98,7 +98,7 @@ export default function Governance() {
             title='Do another thing'
             description='lorum ipsum dolor sit amet dolor sit amet dolor sit amet'
             author='orion@block.science'
-            operations={32n}
+            operations={32}
             status='rejected'
             resolvedBy='steve@block.science'
           />

@@ -1,6 +1,5 @@
-import { Badge, createStyles, DefaultMantineColor } from '@mantine/core';
-import { PropsWithChildren } from 'react';
-
+import { Badge, createStyles, DefaultMantineColor } from '@mantine/core'
+import type { VNode } from 'preact'
 const useStyles = createStyles((theme) => ({
   badge: {
     borderRadius: theme.radius.sm,
@@ -20,17 +19,28 @@ const useStyles = createStyles((theme) => ({
     // borderColor: theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[3],
     color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.colors.gray[8],
     cursor: 'pointer',
-  }
-}));
+  },
+}))
 
 interface InlineTagProps {
   color?: DefaultMantineColor
+  children: VNode[] | VNode | string
 }
 
-export default function InlineTag(props: PropsWithChildren<InlineTagProps>) {
-  const style = useStyles();
-  const { background, color } = style.theme.fn.variant({ variant: 'dark', color: props.color });
-  const backgroundDimmed = style.theme.fn.rgba((background || ''), 0.3);
-  const borderLightened = style.theme.fn.lighten(backgroundDimmed, 0.2);
-  return <Badge tt="inherit" fw={500} size="lg" bg={props.color ? backgroundDimmed : ''} style={props.color ? { borderColor: borderLightened, borderWidth: 1 } : {}} color={props.color ? color : ''} className={props.color ? style.classes.badgeColored : style.classes.badge}>{props.children}</Badge>;
+export default function InlineTag({ color, children }: InlineTagProps) {
+  const style = useStyles()
+
+  return (
+    <Badge
+      tt='inherit'
+      fw={500}
+      size='lg'
+      bg={color ? style.theme.fn.rgba(color, 0.3) : null}
+      style={color ? { borderColor: style.theme.fn.lighten(color, 0.2), borderWidth: 1 } : {}}
+      color={color || null}
+      className={color ? style.classes.badgeColored : style.classes.badge}
+    >
+      {children}
+    </Badge>
+  )
 }

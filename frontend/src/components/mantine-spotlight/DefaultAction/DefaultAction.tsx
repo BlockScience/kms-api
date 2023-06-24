@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'preact'
 import {
   DefaultProps,
   Selectors,
@@ -9,22 +9,22 @@ import {
   Text,
   MantineNumberSize,
   MantineColor,
-} from '@mantine/core';
-import type { SpotlightAction } from '../types';
-import useStyles from './DefaultAction.styles';
+} from '@mantine/core'
+import type { SpotlightAction } from '../types'
+import useStyles from './DefaultAction.styles'
 
-export type DefaultActionStylesNames = Selectors<typeof useStyles>;
+export type DefaultActionStylesNames = Selectors<typeof useStyles>
 
 export interface DefaultActionProps
   extends DefaultProps<DefaultActionStylesNames>,
     React.ComponentPropsWithoutRef<'button'> {
-  action: SpotlightAction;
-  hovered: boolean;
-  onTrigger(): void;
-  highlightQuery: boolean;
-  highlightColor: MantineColor;
-  query: string;
-  radius: MantineNumberSize;
+  action: SpotlightAction
+  hovered: boolean
+  onTrigger(): void
+  highlightQuery: boolean
+  highlightColor: MantineColor
+  query: string
+  radius: MantineNumberSize
 }
 
 export function DefaultAction({
@@ -39,7 +39,7 @@ export function DefaultAction({
   radius,
   ...others
 }: DefaultActionProps) {
-  const { classes } = useStyles({ radius }, { styles, classNames, name: 'Spotlight' });
+  const { classes } = useStyles({ radius }, { styles, classNames, name: 'Spotlight' })
 
   return (
     <UnstyledButton
@@ -68,7 +68,7 @@ export function DefaultAction({
 
           {action.description && (
             <Text
-              size="xs"
+              size='xs'
               className={classes.actionDescription}
               data-hovered={hovered || undefined}
             >
@@ -78,7 +78,7 @@ export function DefaultAction({
         </div>
       </Group>
     </UnstyledButton>
-  );
+  )
 }
 
-DefaultAction.displayName = '@mantine/spotlight/DefaultAction';
+DefaultAction.displayName = '@mantine/spotlight/DefaultAction'
