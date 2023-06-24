@@ -1,8 +1,8 @@
-import { Header } from '@/components/sidebar/sectionHeader'
-import Navigation, { NavigationProps } from '@/components/sidebar/sectionNavigation'
-import Search from '@/components/sidebar/sectionSearch'
-import User from '@/components/sidebar/sectionUser'
-import { Box, Divider, Stack, Tooltip, createStyles, useMantineTheme } from '@mantine/core'
+import Navigation, { NavigationProps } from './sectionNavigation'
+import { Header } from './sectionHeader'
+import Search from './sectionSearch'
+import User from './sectionUser'
+import { Box, Divider, Stack, createStyles, useMantineTheme } from '@mantine/core'
 import { useLocalStorage, useMediaQuery } from '@mantine/hooks'
 import {
   IconAlertCircle,
@@ -14,7 +14,7 @@ import {
   IconMessages,
   IconTimeline,
 } from '@tabler/icons-react'
-import { ReactNode, useState } from 'react'
+import { useState } from 'react'
 
 const upperNavigation: NavigationProps[] = [
   {
@@ -70,7 +70,7 @@ const lowerNavigation: NavigationProps[] = [
   },
 ]
 
-const useStyles = createStyles((theme, { opened }: { opened: boolean }) => ({
+const useStyles = createStyles((theme) => ({
   container: {
     position: 'relative',
   },
@@ -114,7 +114,7 @@ export function Sidebar() {
   const theme = useMantineTheme()
   const bigScreen = useMediaQuery(`(min-width: ${theme.breakpoints.sm})`)
   const fullWidthNav = bigScreen ? expanded : false
-  const { classes } = useStyles({ opened: expanded })
+  const { classes } = useStyles()
 
   const upperNavLinks = upperNavigation.map((link, index) => (
     <Navigation

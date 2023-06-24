@@ -1,5 +1,5 @@
 import ObjectRID from '@/components/ObjectRID'
-import { SetTitle } from '@/utilities/metadata'
+import { SetTitle } from '@/utils'
 import {
   Anchor,
   Badge,

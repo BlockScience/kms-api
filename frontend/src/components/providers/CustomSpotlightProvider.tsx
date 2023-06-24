@@ -34,7 +34,7 @@ function ActionsWrapper({ children }: { children: React.ReactNode }) {
         <Group spacing='xs'>
           <IconInfoCircle size='1rem' stroke={1} />
           <Text size='xs' color='dimmed'>
-            Not the results you expected?
+            Not sure what search can do?
           </Text>
         </Group>
         <Anchor

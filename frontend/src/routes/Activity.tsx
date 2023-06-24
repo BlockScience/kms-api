@@ -1,5 +1,5 @@
 import { PageTitle } from '@/components/typography/PageTitle'
-import { SetTitle } from '@/utilities/metadata'
+import { SetTitle } from '@/utils'
 import { Timeline, Text, Button, Box, Divider, Flex, Group } from '@mantine/core'
 import { IconClock, IconSettings } from '@tabler/icons-react'
 import { useNavigate } from 'react-router-dom'

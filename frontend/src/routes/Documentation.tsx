@@ -1,22 +1,8 @@
 import DocsTOC from '@/components/TableOfContents'
-import Markdown from '@/utilities/markdown'
-import { SetTitle } from '@/utilities/metadata'
-import {
-  Box,
-  Grid,
-  ScrollArea,
-  Flex,
-  Navbar,
-  Text,
-  Aside,
-  Group,
-  TypographyStylesProvider,
-  Button,
-  createStyles,
-  useMantineTheme,
-  TextInput,
-} from '@mantine/core'
-import { useCallback, useState } from 'react'
+import Markdown from '@/components/DocMarkdown'
+import { SetTitle } from '@/utils'
+import { Box, Grid, ScrollArea, useMantineTheme } from '@mantine/core'
+import { useState } from 'react'
 
 const initialDoc = 'index'
 const docs = [

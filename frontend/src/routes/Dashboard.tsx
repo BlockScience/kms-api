@@ -1,4 +1,4 @@
-import { SetTitle } from '@/utilities/metadata'
+import { SetTitle } from '@/utils'
 import { Box, Button, Stack } from '@mantine/core'
 import { PageTitle } from '@/components/typography/PageTitle'
 import StatsGrid from '@/components/StatsGrid'

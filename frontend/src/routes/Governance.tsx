@@ -1,6 +1,6 @@
 import { Stack, Box, Group, Button } from '@mantine/core'
 import { CurationProposal } from '@/components/CurationProposal'
-import { SetTitle } from '@/utilities/metadata'
+import { SetTitle } from '@/utils'
 import { PageTitle } from '@/components/typography/PageTitle'
 import { IconBrandGithub } from '@tabler/icons-react'
 

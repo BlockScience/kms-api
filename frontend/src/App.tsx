@@ -1,4 +1,4 @@
-import { AppShell, Box, ScrollArea } from '@mantine/core'
+import { AppShell, Box, ScrollArea, px, rem } from '@mantine/core'
 import { Routes, Route, BrowserRouter, Outlet } from 'react-router-dom'
 import { createRoot } from 'react-dom/client'
 import { Auth0Provider } from '@auth0/auth0-react'
@@ -8,7 +8,7 @@ import { AuthenticationGuard } from '@/components/AuthenticationGuard'
 import { OnboardingTour } from '@/components/OnboardingTour'
 import { ThemeProvider } from '@/components/providers/ThemeProvider'
 import { CustomSpotlightProvider } from '@/components/providers/CustomSpotlightProvider'
-import { Navbar } from '@/components/navbar/Navbar'
+import Sidebar from '@/components/sidebar'
 
 import { auth0Config } from '@/configs/auth'
 
@@ -44,7 +44,7 @@ function guardedContent() {
       <OnboardingTour />
       <Shortcuts />
       <Notifications />
-      <AppShell padding={0} fixed navbar={<Navbar />}>
+      <AppShell padding={0} fixed navbar={<Sidebar />}>
         <Routes>
           <Route element={<InnerShellContext />}>
             <Route path='/' Component={Home} />

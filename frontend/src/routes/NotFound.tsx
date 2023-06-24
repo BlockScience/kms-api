@@ -10,7 +10,7 @@ import {
   Center,
 } from '@mantine/core'
 import { NavLink } from 'react-router-dom'
-import { SetTitle } from '@/utilities/metadata'
+import { SetTitle } from '@/utils'
 
 const useStyles = createStyles((theme) => ({
   root: {

@@ -13,23 +13,21 @@ import {
   Box,
 } from '@mantine/core'
 import { IconCheck } from '@tabler/icons-react'
-import { trigger } from '@/utilities/events'
-import ImageWelcome from '@/assets/images/homeImage'
-
-import { SetTitle } from '@/utilities/metadata'
+import { trigger, SetTitle } from '@/utils'
 import ApiTestButton from '@/components/ApiTestButton'
+import { useNavigate } from 'react-router-dom'
 
 const useStyles = createStyles((theme) => ({
   inner: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'left',
     paddingTop: `calc(${theme.spacing.xl} * 4)`,
     paddingBottom: `calc(${theme.spacing.xl} * 4)`,
   },
 
   content: {
-    maxWidth: rem(480),
-    marginRight: `calc(${theme.spacing.xl} * 3)`,
+    maxWidth: rem(560),
+    // marginRight: `calc(${theme.spacing.xl} * 3)`,
 
     [theme.fn.smallerThan('md')]: {
       maxWidth: '100%',
@@ -62,20 +60,13 @@ const useStyles = createStyles((theme) => ({
       display: 'none',
     },
   },
-
-  highlight: {
-    position: 'relative',
-    backgroundColor: theme.fn.variant({
-      variant: 'light',
-      color: theme.primaryColor,
-    }).background,
-    borderRadius: theme.radius.sm,
-    padding: `${rem(4)} ${rem(12)}`,
-  },
 }))
 
 export default function Home() {
+  console.log(SetTitle, trigger)
+
   const { classes } = useStyles()
+  const navigate = useNavigate()
   return (
     <>
       <SetTitle text='KMS' noPrefix />
@@ -163,15 +154,14 @@ export default function Home() {
                   radius='xl'
                   size='md'
                   className={classes.control}
-                  component='a'
-                  target='_blank'
-                  href='https://blockscience.github.io/kms/'
+                  // component='a'
+                  // target='_blank'
+                  onClick={() => navigate('/docs')}
                 >
                   Read the docs
                 </Button>
               </Group>
             </div>
-            <ImageWelcome />
           </div>
         </Container>
       </Box>

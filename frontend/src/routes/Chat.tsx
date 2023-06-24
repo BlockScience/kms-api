@@ -1,5 +1,5 @@
 import { PageTitle } from '@/components/typography/PageTitle'
-import { SetTitle } from '@/utilities/metadata'
+import { SetTitle } from '@/utils'
 import { Box, Center, Skeleton, Space, Stack, Text } from '@mantine/core'
 
 export default function Chat() {

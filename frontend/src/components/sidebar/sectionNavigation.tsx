@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
-import { createStyles, UnstyledButton, ThemeIcon, Group, Text, Center } from '@mantine/core'
-import { NavTooltip } from '@/components/sidebar/Tooltip'
+import { createStyles, UnstyledButton, ThemeIcon, Group, Text } from '@mantine/core'
+import { NavTooltip } from './Tooltip'
 
 interface NavLinkStyle {
   active?: boolean

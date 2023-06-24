@@ -1,4 +1,4 @@
-import { SetTitle } from '@/utilities/metadata'
+import { SetTitle } from '@/utils'
 import { useForm } from '@mantine/form'
 import { Box, Button, Group, NumberInput, Checkbox, Stack, Text, Divider } from '@mantine/core'
 import { PageTitle } from '@/components/typography/PageTitle'

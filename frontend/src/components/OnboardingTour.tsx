@@ -1,8 +1,19 @@
 import Joyride, { ACTIONS, EVENTS, STATUS, TooltipRenderProps, CallBackProps } from 'react-joyride'
-import { useEffect, useState } from 'react'
-import { on } from '@/utilities/events'
-import { useTheme } from '@/utilities/theme'
-import { Box, Title, Paper, Button, Text, Group, rem, Code, ThemeIcon, List } from '@mantine/core'
+import { useState } from 'react'
+import { on } from '@/utils'
+import {
+  Box,
+  Title,
+  Paper,
+  Button,
+  Text,
+  Group,
+  rem,
+  Code,
+  ThemeIcon,
+  List,
+  useMantineTheme,
+} from '@mantine/core'
 import {
   IconLayoutDashboard,
   IconAlertCircle,
@@ -163,7 +174,7 @@ function Tooltip({
   step,
   tooltipProps,
 }: TooltipRenderProps) {
-  const theme = useTheme()
+  const theme = useMantineTheme()
   return (
     <Paper
       {...tooltipProps}
@@ -213,7 +224,7 @@ export function OnboardingTour() {
     setState({ ...state, run: true })
   })
 
-  const theme = useTheme()
+  const theme = useMantineTheme()
 
   const handleJoyrideCallback = (data: CallBackProps) => {
     const { action, index, status, type } = data

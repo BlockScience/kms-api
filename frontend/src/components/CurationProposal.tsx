@@ -1,5 +1,4 @@
-import { Paper, Text, Title, Group, Button } from '@mantine/core'
-import { currentColorScheme, useTheme } from '@/utilities/theme'
+import { Paper, Text, Title, Group, Button, useMantineTheme } from '@mantine/core'
 
 interface ProposalProps {
   title: string
@@ -11,7 +10,7 @@ interface ProposalProps {
 }
 
 export function CurationProposal(proposal: ProposalProps) {
-  const { colors } = useTheme()
+  const theme = useMantineTheme()
   return (
     <Paper shadow='sm' p='sm' withBorder radius='md'>
       <Group position='apart'>
@@ -43,7 +42,7 @@ export function CurationProposal(proposal: ProposalProps) {
               <Text
                 span
                 fw={400}
-                c={currentColorScheme() === 'dark' ? colors.gray[6] : colors.gray[6]}
+                c={theme.colorScheme === 'dark' ? theme.colors.gray[6] : theme.colors.gray[6]}
               >
                 by {proposal.resolvedBy}
               </Text>
@@ -55,7 +54,7 @@ export function CurationProposal(proposal: ProposalProps) {
               <Text
                 span
                 fw={400}
-                c={currentColorScheme() === 'dark' ? colors.gray[6] : colors.gray[6]}
+                c={theme.colorScheme === 'dark' ? theme.colors.gray[6] : theme.colors.gray[6]}
               >
                 by {proposal.resolvedBy}
               </Text>

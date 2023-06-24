@@ -1,4 +1,4 @@
-import { SetTitle } from '@/utilities/metadata'
+import { SetTitle } from '@/utils'
 import {
   TypographyStylesProvider,
   Box,

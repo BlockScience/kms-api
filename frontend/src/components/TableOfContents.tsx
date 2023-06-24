@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { createStyles, Box, Text, Group, rem, useMantineTheme } from '@mantine/core'
 import { IconListSearch } from '@tabler/icons-react'
-import { closestWithCondition } from '@/utilities/math'
+import { closestWithCondition } from '@/utils'
 
 const LINK_HEIGHT = 38
 const INDICATOR_SIZE = 10
