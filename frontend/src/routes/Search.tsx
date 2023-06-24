@@ -3,6 +3,7 @@ import { SetTitle } from '@/utils'
 import {
   Anchor,
   Badge,
+  Center,
   Container,
   Divider,
   Group,
@@ -15,6 +16,7 @@ import {
   Stack,
   Text,
   Title,
+  px,
   rem,
   useMantineTheme,
 } from '@mantine/core'
@@ -65,9 +67,12 @@ function FilterState() {
       defaultValue='ignore'
       transitionDuration={0}
       data={[
-        { label: <IconCheck size={rem(15)} />, value: 'include' },
-        { label: <IconMinus size={rem(15)} />, value: 'ignore' },
-        { label: <IconX size={rem(15)} />, value: 'exclude' },
+        {
+          label: <IconCheck size={px('1rem')} />,
+          value: 'include',
+        },
+        { label: <IconMinus size={px('1rem')} />, value: 'ignore' },
+        { label: <IconX size={px('1rem')} />, value: 'exclude' },
       ]}
     />
   )

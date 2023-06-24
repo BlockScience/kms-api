@@ -2,7 +2,7 @@ import Navigation, { NavigationProps } from './sectionNavigation'
 import { Header } from './sectionHeader'
 import Search from './sectionSearch'
 import User from './sectionUser'
-import { Box, Divider, Stack, createStyles, useMantineTheme } from '@mantine/core'
+import { Box, Divider, Stack, createStyles, px, useMantineTheme } from '@mantine/core'
 import { useLocalStorage, useMediaQuery } from '@mantine/hooks'
 import {
   IconAlertCircle,
@@ -18,31 +18,31 @@ import { useState } from 'react'
 
 const upperNavigation: NavigationProps[] = [
   {
-    icon: <IconAlertCircle size='1rem' />,
+    icon: <IconAlertCircle size={px('1rem')} />,
     color: 'teal',
     label: 'Governance',
     path: '/governance',
   },
   {
-    icon: <IconLayoutDashboard size='1rem' />,
+    icon: <IconLayoutDashboard size={px('1rem')} />,
     color: 'blue',
     label: 'Dashboard',
     path: '/dashboard',
   },
   {
-    icon: <IconBinaryTree2 size='1rem' />,
+    icon: <IconBinaryTree2 size={px('1rem')} />,
     color: 'violet',
     label: 'Schema',
     path: '/schema',
   },
   {
-    icon: <IconTimeline size='1rem' />,
+    icon: <IconTimeline size={px('1rem')} />,
     color: 'grape',
     label: 'Activity',
     path: '/activity',
   },
   {
-    icon: <IconMessages size='1rem' />,
+    icon: <IconMessages size={px('1rem')} />,
     color: 'pink',
     label: 'Chat',
     path: '/chat',
@@ -51,19 +51,19 @@ const upperNavigation: NavigationProps[] = [
 
 const lowerNavigation: NavigationProps[] = [
   {
-    icon: <IconBrandSlack size='1rem' />,
+    icon: <IconBrandSlack size={px('1rem')} />,
     color: 'gray',
     label: 'Slack',
     href: 'https://blockscienceteam.slack.com/archives/C029RATAVTJ',
   },
   {
-    icon: <IconBrandGithub size='1rem' />,
+    icon: <IconBrandGithub size={px('1rem')} />,
     color: 'gray',
     label: 'Github',
     href: 'https://github.com/blockScience/kms',
   },
   {
-    icon: <IconFileText size='1rem' />,
+    icon: <IconFileText size={px('1rem')} />,
     color: 'gray',
     label: 'Documentation',
     path: '/docs',
@@ -136,7 +136,7 @@ export function Sidebar() {
   ))
   return (
     <Box id='navbarContainer' className={classes.container}>
-      <Stack id='navbar' spacing='xs' className={classes.stack} w={expanded ? 280 : 65}>
+      <Stack id='navbar' spacing='xs' className={classes.stack} w={expanded ? 280 : 70}>
         <Box id='navbarDivider' onClick={toggle} />
         <Stack spacing='xs'>
           <Header fullwidth={fullWidthNav} onToggle={toggle} />

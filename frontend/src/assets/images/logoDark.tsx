@@ -1,8 +1,8 @@
-import { rem } from '@mantine/core'
+import { px } from '@mantine/core'
 
 function LogoDark() {
   return (
-    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500' width={rem(35)}>
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500' width={px('2.2rem')}>
       <g>
         <linearGradient
           id='linearGradient1'

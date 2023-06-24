@@ -1,4 +1,4 @@
-import { Text, Group, CopyButton, Tooltip, Popover, ActionIcon, Badge } from '@mantine/core'
+import { Text, Group, CopyButton, Tooltip, Popover, ActionIcon, Badge, px } from '@mantine/core'
 import { IconCheck, IconCopy } from '@tabler/icons-react'
 import { Md5 } from 'ts-md5'
 
@@ -27,7 +27,7 @@ export default function ObjectRID(props: {
             {({ copied, copy }) => (
               <Tooltip label={copied ? 'Copied' : 'Copy'} withArrow position='right'>
                 <ActionIcon color={copied ? 'teal' : 'gray'} onClick={copy}>
-                  {copied ? <IconCheck size='1rem' /> : <IconCopy size='1rem' />}
+                  {copied ? <IconCheck size={px('1rem')} /> : <IconCopy size={px('1rem')} />}
                 </ActionIcon>
               </Tooltip>
             )}

@@ -11,6 +11,7 @@ import {
   Code,
   Anchor,
   Box,
+  px,
 } from '@mantine/core'
 import { IconCheck } from '@tabler/icons-react'
 import { trigger, SetTitle } from '@/utils'
@@ -63,8 +64,6 @@ const useStyles = createStyles((theme) => ({
 }))
 
 export default function Home() {
-  console.log(SetTitle, trigger)
-
   const { classes } = useStyles()
   const navigate = useNavigate()
   return (
@@ -96,7 +95,7 @@ export default function Home() {
                 <List.Item
                   icon={
                     <ThemeIcon size={20} radius='xl'>
-                      <IconCheck size={rem(13)} />
+                      <IconCheck size={px('0.8rem')} />
                     </ThemeIcon>
                   }
                 >
@@ -106,7 +105,7 @@ export default function Home() {
                 <List.Item
                   icon={
                     <ThemeIcon size={20} radius='xl'>
-                      <IconCheck size={rem(13)} />
+                      <IconCheck size={px('0.8rem')} />
                     </ThemeIcon>
                   }
                 >
@@ -116,7 +115,7 @@ export default function Home() {
                 <List.Item
                   icon={
                     <ThemeIcon size={20} radius='xl'>
-                      <IconCheck size={rem(13)} />
+                      <IconCheck size={px('0.8rem')} />
                     </ThemeIcon>
                   }
                 >
@@ -127,7 +126,7 @@ export default function Home() {
                 <List.Item
                   icon={
                     <ThemeIcon size={20} radius='xl'>
-                      <IconCheck size={rem(13)} />
+                      <IconCheck size={px('0.8rem')} />
                     </ThemeIcon>
                   }
                 >

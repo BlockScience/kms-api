@@ -13,6 +13,7 @@ import {
   ThemeIcon,
   List,
   useMantineTheme,
+  px,
 } from '@mantine/core'
 import {
   IconLayoutDashboard,
@@ -63,7 +64,7 @@ const tourSteps = [
           <List.Item
             icon={
               <ThemeIcon color='gray' size={24} radius='xl'>
-                <IconLayoutDashboard size='1rem' />
+                <IconLayoutDashboard size={px('1rem')} />
               </ThemeIcon>
             }
           >
@@ -75,7 +76,7 @@ const tourSteps = [
           <List.Item
             icon={
               <ThemeIcon color='gray' size={24} radius='xl'>
-                <IconAlertCircle size='1rem' />
+                <IconAlertCircle size={px('1rem')} />
               </ThemeIcon>
             }
           >
@@ -87,7 +88,7 @@ const tourSteps = [
           <List.Item
             icon={
               <ThemeIcon color='gray' size={24} radius='xl'>
-                <IconBinaryTree2 size='1rem' />
+                <IconBinaryTree2 size={px('1rem')} />
               </ThemeIcon>
             }
           >
@@ -99,7 +100,7 @@ const tourSteps = [
           <List.Item
             icon={
               <ThemeIcon color='gray' size={24} radius='xl'>
-                <IconNotification size='1rem' />
+                <IconNotification size={px('1rem')} />
               </ThemeIcon>
             }
           >
@@ -111,7 +112,7 @@ const tourSteps = [
           <List.Item
             icon={
               <ThemeIcon color='gray' size={24} radius='xl'>
-                <IconMessages size='1rem' />
+                <IconMessages size={px('1rem')} />
               </ThemeIcon>
             }
           >

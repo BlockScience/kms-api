@@ -1,4 +1,4 @@
-import { ActionIcon, Badge, Center, TextInput, createStyles } from '@mantine/core'
+import { ActionIcon, Badge, Center, TextInput, createStyles, px } from '@mantine/core'
 import { useSpotlight } from '@/components/mantine-spotlight'
 import { IconSearch } from '@tabler/icons-react'
 import { BaseSyntheticEvent } from 'react'
@@ -26,7 +26,7 @@ export default function Search({ fullwidth }: { fullwidth: boolean }) {
         onMouseDown={handleSearch}
         style={{ cursor: 'pointer' }}
         placeholder='Search'
-        icon={<IconSearch size='1rem' />}
+        icon={<IconSearch size={px('1rem')} />}
         rightSection={
           <Badge size='xs' radius='xs' variant='filled' className={classes.searchInputShortcut}>
             /
@@ -40,7 +40,7 @@ export default function Search({ fullwidth }: { fullwidth: boolean }) {
       <NavTooltip label='Search'>
         <Center>
           <ActionIcon size={30} onMouseDown={handleSearch} variant='default'>
-            <IconSearch size='1rem' />
+            <IconSearch size={px('1rem')} />
           </ActionIcon>
         </Center>
       </NavTooltip>

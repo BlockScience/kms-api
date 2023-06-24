@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { createStyles, Box, Text, Group, rem, useMantineTheme } from '@mantine/core'
+import { createStyles, Box, Text, Group, rem, useMantineTheme, px } from '@mantine/core'
 import { IconListSearch } from '@tabler/icons-react'
 import { closestWithCondition } from '@/utils'
 
@@ -106,7 +106,7 @@ export default function DocsTOC({ docs, icons, title, onActiveChange }: TableOfC
   return (
     <div>
       <Group mb='sm' noWrap>
-        <IconListSearch size={`${searchIconSize}rem`} stroke={1.5} color={dimmed} />
+        <IconListSearch size={px(`${searchIconSize}rem`)} stroke={1.5} color={dimmed} />
         <Text sx={{ overflow: 'hidden', whiteSpace: 'nowrap' }} color={dimmed}>
           {title}
         </Text>

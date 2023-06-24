@@ -1,5 +1,5 @@
 import { SpotlightProvider, SpotlightAction, useSpotlight } from '@/components/mantine-spotlight'
-import { Group, rem, Text, Anchor, useMantineColorScheme } from '@mantine/core'
+import { Group, rem, Text, Anchor, useMantineColorScheme, px } from '@mantine/core'
 import { useNavigate } from 'react-router-dom'
 import {
   IconSearch,
@@ -32,7 +32,7 @@ function ActionsWrapper({ children }: { children: React.ReactNode }) {
         })}
       >
         <Group spacing='xs'>
-          <IconInfoCircle size='1rem' stroke={1} />
+          <IconInfoCircle size={px('1rem')} stroke={1} />
           <Text size='xs' color='dimmed'>
             Not sure what search can do?
           </Text>
@@ -65,7 +65,7 @@ export function CustomSpotlightProvider({ children }: SpotlightProps) {
     {
       title: 'Dashboard',
       description: 'Go to dashboard',
-      icon: <IconArrowRight size='1.2rem' />,
+      icon: <IconArrowRight size={px('1.2rem')} />,
       onTrigger: () => {
         navigate('/dashboard')
       },
@@ -73,7 +73,7 @@ export function CustomSpotlightProvider({ children }: SpotlightProps) {
     {
       title: 'Governance',
       description: 'Go to governance',
-      icon: <IconArrowRight size='1.2rem' />,
+      icon: <IconArrowRight size={px('1.2rem')} />,
       onTrigger: () => {
         navigate('/governance')
       },
@@ -81,7 +81,7 @@ export function CustomSpotlightProvider({ children }: SpotlightProps) {
     {
       title: 'Schema',
       description: 'Go to schema',
-      icon: <IconArrowRight size='1.2rem' />,
+      icon: <IconArrowRight size={px('1.2rem')} />,
       onTrigger: () => {
         navigate('/schema')
       },
@@ -89,7 +89,7 @@ export function CustomSpotlightProvider({ children }: SpotlightProps) {
     {
       title: 'Activity',
       description: 'Go to activity',
-      icon: <IconArrowRight size='1.2rem' />,
+      icon: <IconArrowRight size={px('1.2rem')} />,
       onTrigger: () => {
         navigate('/activity')
       },
@@ -97,7 +97,7 @@ export function CustomSpotlightProvider({ children }: SpotlightProps) {
     {
       title: 'Chat',
       description: 'Go to chat',
-      icon: <IconArrowRight size='1.2rem' />,
+      icon: <IconArrowRight size={px('1.2rem')} />,
       onTrigger: () => {
         navigate('/chat')
       },
@@ -105,7 +105,7 @@ export function CustomSpotlightProvider({ children }: SpotlightProps) {
     {
       title: 'Documentation',
       description: 'Go to documentation',
-      icon: <IconArrowRight size='1.2rem' />,
+      icon: <IconArrowRight size={px('1.2rem')} />,
       onTrigger: () => {
         navigate('/docs')
       },
@@ -115,7 +115,7 @@ export function CustomSpotlightProvider({ children }: SpotlightProps) {
     {
       title: 'Toggle Darkmode',
       description: 'Switch between light and dark themes',
-      icon: <IconSun size='1.2rem' />,
+      icon: <IconSun size={px('1.2rem')} />,
       onTrigger: () => {
         toggleColorScheme()
       },
@@ -123,7 +123,7 @@ export function CustomSpotlightProvider({ children }: SpotlightProps) {
     {
       title: 'dev/notify',
       description: 'Show a notification',
-      icon: <IconTerminal2 size='1.2rem' />,
+      icon: <IconTerminal2 size={px('1.2rem')} />,
       onTrigger: () => {
         notifications.show({
           title: 'Default notification',
@@ -134,7 +134,7 @@ export function CustomSpotlightProvider({ children }: SpotlightProps) {
     {
       title: 'dev/graph view',
       description: 'Show the graph view',
-      icon: <IconTerminal2 size='1.2rem' />,
+      icon: <IconTerminal2 size={px('1.2rem')} />,
       onTrigger: () => {
         navigate('/experimental')
       },
@@ -159,7 +159,7 @@ export function CustomSpotlightProvider({ children }: SpotlightProps) {
   return (
     <SpotlightProvider
       actions={actions}
-      searchIcon={<IconSearch size='1.2rem' />}
+      searchIcon={<IconSearch size={px('1.2rem')} />}
       searchPlaceholder='Search...'
       cleanQueryOnClose
       shortcut={[]}
