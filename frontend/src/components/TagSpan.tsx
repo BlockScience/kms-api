@@ -14,7 +14,7 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-export default function TagSpan({ children }: { children: VNode[] | VNode | string }) {
+export function TagSpan({ children }: { children: VNode[] | VNode | string }) {
   const { classes } = useStyles()
 
   return (

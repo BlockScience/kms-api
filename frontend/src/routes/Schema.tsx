@@ -1,6 +1,6 @@
 import { SetTitle } from '@/utils'
 import { TypographyStylesProvider, Box, Title, Text, Button, Stack, Group } from '@mantine/core'
-import TagSpan from '@/components/InlineTag'
+import { TagSpan } from '@/components/TagSpan'
 import { PageTitle } from '@/components/typography/PageTitle'
 import { IconBrandGithub } from '@tabler/icons-react'
 

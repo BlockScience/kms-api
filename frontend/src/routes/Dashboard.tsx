@@ -3,7 +3,7 @@ import { Box, Stack } from '@mantine/core'
 import { PageTitle } from '@/components/typography/PageTitle'
 import StatsGrid from '@/components/StatsGrid'
 import { LogTable } from '@/components/LogTable'
-import TagSpan from '@/components/InlineTag'
+import { TagSpan } from '@/components/TagSpan'
 import TagSet from '@/components/TagSet'
 import AreaChart from '@/components/AreaChart'
 
