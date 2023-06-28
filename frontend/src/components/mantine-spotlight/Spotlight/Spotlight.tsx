@@ -20,7 +20,7 @@ import { ActionsList, ActionsListStylesNames } from '../ActionsList/ActionsList'
 import type { SpotlightAction } from '../types'
 import { filterActions } from './filter-actions/filter-actions'
 import useStyles from './Spotlight.styles'
-import { VNode } from 'preact'
+import { FunctionComponent, VNode } from 'preact'
 
 function SpotlightScrollArea(props: ScrollAreaAutosizeProps) {
   // @ts-ignore
@@ -76,7 +76,7 @@ export interface InnerSpotlightProps
   searchInputProps?: TextInputProps
 
   /** Component used as scrollable container for actions list, defaults to ScrollArea.Autosize */
-  scrollAreaComponent?: React.FC<{ children: VNode }>
+  scrollAreaComponent?: FunctionComponent<{ children: VNode }>
 }
 
 interface SpotlightProps extends InnerSpotlightProps {
@@ -95,6 +95,7 @@ const defaultProps: Partial<SpotlightProps> = {
   filter: filterActions,
   limit: 10,
   actionComponent: DefaultAction,
+  // @ts-ignore
   scrollAreaComponent: SpotlightScrollArea,
   actionsWrapperComponent: 'div',
   zIndex: getDefaultZIndex('max'),
@@ -220,6 +221,8 @@ export function Spotlight(props: SpotlightProps) {
         placeholder={searchPlaceholder}
         icon={searchIcon}
       />
+      {/* 
+      // @ts-ignore */}
       <ActionsWrapper>
         <ScrollAreaComponent>
           <ActionsList

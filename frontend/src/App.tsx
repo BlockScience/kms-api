@@ -27,6 +27,8 @@ const queryClient = new QueryClient()
 
 const DefaultShell = () => {
   return (
+    // TODO: Replace with custom scroll area
+    // @ts-ignore
     <ScrollArea h='100vh'>
       <Box p='md'>
         <Outlet />

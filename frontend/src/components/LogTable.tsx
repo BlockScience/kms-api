@@ -1,71 +1,76 @@
-import { useState } from 'preact/hooks'
-import { createStyles, Table, ScrollArea, rem } from '@mantine/core'
+import { Group, Stack, Text } from '@mantine/core'
 import ObjectRID from './ObjectRID'
-
-const useStyles = createStyles((theme) => ({
-  header: {
-    position: 'sticky',
-    top: 0,
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-    transition: 'box-shadow 150ms ease',
-
-    '&::after': {
-      content: '""',
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      bottom: 0,
-      borderBottom: `${rem(1)} solid ${
-        theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[2]
-      }`,
-    },
-  },
-
-  scrolled: {
-    boxShadow: theme.shadows.sm,
-  },
-}))
+import { JSX } from 'preact/jsx-runtime'
+import { DataTable } from 'mantine-datatable'
+import { Prism } from '@mantine/prism'
 
 interface LogTableProps {
   data: {
     event: string
     objectRID: string
     user: string
-    data: preact.JSX.Element
+    data: JSX.Element
     time: string
   }[]
 }
 
 export function LogTable({ data }: LogTableProps) {
-  const { classes, cx } = useStyles()
-  const [scrolled, setScrolled] = useState(false)
-
-  const rows = data.map((row) => (
-    <tr key={row.objectRID}>
-      <td>{row.event}</td>
-      <td>
-        <ObjectRID id={row.objectRID} popoverPosition='top' />
-      </td>
-      <td>{row.user}</td>
-      <td>{row.data}</td>
-      <td>{row.time}</td>
-    </tr>
-  ))
-
   return (
-    <ScrollArea h={400} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
-      <Table miw={700}>
-        <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
-          <tr>
-            <th>Event</th>
-            <th>Object</th>
-            <th>User</th>
-            <th>Data</th>
-            <th>Time</th>
-          </tr>
-        </thead>
-        <tbody>{rows}</tbody>
-      </Table>
-    </ScrollArea>
+    <DataTable
+      withBorder
+      height={500}
+      borderRadius='md'
+      withColumnBorders
+      scrollAreaProps={{ type: 'never' }}
+      highlightOnHover
+      idAccessor='time'
+      rowExpansion={{
+        content: ({ record }) => <Prism language='json'>{record.data}</Prism>,
+      }}
+      columns={[
+        { accessor: 'event' },
+        { accessor: 'object' },
+        { accessor: 'user' },
+        { accessor: 'time' },
+      ]}
+      records={[
+        {
+          event: 'Tags Changed',
+          object: '8DE3G9',
+          user: 'Donald Knuth',
+          time: '12/32/2021',
+          data: JSON.stringify({
+            event: 'string',
+            objectRID: 'string',
+            user: 'string',
+            data: 'JSX.Element',
+            time: 'string',
+          }),
+        },
+        {
+          event: 'Tags Changed',
+          object: '8DE3G9',
+          user: 'Donald Knuth',
+          time: '13/32/2021',
+          data: JSON.stringify({
+            event: 'something',
+            objectRID: 'UHEF32',
+          }),
+        },
+        {
+          event: 'Tags Changed',
+          object: '8DE3G9',
+          user: 'Donald Knuth',
+          time: '15/32/2021',
+          data: JSON.stringify({
+            event: 'foobar',
+            objectRID: '1231ref',
+            user: 'string',
+            data: 'JSX.Element',
+            time: 'string',
+          }),
+        },
+      ]}
+    />
   )
 }

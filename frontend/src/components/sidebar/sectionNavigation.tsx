@@ -66,7 +66,7 @@ export default function Navigation({
 }: NavigationProps) {
   const { classes } = navLinkStyles({ active, fullwidth })
   const navigate = useNavigate()
-  const handleNavigate = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleNavigate = (event: MouseEvent) => {
     if (event.button === 0) {
       if (path) navigate(path)
       if (href) window.open(href, '_blank')

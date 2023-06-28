@@ -190,6 +190,8 @@ export function SpotlightProvider({ children }: SpotlightProps) {
         }
       }}
     >
+      {/* 
+      // @ts-ignore */}
       {children}
     </MantineSpotlightProvider>
   )

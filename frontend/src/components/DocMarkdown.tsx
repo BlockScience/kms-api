@@ -27,8 +27,8 @@ export default function Markdown(props: MarkdownParserProps) {
         h2: ({ ...props }) => <Title order={3} {...props} />,
         h3: ({ ...props }) => <Title order={4} {...props} />,
         h4: ({ ...props }) => <Title order={5} {...props} />,
-        a: ({ ...props }) => <Anchor {...props} />,
-        img: ({ ...props }) => <Image {...props} />,
+        a: () => <Anchor {...props} />,
+        img: () => <Image {...props} />,
       }}
     >
       {markdown}
