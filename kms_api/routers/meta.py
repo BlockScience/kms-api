@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends
 from kms_api.core import firestore_db
-from kms_api.auth import validate_key, validate_jwt
+from kms_api.auth import validate_auth
 
 router = APIRouter(
     prefix="/meta",
-    dependencies=[Depends(validate_jwt)]
+    dependencies=[Depends(validate_auth)]
 )
 
 
