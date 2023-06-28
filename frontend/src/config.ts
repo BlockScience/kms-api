@@ -6,5 +6,5 @@ export const auth0 = {
 }
 
 export const api = {
-  url: 'https://localhost:8000',
+  url: 'api',
 }

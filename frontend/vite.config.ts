@@ -20,10 +20,6 @@ export default defineConfig({
   server: {
     https: true,
     port: 3000,
-    strictPort: true,
-    hmr: {
-      host: 'localhost',
-      clientPort: 3000,
-    },
+    strictPort: true
   },
 })
