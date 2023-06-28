@@ -11,10 +11,8 @@ app.include_router(feedback.router)
 app.include_router(meta.router)
 app.include_router(test.router)
 
-origins = [
-    "http://localhost:5173",
-    "http://localhost:8080",
-]
+origins = ['https://localhost:3000']
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,

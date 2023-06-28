@@ -17,7 +17,7 @@ API_KEYS_FILENAME = "api_keys.json"
 API_KEY_LENGTH = 20
 
 AUTH0_DOMAIN = 'dev-67fgpygy2qoenl7r.us.auth0.com'
-AUTH0_AUDIENCE = 'http://127.0.0.1:8000'
+AUTH0_AUDIENCE = 'https://127.0.0.1:8000'
 AUTH0_ISSUER = 'https://dev-67fgpygy2qoenl7r.us.auth0.com/'
 AUTH0_CLIENT = 'dev-67fgpygy2qoenl7r'
 AUTH0_ALGORITHMS = 'RS256'

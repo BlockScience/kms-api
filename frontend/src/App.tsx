@@ -2,7 +2,6 @@ import 'preact/debug' // Must be the first import
 import { render } from 'preact'
 import { AppShell, Box, ScrollArea } from '@mantine/core'
 import { Routes, Route, BrowserRouter, Outlet } from 'react-router-dom'
-import { auth0Config } from '@/configs/auth'
 import { ThemeProvider, SpotlightProvider, Auth0RedirectProvider } from '@/components/providers'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 
@@ -11,7 +10,6 @@ import { Notifications } from '@mantine/notifications'
 import { OnboardingTour } from '@/components/OnboardingTour'
 import { Shortcuts } from '@/components/Shortcuts'
 import { ProtectedRoute } from '@/components/ProtectedRoute'
-import ApiTestButton from '@/components/ApiTestButton'
 
 import Home from '@/routes/Home'
 import Dashboard from '@/routes/Dashboard'
@@ -31,7 +29,6 @@ const DefaultShell = () => {
   return (
     <ScrollArea h='100vh'>
       <Box p='md'>
-        <ApiTestButton />
         <Outlet />
       </Box>
     </ScrollArea>
@@ -41,18 +38,9 @@ const DefaultShell = () => {
 function App() {
   return (
     <BrowserRouter>
-      <Auth0RedirectProvider
-        domain={auth0Config.domain}
-        audience={auth0Config.audience}
-        scope='read:test'
-        clientId={auth0Config.clientID}
-        authorizationParams={{
-          redirect_uri: window.location.origin,
-          // prompt: 'login',
-        }}
-      >
+      <Auth0RedirectProvider>
         <ThemeProvider>
-          <ProtectedRoute component={Protected} />
+          <ProtectedRoute component={ProtectedRoutes} />
           {/* <Protected /> */}
         </ThemeProvider>
       </Auth0RedirectProvider>
@@ -60,7 +48,7 @@ function App() {
   )
 }
 
-function Protected() {
+function ProtectedRoutes() {
   return (
     <QueryClientProvider client={queryClient}>
       <SpotlightProvider>
