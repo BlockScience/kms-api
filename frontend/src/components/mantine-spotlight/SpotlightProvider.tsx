@@ -6,6 +6,7 @@ import { InnerSpotlightProps, Spotlight } from './Spotlight/Spotlight'
 import type { SpotlightAction } from './types'
 import { useActionsState } from './use-actions-state/use-actions-state'
 import { useSpotlightShortcuts } from './use-spotlight-shortcuts/use-spotlight-shortcuts'
+import { VNode } from 'preact'
 
 export interface SpotlightProviderProps extends InnerSpotlightProps {
   /** Actions list */
@@ -21,7 +22,7 @@ export interface SpotlightProviderProps extends InnerSpotlightProps {
   onQueryChange?(query: string): void
 
   /** Your application */
-  children?: React.ReactNode
+  children?: VNode
 
   /** Called when spotlight opens */
   onSpotlightOpen?(): void

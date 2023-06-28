@@ -57,7 +57,7 @@ function removePrefix(string: string, prefix: string): string {
 }
 
 interface SpotlightProps {
-  children: VNode[] | VNode | string
+  children: VNode | VNode[]
 }
 export function SpotlightProvider({ children }: SpotlightProps) {
   const navigate = useNavigate()

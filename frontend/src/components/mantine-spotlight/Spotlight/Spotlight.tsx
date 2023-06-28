@@ -23,6 +23,7 @@ import useStyles from './Spotlight.styles'
 import { VNode } from 'preact'
 
 function SpotlightScrollArea(props: ScrollAreaAutosizeProps) {
+  // @ts-ignore
   return <ScrollArea.Autosize mah='calc(100vh - 18rem)' {...props} />
 }
 
@@ -37,6 +38,7 @@ export interface InnerSpotlightProps
       'styles' | 'classNames' | 'title' | 'withCloseButton' | 'opened' | 'onClose'
     >,
     DefaultProps<SpotlightStylesNames>,
+    // @ts-ignore
     React.ComponentPropsWithoutRef<'div'> {
   variant?: string
 

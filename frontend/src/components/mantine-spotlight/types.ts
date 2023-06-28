@@ -1,5 +1,3 @@
-// import type { ReactNode } from 'preact'
-
 export interface SpotlightAction {
   /** Action id, may be used to trigger action or find it in actions array, if not provided random string will be generated instead */
   id?: string
