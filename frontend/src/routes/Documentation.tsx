@@ -49,6 +49,9 @@ export default function Documentation() {
           </Box>
         </Grid.Col>
         <Grid.Col span={18}>
+          {/* // TODO: Create preact replacement for ScrollArea */}
+          {/* 
+          // @ts-ignore */}
           <ScrollArea h='100vh'>
             <Box m='4em'>
               <Markdown filename={currentDoc} />

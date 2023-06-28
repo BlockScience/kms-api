@@ -37,7 +37,7 @@ export default function Schema() {
             {loaded ? (
               <Markdown
                 components={{
-                  code: ({ ...props }) => <TagSpan {...props} />,
+                  code: (node) => <TagSpan>{node.children}</TagSpan>,
                 }}
               >
                 {preprocess(result)}

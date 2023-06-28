@@ -1,4 +1,4 @@
-import React from 'preact'
+import React, { FunctionComponent } from 'preact'
 import { DefaultProps, Selectors, Text, MantineNumberSize, MantineColor } from '@mantine/core'
 import type { SpotlightAction } from '../types'
 import type { DefaultActionProps, DefaultActionStylesNames } from '../DefaultAction/DefaultAction'
@@ -9,13 +9,15 @@ type GetGroupOptionsItem<T extends any[]> = { type: 'item'; item: T[number]; ind
 type GetGroupOptionsLabel = { type: 'label'; label: string }
 
 export interface ActionsListProps
-  extends DefaultProps<ActionsListStylesNames>,
+
+extends DefaultProps<ActionsListStylesNames>,
+// @ts-ignore
     React.ComponentPropsWithoutRef<'div'> {
   actions: (GetGroupOptionsItem<SpotlightAction[]> | GetGroupOptionsLabel)[]
-  actionComponent?: React.FC<DefaultActionProps>
+  actionComponent?: FunctionComponent<DefaultActionProps>
   hovered: number
   query: string
-  nothingFoundMessage?: React.ReactNode
+  nothingFoundMessage?: string
   onActionTrigger(action: SpotlightAction): void
   highlightQuery: boolean
   highlightColor: MantineColor

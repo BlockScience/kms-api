@@ -153,5 +153,5 @@ export default function User({ fullwidth }: { fullwidth: boolean }) {
     : userLoggedInSmall()
   const expanded = isLoading ? loadingWide : !isAuthenticated ? loginWide : userLoggedInLarge()
 
-  return <Box className={classes.container}>{fullwidth ? expanded : collapsed}</Box>
+  return <Box>{fullwidth ? expanded : collapsed}</Box>
 }

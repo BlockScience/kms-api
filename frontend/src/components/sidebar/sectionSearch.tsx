@@ -1,7 +1,6 @@
 import { ActionIcon, Badge, Center, TextInput, createStyles, px } from '@mantine/core'
 import { useSpotlight } from '@/components/mantine-spotlight'
 import { IconSearch } from '@tabler/icons-react'
-import { BaseSyntheticEvent } from 'preact'
 import { NavTooltip } from './Tooltip'
 
 const useStyles = createStyles((theme) => ({
@@ -14,10 +13,12 @@ const useStyles = createStyles((theme) => ({
 export default function Search({ fullwidth }: { fullwidth: boolean }) {
   const { classes } = useStyles()
   const spotlight = useSpotlight()
-  const handleSearch = (e: BaseSyntheticEvent) => {
-    e.preventDefault()
-    e.target.blur()
-    spotlight.openSpotlight()
+  const handleSearch = (e: MouseEvent) => {
+    if (e.target instanceof HTMLElement) {
+      e.preventDefault()
+      e.target.blur()
+      spotlight.openSpotlight()
+    }
   }
   const searchFullwidth = () => {
     return (

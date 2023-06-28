@@ -1,10 +1,10 @@
 import { Tooltip } from '@mantine/core'
-import { ReactNode } from 'preact'
+import { VNode } from 'preact'
 
 interface NavTooltipProps {
   label: string
   disable?: boolean
-  children?: ReactNode
+  children?: VNode
 }
 export const NavTooltip = ({ label, disable, children }: NavTooltipProps) => {
   return disable ? (

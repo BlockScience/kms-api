@@ -53,8 +53,8 @@ export default function Dashboard() {
                 user: 'tealc@sgc.com',
                 data: (
                   <div>
-                    <TagSpan color='green'>kms</TagSpan>&nbsp;
-                    <TagSpan color='red'>cadcad</TagSpan>
+                    <TagSpan>kms</TagSpan>&nbsp;
+                    <TagSpan>cadcad</TagSpan>
                   </div>
                 ),
                 time: 'yesterday',
@@ -65,8 +65,8 @@ export default function Dashboard() {
                 user: 'daniel@sgc.com',
                 data: (
                   <div>
-                    <TagSpan color='green'>fluff</TagSpan>&nbsp;
-                    <TagSpan color='green'>rock</TagSpan>
+                    <TagSpan>fluff</TagSpan>&nbsp;
+                    <TagSpan>rock</TagSpan>
                   </div>
                 ),
                 time: 'yesterday',
@@ -77,8 +77,8 @@ export default function Dashboard() {
                 user: 'steve@sgc.com',
                 data: (
                   <div>
-                    <TagSpan color='green'>tree</TagSpan>&nbsp;
-                    <TagSpan color='red'>stick</TagSpan>
+                    <TagSpan>tree</TagSpan>&nbsp;
+                    <TagSpan>stick</TagSpan>
                   </div>
                 ),
                 time: 'yesterday',
@@ -89,8 +89,8 @@ export default function Dashboard() {
                 user: 'tealc@sgc.com',
                 data: (
                   <div>
-                    <TagSpan color='green'>kms</TagSpan>&nbsp;
-                    <TagSpan color='red'>cadcad</TagSpan>
+                    <TagSpan>kms</TagSpan>&nbsp;
+                    <TagSpan>cadcad</TagSpan>
                   </div>
                 ),
                 time: 'yesterday',
@@ -101,8 +101,8 @@ export default function Dashboard() {
                 user: 'daniel@sgc.com',
                 data: (
                   <div>
-                    <TagSpan color='green'>fluff</TagSpan>&nbsp;
-                    <TagSpan color='green'>rock</TagSpan>
+                    <TagSpan>fluff</TagSpan>&nbsp;
+                    <TagSpan>rock</TagSpan>
                   </div>
                 ),
                 time: 'yesterday',
@@ -113,8 +113,8 @@ export default function Dashboard() {
                 user: 'steve@sgc.com',
                 data: (
                   <div>
-                    <TagSpan color='green'>tree</TagSpan>&nbsp;
-                    <TagSpan color='red'>stick</TagSpan>
+                    <TagSpan>tree</TagSpan>&nbsp;
+                    <TagSpan>stick</TagSpan>
                   </div>
                 ),
                 time: 'yesterday',
@@ -125,8 +125,8 @@ export default function Dashboard() {
                 user: 'tealc@sgc.com',
                 data: (
                   <div>
-                    <TagSpan color='green'>kms</TagSpan>&nbsp;
-                    <TagSpan color='red'>cadcad</TagSpan>
+                    <TagSpan>kms</TagSpan>&nbsp;
+                    <TagSpan>cadcad</TagSpan>
                   </div>
                 ),
                 time: 'yesterday',
@@ -137,8 +137,8 @@ export default function Dashboard() {
                 user: 'daniel@sgc.com',
                 data: (
                   <div>
-                    <TagSpan color='green'>fluff</TagSpan>&nbsp;
-                    <TagSpan color='green'>rock</TagSpan>
+                    <TagSpan>fluff</TagSpan>&nbsp;
+                    <TagSpan>rock</TagSpan>
                   </div>
                 ),
                 time: 'yesterday',
@@ -149,8 +149,8 @@ export default function Dashboard() {
                 user: 'steve@sgc.com',
                 data: (
                   <div>
-                    <TagSpan color='green'>tree</TagSpan>&nbsp;
-                    <TagSpan color='red'>stick</TagSpan>
+                    <TagSpan>tree</TagSpan>&nbsp;
+                    <TagSpan>stick</TagSpan>
                   </div>
                 ),
                 time: 'yesterday',
@@ -161,8 +161,8 @@ export default function Dashboard() {
                 user: 'tealc@sgc.com',
                 data: (
                   <div>
-                    <TagSpan color='green'>kms</TagSpan>&nbsp;
-                    <TagSpan color='red'>cadcad</TagSpan>
+                    <TagSpan>kms</TagSpan>&nbsp;
+                    <TagSpan>cadcad</TagSpan>
                   </div>
                 ),
                 time: 'yesterday',
@@ -173,8 +173,8 @@ export default function Dashboard() {
                 user: 'daniel@sgc.com',
                 data: (
                   <div>
-                    <TagSpan color='green'>fluff</TagSpan>&nbsp;
-                    <TagSpan color='green'>rock</TagSpan>
+                    <TagSpan>fluff</TagSpan>&nbsp;
+                    <TagSpan>rock</TagSpan>
                   </div>
                 ),
                 time: 'yesterday',
@@ -185,8 +185,8 @@ export default function Dashboard() {
                 user: 'steve@sgc.com',
                 data: (
                   <div>
-                    <TagSpan color='green'>tree</TagSpan>&nbsp;
-                    <TagSpan color='red'>stick</TagSpan>
+                    <TagSpan>tree</TagSpan>&nbsp;
+                    <TagSpan>stick</TagSpan>
                   </div>
                 ),
                 time: 'yesterday',
@@ -197,8 +197,8 @@ export default function Dashboard() {
                 user: 'tealc@sgc.com',
                 data: (
                   <div>
-                    <TagSpan color='green'>kms</TagSpan>&nbsp;
-                    <TagSpan color='red'>cadcad</TagSpan>
+                    <TagSpan>kms</TagSpan>&nbsp;
+                    <TagSpan>cadcad</TagSpan>
                   </div>
                 ),
                 time: 'yesterday',
@@ -209,8 +209,8 @@ export default function Dashboard() {
                 user: 'daniel@sgc.com',
                 data: (
                   <div>
-                    <TagSpan color='green'>fluff</TagSpan>&nbsp;
-                    <TagSpan color='green'>rock</TagSpan>
+                    <TagSpan>fluff</TagSpan>&nbsp;
+                    <TagSpan>rock</TagSpan>
                   </div>
                 ),
                 time: 'yesterday',
@@ -221,8 +221,8 @@ export default function Dashboard() {
                 user: 'steve@sgc.com',
                 data: (
                   <div>
-                    <TagSpan color='green'>tree</TagSpan>&nbsp;
-                    <TagSpan color='red'>stick</TagSpan>
+                    <TagSpan>tree</TagSpan>&nbsp;
+                    <TagSpan>stick</TagSpan>
                   </div>
                 ),
                 time: 'yesterday',
@@ -233,8 +233,8 @@ export default function Dashboard() {
                 user: 'tealc@sgc.com',
                 data: (
                   <div>
-                    <TagSpan color='green'>kms</TagSpan>&nbsp;
-                    <TagSpan color='red'>cadcad</TagSpan>
+                    <TagSpan>kms</TagSpan>&nbsp;
+                    <TagSpan>cadcad</TagSpan>
                   </div>
                 ),
                 time: 'yesterday',
@@ -245,8 +245,8 @@ export default function Dashboard() {
                 user: 'daniel@sgc.com',
                 data: (
                   <div>
-                    <TagSpan color='green'>fluff</TagSpan>&nbsp;
-                    <TagSpan color='green'>rock</TagSpan>
+                    <TagSpan>fluff</TagSpan>&nbsp;
+                    <TagSpan>rock</TagSpan>
                   </div>
                 ),
                 time: 'yesterday',
@@ -257,8 +257,8 @@ export default function Dashboard() {
                 user: 'steve@sgc.com',
                 data: (
                   <div>
-                    <TagSpan color='green'>tree</TagSpan>&nbsp;
-                    <TagSpan color='red'>stick</TagSpan>
+                    <TagSpan>tree</TagSpan>&nbsp;
+                    <TagSpan>stick</TagSpan>
                   </div>
                 ),
                 time: 'yesterday',

@@ -15,7 +15,6 @@ import {
 } from '@mantine/core'
 import { IconCheck } from '@tabler/icons-react'
 import { trigger, SetTitle } from '@/utils'
-import ApiTestButton from '@/components/ApiTestButton'
 import { useNavigate } from 'react-router-dom'
 
 const useStyles = createStyles((theme) => ({
@@ -68,7 +67,6 @@ export default function Home() {
     <>
       <SetTitle text='KMS' noPrefix />
       <Box maw={1000} mx='auto'>
-        <ApiTestButton />
         <Container>
           <div className={classes.inner}>
             <div className={classes.content}>

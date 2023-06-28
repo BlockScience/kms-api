@@ -135,7 +135,7 @@ export function Sidebar() {
   ))
   return (
     <Box id='navbarContainer' className={classes.container}>
-      <Stack id='navbar' spacing='xs' className={classes.stack} w={expanded ? 280 : 70}>
+      <Stack spacing='xs' className={classes.stack} w={expanded ? 280 : 70}>
         <Box id='navbarDivider' onClick={toggle} />
         <Stack spacing='xs'>
           <Header fullwidth={fullWidthNav} onToggle={toggle} />
