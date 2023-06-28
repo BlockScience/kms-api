@@ -3,7 +3,7 @@ import { TypographyStylesProvider, Box, Text, Button, Stack, Group } from '@mant
 import { PageTitle } from '@/components/typography/PageTitle'
 import { IconBrandGithub } from '@tabler/icons-react'
 import { useApi } from '@/hooks/useApi'
-import Markdown from 'react-markdown'
+import Markdown from '@/components/preact-markdown'
 import { TagSpan } from '@/components/TagSpan'
 import { Paragraphs } from '@/components/Skeleton'
 

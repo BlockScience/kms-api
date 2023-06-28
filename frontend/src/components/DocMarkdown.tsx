@@ -1,5 +1,5 @@
 import { useState } from 'preact/hooks'
-import ReactMarkdown from 'react-markdown'
+import ReactMarkdown from '@/components/preact-markdown'
 import { Anchor, Image, Title } from '@mantine/core'
 
 interface MarkdownParserProps {
