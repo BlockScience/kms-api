@@ -1,14 +1,14 @@
 from fastapi import APIRouter, Response, status, Depends, Body
 from kms_api.core import firestore_db
 from kms_api.utils import url_normalize, encode_url, search_typesense, query
-from kms_api.auth import validate_key
+from kms_api.auth import validate_auth
 from kms_api.schema import KNOWLEDGE_SCHEMA
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 
 router = APIRouter(
     prefix="/object",
-    dependencies=[Depends(validate_key)]
+    dependencies=[Depends(validate_auth)]
 )
 
 @router.post("")

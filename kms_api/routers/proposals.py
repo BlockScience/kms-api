@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Body, Response, status
 from kms_api.core import firestore_db
-from kms_api.auth import validate_key
+from kms_api.auth import validate_auth
 from kms_api.utils import simplify_ops, check_for_missing_ids, md5_dict
 from kms_api.schema import PROPOSAL_SCHEMA, RESOLUTION_SCHEMA
 from jsonschema import validate
@@ -10,7 +10,7 @@ from typing import Union
 
 router = APIRouter(
     prefix="/proposal",
-    dependencies=[Depends(validate_key)]
+    dependencies=[Depends(validate_auth)]
 )
 
 @router.post("")

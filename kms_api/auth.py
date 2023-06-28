@@ -7,10 +7,6 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from kms_api.config import API_KEYS_FILENAME, API_KEY_LENGTH, API_KEY_HEADER_NAME
 from kms_api.config import AUTH0_ALGORITHMS, AUTH0_AUDIENCE, AUTH0_ISSUER, AUTH0_DOMAIN
 
-api_key_header = APIKeyHeader(name=API_KEY_HEADER_NAME, auto_error=False)
-token_auth_scheme = HTTPBearer()
-
-
 def create_keys(n=1):
     new_keys = [secrets.token_urlsafe(API_KEY_LENGTH) for i in range(n)]
 
@@ -36,7 +32,10 @@ def get_keys():
     return keys
 
 
-async def validate_key(api_key: str = Security(api_key_header)):
+async def validate_key(api_key: str = Depends(APIKeyHeader(name=API_KEY_HEADER_NAME, auto_error=False))):
+    if not api_key:
+        return None
+
     if api_key in get_keys():
         return api_key
     else:
@@ -44,8 +43,10 @@ async def validate_key(api_key: str = Security(api_key_header)):
             status_code=403, detail="Invalid access token"
         )
 
-
-async def validate_jwt(token: HTTPAuthorizationCredentials = Depends(token_auth_scheme)):
+async def validate_jwt(token: HTTPAuthorizationCredentials = Depends(HTTPBearer(auto_error=False))):
+    if not token:
+        return None
+    
     result = VerifyToken(token.credentials).verify()
     if result.get("status"):
         raise HTTPException(
@@ -53,6 +54,11 @@ async def validate_jwt(token: HTTPAuthorizationCredentials = Depends(token_auth_
         )
     return result
 
+async def validate_auth(api_key = Depends(validate_key), token = Depends(validate_jwt)):
+    if not (api_key or token):
+        raise HTTPException(
+            status_code=403, detail="Missing authorization"
+        )
 
 class VerifyToken():
     """Does all the token verification using PyJWT"""

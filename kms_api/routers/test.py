@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Response, Depends, Body, status
 from fastapi.security import HTTPBearer
-from kms_api.auth import validate_jwt
+from kms_api.auth import validate_auth
 from pprint import pprint
 
 router = APIRouter(
     prefix="/test",
-    dependencies=[Depends(validate_jwt)]
+    dependencies=[Depends(validate_auth)]
 )
 
 # token_auth_scheme = HTTPBearer()
