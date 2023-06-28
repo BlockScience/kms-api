@@ -9,6 +9,8 @@ interface ApiOptions {
   data?: object
 }
 
+// TODO: Add caching to this hook
+
 /**
  * Securely calls an API endpoint with the given options.
  * @param endpoint the endpoint to call
