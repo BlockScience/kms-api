@@ -1,10 +1,10 @@
 import { withAuthenticationRequired } from '@auth0/auth0-react'
 import { PageLoading } from '@/components/PageLoading'
 
-interface ProtectedRouteProps {
-  component: () => JSX.Element
+interface AuthRequiredProps {
+  component
 }
-export const ProtectedRoute = ({ component }: ProtectedRouteProps) => {
+export const AuthRequired = ({ component }: AuthRequiredProps) => {
   const Component = withAuthenticationRequired(component, {
     onRedirecting: PageLoading,
   })

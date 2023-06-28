@@ -9,7 +9,7 @@ import { Sidebar } from '@/components/sidebar'
 import { Notifications } from '@mantine/notifications'
 import { OnboardingTour } from '@/components/OnboardingTour'
 import { Shortcuts } from '@/components/Shortcuts'
-import { ProtectedRoute } from '@/components/ProtectedRoute'
+import { AuthRequired } from '@/components/ProtectedRoute'
 
 import Home from '@/routes/Home'
 import Dashboard from '@/routes/Dashboard'
@@ -40,7 +40,7 @@ function App() {
     <BrowserRouter>
       <Auth0RedirectProvider>
         <ThemeProvider>
-          <ProtectedRoute component={ProtectedRoutes} />
+          <AuthRequired component={Protected} />
           {/* <Protected /> */}
         </ThemeProvider>
       </Auth0RedirectProvider>
@@ -48,7 +48,7 @@ function App() {
   )
 }
 
-function ProtectedRoutes() {
+function Protected() {
   return (
     <QueryClientProvider client={queryClient}>
       <SpotlightProvider>
