@@ -1,15 +1,17 @@
 from fastapi import APIRouter, Depends
 from kms_api.core import firestore_db
-from kms_api.auth import validate_key
+from kms_api.auth import validate_key, validate_jwt
 
 router = APIRouter(
     prefix="/meta",
-    dependencies=[Depends(validate_key)]
+    dependencies=[Depends(validate_jwt)]
 )
+
 
 @router.get("/schema")
 def get_schema():
     return firestore_db.collection("meta").document("schema").get().get("markdown")
+
 
 @router.get("/tagsets")
 def get_tagsets():
@@ -21,6 +23,7 @@ def get_tagsets():
         "intersection": schema.intersection(knowledgebase),
         "union": schema.union(knowledgebase)
     }
+
 
 @router.get("/curation_stats")
 def get_curation_stats():

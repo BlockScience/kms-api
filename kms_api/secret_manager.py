@@ -1,11 +1,11 @@
+from google.cloud import secretmanager
+import google_crc32c
 import warnings
 # crc32c only called once on startup, so safe to ignore this warning I think
 warnings.filterwarnings("ignore", message="As the c extension couldn't be imported, `google-crc32c` is using a pure python implementation that is significantly slower. If possible, please configure a c build environment and compile the extension")
-import google_crc32c
-from google.cloud import secretmanager
 
 
-def access_secret_version(project_id: str, secret_id: str, version_id: str) -> str:
+def access_secret_version(project: str, secret: str, version: str = 'latest') -> str:
     """
     Access the payload for the given secret version if one exists. The version
     can be a version number as a string (e.g. "5") or an alias (e.g. "latest").
@@ -15,7 +15,7 @@ def access_secret_version(project_id: str, secret_id: str, version_id: str) -> s
     client = secretmanager.SecretManagerServiceClient()
 
     # Build the resource name of the secret version.
-    name = f"projects/{project_id}/secrets/{secret_id}/versions/{version_id}"
+    name = f"projects/{project}/secrets/{secret}/versions/{version}"
 
     # Access the secret version.
     response = client.access_secret_version(request={"name": name})

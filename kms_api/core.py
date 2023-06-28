@@ -3,7 +3,7 @@ import typesense
 from kms_api import config
 from kms_api.secret_manager import access_secret_version
 
-TYPESENSE_API_KEY = access_secret_version('knowledge-management-333914', 'TYPESENSE_ADMIN_API_KEY', 'latest')
+TYPESENSE_API_KEY = access_secret_version('knowledge-management-333914', 'TYPESENSE_ADMIN_API_KEY')
 TYPESENSE_OPTIONS = {
     'nodes': config.TYPESENSE_NODES,
     'api_key': TYPESENSE_API_KEY,
