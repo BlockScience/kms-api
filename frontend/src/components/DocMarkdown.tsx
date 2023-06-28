@@ -1,5 +1,5 @@
 import { useState } from 'preact/hooks'
-import ReactMarkdown from '@/components/preact-markdown'
+import { MD } from '@/components/Markdown'
 import { Anchor, Image, Title } from '@mantine/core'
 
 interface MarkdownParserProps {
@@ -20,18 +20,5 @@ export default function Markdown(props: MarkdownParserProps) {
     )
     .catch((err) => console.log(err))
 
-  return (
-    <ReactMarkdown
-      components={{
-        h1: ({ ...props }) => <Title order={2} {...props} />,
-        h2: ({ ...props }) => <Title order={3} {...props} />,
-        h3: ({ ...props }) => <Title order={4} {...props} />,
-        h4: ({ ...props }) => <Title order={5} {...props} />,
-        a: () => <Anchor {...props} />,
-        img: () => <Image {...props} />,
-      }}
-    >
-      {markdown}
-    </ReactMarkdown>
-  )
+  return <MD markdown={markdown} />
 }
