@@ -1,14 +1,17 @@
 import { SetTitle } from '@/utils'
-import { TypographyStylesProvider, Box, Button, Stack, Group } from '@mantine/core'
+import { Box, Button, Stack, Group } from '@mantine/core'
 import { PageTitle } from '@/components/typography/PageTitle'
 import { IconBrandGithub } from '@tabler/icons-react'
 import { useApi } from '@/hooks/useApi'
 import { Paragraphs } from '@/components/Skeleton'
-import { MD } from '@/components/Markdown'
+import Markdown from 'markdown-to-jsx'
+import { TagSpan } from '@/components/TagSpan'
+import { common } from '@/components/typography/overrides'
 
 export default function Schema() {
   const { result, loaded } = useApi('/meta/schema')
-
+  const preprocess = (s: string) =>
+    s.replace(/:([a-zA-Z0-9-_]*?)(?=\s|$)/g, '<schemaTag>$1</schemaTag>')
   return (
     <div>
       <SetTitle text='Schema' />
@@ -26,17 +29,20 @@ export default function Schema() {
           </Button>
         </Group>
         <Stack>
-          <TypographyStylesProvider>
-            {loaded ? (
-              <MD
-                markdown={result}
-                preprocess={(s) => s.replace(/:([a-zA-Z0-9-_]*?)(?=\s|$)/g, '`$1`')}
-                postprocess={(s) => s.replace(/<code>(.*?)<\/code>/g, '<mark>$1</mark>')}
-              />
-            ) : (
-              Paragraphs([5, 3, 3])
-            )}
-          </TypographyStylesProvider>
+          {loaded ? (
+            <Markdown
+              options={{
+                overrides: {
+                  schemaTag: ({ children }) => <TagSpan>{children}</TagSpan>,
+                  ...common,
+                },
+              }}
+            >
+              {preprocess(result)}
+            </Markdown>
+          ) : (
+            Paragraphs([5, 3, 3])
+          )}
         </Stack>
       </Box>
     </div>

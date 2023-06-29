@@ -8,7 +8,6 @@ export default defineConfig({
   plugins: [
     preact({
       babel: {
-        // presets: [...],
         plugins: ['@babel/plugin-transform-react-jsx-source'],
       },
     }),
