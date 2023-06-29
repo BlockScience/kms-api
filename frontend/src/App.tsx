@@ -18,7 +18,7 @@ import Schema from '@/routes/Schema'
 import Activity from '@/routes/Activity'
 import Search from '@/routes/Search'
 import Settings from '@/routes/Settings'
-import Chat from '@/routes/Chat'
+import LLMChat from '@/routes/LLMChat'
 import NotFound from '@/routes/NotFound'
 import Documentation from '@/routes/Documentation'
 import Graph from '@/routes/Graph'
@@ -67,7 +67,7 @@ function Protected() {
               <Route path='/activity' Component={Activity} />
               <Route path='/search' Component={Search} />
               <Route path='/settings' Component={Settings} />
-              <Route path='/chat' Component={Chat} />
+              <Route path='/chat' Component={LLMChat} />
             </Route>
             <Route path='/experimental' Component={Graph} />
             <Route path='/docs' Component={Documentation} />
