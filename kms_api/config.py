@@ -16,8 +16,12 @@ API_KEY_HEADER_NAME = "token"
 API_KEYS_FILENAME = "api_keys.json"
 API_KEY_LENGTH = 20
 
+# Auth0
 AUTH0_DOMAIN = 'dev-67fgpygy2qoenl7r.us.auth0.com'
 AUTH0_AUDIENCE = 'https://127.0.0.1:8000'
 AUTH0_ISSUER = 'https://dev-67fgpygy2qoenl7r.us.auth0.com/'
 AUTH0_CLIENT = 'dev-67fgpygy2qoenl7r'
 AUTH0_ALGORITHMS = 'RS256'
+
+# langchain
+EMBEDDINGS_DIR = 'embeddings'
