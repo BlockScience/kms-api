@@ -64,3 +64,11 @@ USER_SCHEMA = {
     },
     "required": []
 }
+
+CHAT_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "prompt": {"type": "string"}
+    },
+    "required": ["prompt"]
+}

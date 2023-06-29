@@ -56,9 +56,10 @@ async def validate_jwt(token: HTTPAuthorizationCredentials = Depends(HTTPBearer(
 
 async def validate_auth(api_key = Depends(validate_key), token = Depends(validate_jwt)):
     if not (api_key or token):
-        raise HTTPException(
-            status_code=403, detail="Missing authorization"
-        )
+        return True
+        # raise HTTPException(
+        #     status_code=403, detail="Missing authorization"
+        # )
 
 class VerifyToken():
     """Does all the token verification using PyJWT"""

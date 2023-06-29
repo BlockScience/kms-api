@@ -1,0 +1,50 @@
+<html>
+
+<body>
+    <input type="text" id="input">
+    <button onclick="chat();">go</button>
+    <div id="gpt"></div>
+</body>
+<script>
+
+    const input = document.getElementById("input");
+    const gpt = document.getElementById("gpt");
+
+    function chat() {
+        fetch("http://localhost:8000/user/<user_id>/chat/<chat_id>", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                'prompt': input.value
+            })
+        })
+
+            .then(response => {
+                const reader = response.body.getReader();
+
+                reader.read().then(
+                    function pump({ done, value }) {
+                        if (done) {
+                            gpt.innerText += "\n";
+
+                            console.log("done streaming");
+                            return;
+                        }
+
+                        const chunk = new TextDecoder().decode(value);
+                        console.log(chunk);
+
+                        gpt.innerText += chunk;
+
+                        return reader.read().then(pump);
+                    }
+                )
+            })
+            .catch(error => {
+                console.error("Error reading the stream:", error);
+            })
+    }
+
+</script>
+
+</html>
