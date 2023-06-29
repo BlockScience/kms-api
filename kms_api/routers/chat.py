@@ -20,7 +20,7 @@ histories = {}
 def create_chat(user_id: str):
     ...
 
-@router.get("/{chat_id}")
+@router.post("/{chat_id}")
 async def get_chat_response(user_id: str, chat_id: str, response: Response, prompt: dict = Body(...)):
     try:
         validate(prompt, CHAT_SCHEMA)
