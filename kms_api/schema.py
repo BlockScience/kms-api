@@ -77,5 +77,5 @@ QUERY_SCHEMA = {
         "per_page": {"type": "number"},
         "filter_by": {"type": "string"}
     },
-    "required": ["q", "query_by", "query_by_weights", "sort_by", "highlight_full_fields", "highlight_affix_num_tokens", "per_page", "filter_by"]
+    "required": ["q", "filter_by"]
 }

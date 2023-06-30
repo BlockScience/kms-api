@@ -12,7 +12,7 @@ export default function QueryTest() {
   // const [typesenseResponse, setTypesenseResponse] = useState('')
   const [shouldPassTests, setShouldPassTests] = useState([])
   const [shouldFailTests, setShouldFailTests] = useState([])
-  const { result, setData, refresh } = useApi('/typesense_endpoint', {
+  const { result, setData, refresh } = useApi('/object/query', {
     defer: true,
     method: 'POST',
   })
@@ -31,7 +31,7 @@ export default function QueryTest() {
 
   const handleInputSubmit = (e) => {
     e.preventDefault()
-    setData({ filters_or_whatever_the_endpoint_expects: e.target.value })
+    setData({ "q": "*", "filter_by": e.target.value })
     refresh()
   }
 
