@@ -1,24 +1,20 @@
 import { SetTitle } from '@/utils'
-import { Box, Button, Text, Stack, TextInput, Textarea } from '@mantine/core'
+import { Box, Button, Stack, TextInput, Textarea } from '@mantine/core'
 import { PageTitle } from '@/components/typography/PageTitle'
 import { Prism } from '@mantine/prism'
-import { useEffect, useState } from 'preact/hooks'
+import { useState } from 'preact/hooks'
 import { parser } from '@/utils/parser'
 import { useApi } from '@/hooks/useApi'
 
 export default function QueryTest() {
-  const [parserResponse, setParserResponse] = useState('Parser response')
-  const [parseError, setParseError] = useState(false)
-  // const [typesenseResponse, setTypesenseResponse] = useState('')
-  const [shouldPassTests, setShouldPassTests] = useState([])
-  const [shouldFailTests, setShouldFailTests] = useState([])
   const { result, error, setData, refresh } = useApi('/object/query', {
     defer: true,
     method: 'POST',
   })
-
-  // console.log(result)
-  // console.log(error)
+  const [parserResponse, setParserResponse] = useState('Parser response')
+  const [parseError, setParseError] = useState(false)
+  const [shouldPassTests, setShouldPassTests] = useState([])
+  const [shouldFailTests, setShouldFailTests] = useState([])
 
   const handleInputChange = (e) => {
     try {
@@ -34,7 +30,6 @@ export default function QueryTest() {
 
   const handleInputSubmit = (e) => {
     e.preventDefault()
-    console.log(e.target.filterString.value)
     setData({ q: '*', filter_by: e.target.filterString.value })
     refresh()
   }
@@ -68,8 +63,33 @@ export default function QueryTest() {
               Submit to Typesense
             </Button>
           </form>
-          <Prism withLineNumbers language='json'>
-            {JSON.stringify(result || error, null, 2) || ''}
+          <Prism
+            withLineNumbers
+            language='json'
+            highlightLines={
+              parseError
+                ? {
+                    1: { color: 'red' },
+                  }
+                : undefined
+            }
+          >
+            {parseError ? parserResponse : '✅ Syntax is valid'}
+          </Prism>
+          <Prism
+            withLineNumbers
+            language='json'
+            highlightLines={
+              error
+                ? {
+                    1: { color: 'red' },
+                    2: { color: 'red' },
+                    3: { color: 'red' },
+                  }
+                : undefined
+            }
+          >
+            {result ? '✅ Typesense query is valid' : JSON.stringify(error, null, 2) || ''}
           </Prism>
 
           {/* TESTS */}
@@ -89,25 +109,12 @@ export default function QueryTest() {
               )}
               Test
             </Button>
+            {result && (
+              <Prism withLineNumbers language='json'>
+                {result}
+              </Prism>
+            )}
           </form>
-          {result && (
-            <Prism withLineNumbers language='json'>
-              {result}
-            </Prism>
-          )}
-          <Prism
-            withLineNumbers
-            language='json'
-            highlightLines={
-              parseError
-                ? {
-                    1: { color: 'red' },
-                  }
-                : undefined
-            }
-          >
-            {parserResponse}
-          </Prism>
         </Stack>
       </Box>
     </div>
