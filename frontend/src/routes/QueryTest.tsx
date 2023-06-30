@@ -76,20 +76,8 @@ export default function QueryTest() {
           >
             {parseError ? parserResponse : '✅ Syntax is valid'}
           </Prism>
-          <Prism
-            withLineNumbers
-            language='json'
-            highlightLines={
-              error
-                ? {
-                    1: { color: 'red' },
-                    2: { color: 'red' },
-                    3: { color: 'red' },
-                  }
-                : undefined
-            }
-          >
-            {result ? '✅ Typesense query is valid' : JSON.stringify(error, null, 2) || ''}
+          <Prism withLineNumbers language='json'>
+            {result ? JSON.stringify(result, null, 2) : JSON.stringify(error, null, 2) || ''}
           </Prism>
 
           {/* TESTS */}
