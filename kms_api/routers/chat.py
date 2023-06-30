@@ -1,10 +1,11 @@
 from fastapi import APIRouter, Depends, Body, Response, status
 from starlette.responses import StreamingResponse
+from kms_api.core import firestore_db
 from kms_api.auth import validate_auth
 from kms_api.schema import CHAT_SCHEMA
+from kms_api.llm.interaction_handler import conversational
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
-from kms_api.llm.interaction_handler import conversational
 from queue import Queue, Empty
 from threading import Thread
 import asyncio
@@ -13,8 +14,6 @@ router = APIRouter(
     prefix="/user/{user_id}/chat",
     dependencies=[Depends(validate_auth)]
 )
-
-histories = {}
 
 @router.post("")
 def create_chat(user_id: str):
