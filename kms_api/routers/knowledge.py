@@ -27,7 +27,7 @@ def create_knowledge(response: Response, knowledge: dict = Body(...)):
 
     return {'status': 'success', 'id': url_encoded}
 
-@router.get("/query")
+@router.post("/query")
 def typesense_query(response: Response, query: dict = Body(...)):
     try:
         validate(query, QUERY_SCHEMA)

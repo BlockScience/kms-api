@@ -1,5 +1,5 @@
 import { SetTitle } from '@/utils'
-import { Box, Button, Group, Stack, TextInput, Textarea } from '@mantine/core'
+import { Box, Button, Text, Stack, TextInput, Textarea } from '@mantine/core'
 import { PageTitle } from '@/components/typography/PageTitle'
 import { Prism } from '@mantine/prism'
 import { useEffect, useState } from 'preact/hooks'
@@ -12,10 +12,13 @@ export default function QueryTest() {
   // const [typesenseResponse, setTypesenseResponse] = useState('')
   const [shouldPassTests, setShouldPassTests] = useState([])
   const [shouldFailTests, setShouldFailTests] = useState([])
-  const { result, setData, refresh } = useApi('/object/query', {
+  const { result, error, setData, refresh } = useApi('/object/query', {
     defer: true,
     method: 'POST',
   })
+
+  // console.log(result)
+  // console.log(error)
 
   const handleInputChange = (e) => {
     try {
@@ -31,7 +34,8 @@ export default function QueryTest() {
 
   const handleInputSubmit = (e) => {
     e.preventDefault()
-    setData({ "q": "*", "filter_by": e.target.value })
+    console.log(e.target.filterString.value)
+    setData({ q: '*', filter_by: e.target.filterString.value })
     refresh()
   }
 
@@ -49,8 +53,6 @@ export default function QueryTest() {
         }
       }),
     )
-    console.log(e.target.shouldPass.value)
-    console.log(e.target.shouldFail.value)
   }
 
   return (
@@ -59,12 +61,18 @@ export default function QueryTest() {
       <Box maw={1000} mx='auto'>
         <PageTitle>Query Tests</PageTitle>
         <Stack>
+          {/* PARSER INPUT */}
           <form onSubmit={handleInputSubmit}>
-            <TextInput onInput={handleInputChange} placeholder='filter_by' />
-            <Button mt='sm' onClick={null}>
+            <TextInput name='filterString' onInput={handleInputChange} placeholder='filter_by' />
+            <Button type='submit' mt='sm'>
               Submit to Typesense
             </Button>
           </form>
+          <Prism withLineNumbers language='json'>
+            {JSON.stringify(result || error, null, 2) || ''}
+          </Prism>
+
+          {/* TESTS */}
           <form onSubmit={handleTestSubmit}>
             <Textarea name='shouldPass' label='Valid filter strings' />
             {shouldPassTests && (
