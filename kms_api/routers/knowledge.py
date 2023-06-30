@@ -5,7 +5,7 @@ from kms_api.auth import validate_auth
 from kms_api.schema import KNOWLEDGE_SCHEMA, QUERY_SCHEMA
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
-from typesense.exceptions import RequestMalformed
+from typesense.exceptions import RequestMalformed, ObjectNotFound
 
 router = APIRouter(
     prefix="/object",
@@ -37,7 +37,7 @@ def typesense_query(response: Response, query: dict = Body(...)):
     
     try:
         return search_typesense(query)
-    except RequestMalformed as e:
+    except (RequestMalformed, ObjectNotFound) as e:
         response.status_code = status.HTTP_400_BAD_REQUEST
         return {"message": str(e)}
 
