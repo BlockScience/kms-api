@@ -64,3 +64,18 @@ USER_SCHEMA = {
     },
     "required": []
 }
+
+QUERY_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "q": {"type": "string"},
+        "query_by": {"type": "string"},
+        "query_by_weights": {"type": "string"},
+        "sort_by": {"type": "string"},
+        "highlight_full_fields": {"type": "string"},
+        "highlight_affix_num_tokens": {"type": "number"},
+        "per_page": {"type": "number"},
+        "filter_by": {"type": "string"}
+    },
+    "required": ["q", "query_by", "query_by_weights", "sort_by", "highlight_full_fields", "highlight_affix_num_tokens", "per_page", "filter_by"]
+}
