@@ -80,7 +80,7 @@ export default function QueryTest() {
           </Prism>
           <Prism withLineNumbers language='json'>
             {result
-              ? `Filter string: "${currentTest}"\n` + JSON.stringify(result, null, 2)
+              ? `Filter string: "${currentTest}"\n` + JSON.stringify(result, null, 2) || ''
               : `Filter string: "${error}"\n` + JSON.stringify(error, null, 2) || ''}
           </Prism>
 
