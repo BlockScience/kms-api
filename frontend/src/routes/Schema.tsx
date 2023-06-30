@@ -1,21 +1,17 @@
 import { SetTitle } from '@/utils'
-import { TypographyStylesProvider, Box, Text, Button, Stack, Group } from '@mantine/core'
+import { Box, Button, Stack, Group } from '@mantine/core'
 import { PageTitle } from '@/components/typography/PageTitle'
 import { IconBrandGithub } from '@tabler/icons-react'
 import { useApi } from '@/hooks/useApi'
-import Markdown from 'react-markdown'
-import { TagSpan } from '@/components/TagSpan'
 import { Paragraphs } from '@/components/Skeleton'
+import Markdown from 'markdown-to-jsx'
+import { TagSpan } from '@/components/TagSpan'
+import { common } from '@/components/typography/overrides'
 
 export default function Schema() {
   const { result, loaded } = useApi('/meta/schema')
-
-  // This preprocessing turns our plaintext tag syntax into a code block which we're hijacking to render our tags.
-  // A better solution here would be to use a markdown renderer that supports custom components.
-  const preprocess = (input: string) => {
-    return input.replaceAll(/:([a-zA-Z0-9-_]*?)(?=\s|$)/g, '`$1`')
-  }
-
+  const preprocess = (s: string) =>
+    s.replace(/:([a-zA-Z0-9-_]*?)(?=\s|$)/g, '<schemaTag>$1</schemaTag>')
   return (
     <div>
       <SetTitle text='Schema' />
@@ -33,19 +29,20 @@ export default function Schema() {
           </Button>
         </Group>
         <Stack>
-          <TypographyStylesProvider>
-            {loaded ? (
-              <Markdown
-                components={{
-                  code: (node) => <TagSpan>{node.children}</TagSpan>,
-                }}
-              >
-                {preprocess(result)}
-              </Markdown>
-            ) : (
-              Paragraphs([5, 3, 3])
-            )}
-          </TypographyStylesProvider>
+          {loaded ? (
+            <Markdown
+              options={{
+                overrides: {
+                  schemaTag: ({ children }) => <TagSpan>{children}</TagSpan>,
+                  ...common,
+                },
+              }}
+            >
+              {preprocess(result)}
+            </Markdown>
+          ) : (
+            Paragraphs([5, 3, 3])
+          )}
         </Stack>
       </Box>
     </div>

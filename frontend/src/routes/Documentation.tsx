@@ -1,8 +1,9 @@
 import DocsTOC from '@/components/TableOfContents'
-import Markdown from '@/components/DocMarkdown'
 import { SetTitle } from '@/utils'
 import { Box, Grid, ScrollArea, useMantineTheme } from '@mantine/core'
 import { useState } from 'preact/hooks'
+import Markdown from 'markdown-to-jsx'
+import { common } from '@/components/typography/overrides'
 
 const initialDoc = 'index'
 const docs = [
@@ -16,10 +17,25 @@ const docs = [
   { label: 'First-Class Relations', filename: 'research-relations', order: 2 },
 ]
 
+function getDoc(filename: string) {
+  const [markdown, setState] = useState('')
+  import(`../assets/docs/${filename}.md`)
+    .then((module) =>
+      fetch(module.default)
+        .then((res) => res.text())
+        .then((md) => {
+          setState(md)
+        })
+        .catch((err) => console.log(err)),
+    )
+    .catch((err) => console.log(err))
+
+  return markdown
+}
+
 export default function Documentation() {
   const theme = useMantineTheme()
   const [currentDoc, setCurrentDoc] = useState(initialDoc)
-
   function handlePageChange(page: number, filename: string) {
     setCurrentDoc(filename)
   }
@@ -54,7 +70,16 @@ export default function Documentation() {
           // @ts-ignore */}
           <ScrollArea h='100vh'>
             <Box m='4em'>
-              <Markdown filename={currentDoc} />
+              <Markdown
+                options={{
+                  overrides: {
+                    dw: ({ children }) => <span>{children}</span>,
+                    ...common,
+                  },
+                }}
+              >
+                {getDoc(currentDoc)}
+              </Markdown>
             </Box>
           </ScrollArea>
         </Grid.Col>
