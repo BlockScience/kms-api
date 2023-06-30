@@ -15,6 +15,7 @@ export default function QueryTest() {
   const [parseError, setParseError] = useState(false)
   const [shouldPassTests, setShouldPassTests] = useState([])
   const [shouldFailTests, setShouldFailTests] = useState([])
+  const [currentTest, setCurrentTest] = useState('')
 
   const handleInputChange = (e) => {
     try {
@@ -31,6 +32,7 @@ export default function QueryTest() {
   const handleInputSubmit = (e) => {
     e.preventDefault()
     setData({ q: '*', filter_by: e.target.filterString.value })
+    setCurrentTest(e.target.filterString.value)
     refresh()
   }
 
@@ -77,7 +79,9 @@ export default function QueryTest() {
             {parseError ? parserResponse : '✅ Syntax is valid'}
           </Prism>
           <Prism withLineNumbers language='json'>
-            {result ? JSON.stringify(result, null, 2) : JSON.stringify(error, null, 2) || ''}
+            {result
+              ? `Filter string: "${currentTest}"\n` + JSON.stringify(result, null, 2)
+              : `Filter string: "${error}"\n` + JSON.stringify(error, null, 2) || ''}
           </Prism>
 
           {/* TESTS */}
