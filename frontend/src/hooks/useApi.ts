@@ -18,9 +18,9 @@ interface ApiOptions {
  */
 export function useApi(endpoint: string, options?: ApiOptions) {
   const method = options?.method || 'GET'
-  const data = options?.data || {}
-  let defer = options?.defer || false
 
+  const [data, setData] = useState(options?.data || {})
+  const [defer, setDefer] = useState(options?.defer || false)
   const { getAccessTokenSilently } = useAuth0()
   const [result, setResult] = useState()
   const [loading, setLoading] = useState(false)
@@ -29,7 +29,7 @@ export function useApi(endpoint: string, options?: ApiOptions) {
   const [refreshIndex, setRefreshIndex] = useState(0)
 
   const refresh = () => {
-    defer = false
+    setDefer(false)
     setRefreshIndex(refreshIndex + 1)
   }
 
@@ -88,7 +88,8 @@ export function useApi(endpoint: string, options?: ApiOptions) {
     return () => {
       cancelled = true
     }
-  }, [getAccessTokenSilently, endpoint, refreshIndex])
+  }, [getAccessTokenSilently, endpoint, data, refreshIndex])
 
-  return { result, loading, loaded, error, refresh, setResult }
+  // TODO: rename 'refresh' to 'reload' or 'update' or 'call'
+  return { result, loading, loaded, error, refresh, setData }
 }
