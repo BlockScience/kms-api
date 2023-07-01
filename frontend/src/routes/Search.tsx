@@ -123,7 +123,14 @@ export default function Search() {
   const { result, error, setData, refresh } = useApi('/object/query', {
     // defer: true,
     method: 'POST',
-    data: { q: query, query_by: "tags, title, text", query_by_weights: "3, 2, 1", }
+    data: {
+      "q": "kms",
+      "query_by": "tags, title, text",
+      "query_by_weights": "3, 2, 1",
+      "sort_by": "rank:desc,_text_match:desc",
+      "highlight_full_fields": "title, tags",
+      "highlight_affix_num_tokens": 20
+    }
   })
 
   const searchresults = result && result.hits.map(search => {
@@ -134,7 +141,7 @@ export default function Search() {
       type='document'
       platform={search.document.platform}
       tags={search.document.tags}
-      text={search.document.text}
+      text={search.highlight.text.snippet}
     />)
   });
 
