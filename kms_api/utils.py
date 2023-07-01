@@ -6,6 +6,25 @@ from hashlib import md5
 from typing import Dict, Any
 from kms_api.core import typesense_db, firestore_db
 from kms_api import config
+from functools import wraps
+import time
+
+# Decorator to measure execution time of synchronous functions
+def profile(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start_time = time.perf_counter()
+        result = func(*args, **kwargs)
+        elapsed_time = round(time.perf_counter() - start_time, 2)
+        func_name = func.__name__
+
+        print(f"{func_name} - elapsed time: {elapsed_time}")
+
+        # ... print or store elapsed_time and func_name
+
+        return result
+
+    return wrapper
 
 def encode_url(string):
     return b64encode(string.encode('ascii')).decode('ascii')

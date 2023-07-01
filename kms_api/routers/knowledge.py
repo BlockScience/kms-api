@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Response, status, Depends, Body
 from kms_api.core import firestore_db
-from kms_api.utils import url_normalize, encode_url, search_typesense, query
+from kms_api.utils import url_normalize, encode_url, search_typesense, query, profile
 from kms_api.auth import validate_auth
 from kms_api.schema import KNOWLEDGE_SCHEMA, QUERY_SCHEMA
 from jsonschema import validate
@@ -28,6 +28,7 @@ def create_knowledge(response: Response, knowledge: dict = Body(...)):
     return {'status': 'success', 'id': url_encoded}
 
 @router.post("/query")
+@profile
 def typesense_query(response: Response, query: dict = Body(...)):
     try:
         validate(query, QUERY_SCHEMA)
@@ -36,7 +37,8 @@ def typesense_query(response: Response, query: dict = Body(...)):
         return {"message": e.message}
     
     try:
-        return search_typesense(query)
+        result = search_typesense(query)
+        return result
     except (RequestMalformed, ObjectNotFound) as e:
         response.status_code = status.HTTP_400_BAD_REQUEST
         return {"message": str(e)}
