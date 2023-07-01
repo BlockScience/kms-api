@@ -4,7 +4,7 @@ import {
   useSpotlight,
 } from '@/components/mantine-spotlight'
 import { Group, rem, Text, Anchor, useMantineColorScheme, px } from '@mantine/core'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, createSearchParams } from 'react-router-dom'
 import {
   IconSearch,
   IconSun,
@@ -15,6 +15,7 @@ import {
 import { useState } from 'preact/hooks'
 import { notifications } from '@mantine/notifications'
 import { VNode } from 'preact'
+import axios from 'axios'
 
 function ActionsWrapper({ children }: { children: VNode[] | VNode }) {
   const navigate = useNavigate()
@@ -143,13 +144,32 @@ export function SpotlightProvider({ children }: SpotlightProps) {
         navigate('/experimental')
       },
     },
+    {
+      title: 'dev/test',
+      description: 'Dummy endpoint',
+      icon: <IconTerminal2 size={px('1.2rem')} />,
+      onTrigger: () => {
+        axios({
+          method: 'GET',
+          url: '/api/test',
+          headers: {
+            token: 'atAEWRVEEZQ989TfTcGVNGOhb1U',
+          },
+        })
+      }
+    }
   ]
   const opSearch = [
     {
       title: `Search for "${query}"`,
       description: 'Search will match any title, text, or tags in the knowledgebase',
       onTrigger: () => {
-        navigate('/search', { state: { q: query } })
+        navigate({
+          pathname: '/search',
+          search: createSearchParams({
+            q: query
+          }).toString()
+        })
       },
     },
   ]

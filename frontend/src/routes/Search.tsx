@@ -1,4 +1,5 @@
 import ObjectRID from '@/components/ObjectRID'
+import { useApi } from '@/hooks/useApi'
 import { SetTitle } from '@/utils'
 import {
   Anchor,
@@ -20,6 +21,7 @@ import {
   useMantineTheme,
 } from '@mantine/core'
 import { IconCheck, IconMinus, IconX } from '@tabler/icons-react'
+import { useSearchParams } from 'react-router-dom'
 
 interface SearchResultProps {
   title: string
@@ -114,7 +116,31 @@ function FilterDropdown(props: FilterProps) {
 }
 
 export default function Search() {
-  const theme = useMantineTheme()
+  const theme = useMantineTheme();
+  const [searchparams] = useSearchParams();
+  const query = searchparams.get('q');
+
+  const { result, error, setData, refresh } = useApi('/object/query', {
+    // defer: true,
+    method: 'POST',
+    data: { q: query, query_by: "tags, title, text", query_by_weights: "3, 2, 1", }
+  })
+
+  const searchresults = result && result.hits.map(search => {
+    return (<SearchResult
+      title={search.document.title}
+      url={search.document.url}
+      theme={theme}
+      type='document'
+      platform={search.document.platform}
+      tags={search.document.tags}
+      text={search.document.text}
+    />)
+  });
+
+  console.log(result);
+
+
   return (
     <div>
       <SetTitle text='Search' />
@@ -124,7 +150,7 @@ export default function Search() {
             Query
           </Text>
           <Badge variant='light' color='gray' radius='sm'>
-            cadCAD something foo foo
+            {query}
           </Badge>
           <Space w='md' />
           <Text size='xs' fw={700} color='dimmed' tt='uppercase'>
@@ -228,71 +254,8 @@ export default function Search() {
             data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
           />
         </Group>
-        <Divider label='showing 20/231 results' labelPosition='center' />
-
-        <SearchResult
-          title='Some Artifact'
-          url='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-          theme={theme}
-          type='video'
-          platform='youtube.com'
-          tags={[]}
-          text='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolosre magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-        />
-        <SearchResult
-          title='Some Artifact'
-          url='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-          theme={theme}
-          type='video'
-          platform='youtube.com'
-          tags={[]}
-          text='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et doflore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-        />
-        <SearchResult
-          title='Some Artifact'
-          url='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-          theme={theme}
-          type='video'
-          platform='youtube.com'
-          tags={[]}
-          text='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolaore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-        />
-        <SearchResult
-          title='Some Artifact'
-          url='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-          theme={theme}
-          type='video'
-          platform='youtube.com'
-          tags={[]}
-          text='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et doslore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-        />
-        <SearchResult
-          title='Some Artifact'
-          url='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-          theme={theme}
-          type='video'
-          platform='youtube.com'
-          tags={[]}
-          text='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolgore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-        />
-        <SearchResult
-          title='Some Artifact'
-          url='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-          theme={theme}
-          type='video'
-          platform='youtube.com'
-          tags={[]}
-          text='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et doloreee magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-        />
-        <SearchResult
-          title='Some Artifact'
-          url='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-          theme={theme}
-          type='video'
-          platform='youtube.com'
-          tags={[]}
-          text='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et folore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-        />
+        <Divider label={result && `showing ${result.hits.length}/${result.found} results`} labelPosition='center' />
+        {searchresults}
         <Container>
           <Pagination total={10} />
         </Container>
