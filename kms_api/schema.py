@@ -23,7 +23,7 @@ PROPOSAL_SCHEMA = {
                     "type": "object",
                     "properties": {
                         "id": {"type": "string"},
-                        "action": {"enum":["remove_tags","add_tags", "replace_tags"]},
+                        "action": {"enum": ["remove_tags", "add_tags", "replace_tags"]},
                         "payload": {}
                     },
                     "required": ["id", "action", "payload"],
@@ -60,7 +60,7 @@ USER_SCHEMA = {
     "properties": {
         "profile_name": {"type": "string"},
         "per_page": {"type": "integer"},
-        "search_context_tokens" : {"type": "integer"}
+        "search_context_tokens": {"type": "integer"}
     },
     "required": []
 }
@@ -71,4 +71,19 @@ CHAT_SCHEMA = {
         "prompt": {"type": "string"}
     },
     "required": ["prompt"]
+}
+
+QUERY_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "q": {"type": "string"},
+        "query_by": {"type": "string"},
+        "query_by_weights": {"type": "string"},
+        "sort_by": {"type": "string"},
+        "highlight_full_fields": {"type": "string"},
+        "highlight_affix_num_tokens": {"type": "number"},
+        "per_page": {"type": "number"},
+        "filter_by": {"type": "string"}
+    },
+    "required": ["q", "filter_by"]
 }

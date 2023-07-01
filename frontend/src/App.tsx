@@ -22,6 +22,7 @@ import LLMChat from '@/routes/LLMChat'
 import NotFound from '@/routes/NotFound'
 import Documentation from '@/routes/Documentation'
 import Graph from '@/routes/Graph'
+import QueryTest from '@/routes/QueryTest'
 
 const queryClient = new QueryClient()
 
@@ -68,6 +69,7 @@ function Protected() {
               <Route path='/search' Component={Search} />
               <Route path='/settings' Component={Settings} />
               <Route path='/chat' Component={LLMChat} />
+              <Route path='/query-test' Component={QueryTest} />
             </Route>
             <Route path='/experimental' Component={Graph} />
             <Route path='/docs' Component={Documentation} />
