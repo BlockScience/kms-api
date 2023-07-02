@@ -19,13 +19,26 @@ import { useSearchParams, useNavigate, createSearchParams, useLocation } from 'r
 import { Parser, ProcessNodeDefinitions } from 'html-to-react'
 import { notifications } from '@mantine/notifications'
 import { CardsSkeleton } from '@/components/Skeleton'
-import { useEffect, useState } from 'preact/hooks'
+import { useEffect } from 'preact/hooks'
+
+// Define constants
+const MARK_NODE_TYPE = 'mark'
+
+const QUERY_DEFAULTS = {
+  query_by: 'tags, title, text',
+  query_by_weights: '3, 2, 1',
+  sort_by: 'rank:desc,_text_match:desc',
+  highlight_fields: 'tags, title, text',
+  highlight_full_fields: 'title, tags',
+  highlight_affix_num_tokens: 20,
+  exclude_fields: 'text',
+}
 
 // TODO: use this to fix parsing bug thats breaking some search pages
-const textToHtmlRules = [
+const HTML_PARSER_RULES = [
   {
     shouldProcessNode: function (node) {
-      return node.type === 'mark'
+      return node.type === MARK_NODE_TYPE
     },
     processNode: function (node, children) {
       return node.data.toUpperCase()
@@ -40,17 +53,40 @@ const textToHtmlRules = [
   },
 ]
 
-const queryDefaults = {
-  query_by: 'tags, title, text',
-  query_by_weights: '3, 2, 1',
-  sort_by: 'rank:desc,_text_match:desc',
-  highlight_fields: 'tags, title, text',
-  highlight_full_fields: 'title, tags',
-  highlight_affix_num_tokens: 20,
-  exclude_fields: 'text',
+// Define interfaces
+interface TypesenseQuery {
+  q: string
+  [key: string]: any
 }
 
-interface SearchResultProps {
+interface TypesenseResponse {
+  found: number
+  hits: SearchHit[]
+  page: number
+  request_params: {
+    per_page: number
+  }
+}
+
+interface SearchHit {
+  document: Document
+  highlight: {
+    text?: {
+      snippet?: string
+    }
+  }
+}
+
+interface Document {
+  id: string
+  title: string
+  url: string
+  type: string
+  platform: string
+  tags: string[]
+}
+
+interface KObjectProps {
   title: string
   text: string
   url: string
@@ -59,7 +95,25 @@ interface SearchResultProps {
   tags: string[]
   id: string
 }
-function SearchResult({ title, text, url, type, platform, tags, id }: SearchResultProps) {
+
+// Define helpers
+const searchSummaryString = (result: TypesenseResponse) => {
+  const totalResults = result.found
+  const resultsPerPage = result.request_params.per_page
+  const currentPage = result.page || 1
+
+  // Calculate the range of results being shown
+  let start = Math.max(0, currentPage - 1) * resultsPerPage + 1
+  const end = Math.min(currentPage * resultsPerPage, totalResults)
+  start = Math.min(start, end)
+
+  // Create the string using template literals
+  return `Showing ${start}-${end} of ${totalResults} results`
+}
+
+// Define subcomponents
+
+function KObjectCard({ title, text, url, type, platform, tags, id }: KObjectProps) {
   const theme = useMantineTheme()
   const bg = theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]
   return (
@@ -80,28 +134,47 @@ function SearchResult({ title, text, url, type, platform, tags, id }: SearchResu
   )
 }
 
+const KObjectCards = ({ hits }: { hits: SearchHit[] }): JSX.Element => {
+  const cards = hits.map((hit) => (
+    <KObjectCard
+      key={hit.document.id}
+      id={hit.document.id}
+      title={hit.document.title}
+      url={hit.document.url}
+      type={hit.document.type}
+      platform={hit.document.platform}
+      tags={hit.document.tags}
+      text={Parser().parseWithInstructions(
+        hit.highlight.text?.snippet || '',
+        () => true,
+        HTML_PARSER_RULES,
+      )}
+    />
+  ))
+  return <>{cards}</>
+}
+
 export default function Search() {
+  const navigate = useNavigate()
   const { search } = useLocation()
   const [searchparams] = useSearchParams()
   const currentQuery = searchparams.get('q')
-  const navigate = useNavigate()
-
   const { result, error, loading, update } = useApi('/object/query', {
     method: 'POST',
     data: {
-      ...queryDefaults,
+      ...QUERY_DEFAULTS,
       q: currentQuery,
     },
   })
 
   useEffect(() => {
     update({
-      ...queryDefaults,
+      ...QUERY_DEFAULTS,
       q: currentQuery,
     })
   }, [search])
 
-  const updateSearch = (typesenseQuery: object) => {
+  const updateSearch = (typesenseQuery: TypesenseQuery) => {
     if (!typesenseQuery.q) throw new Error('updateSearch must be called with a q parameter')
     update(typesenseQuery)
     navigate(
@@ -115,58 +188,13 @@ export default function Search() {
     )
   }
 
-  const handleSearchSubmit = (e: SubmitEvent) => {
-    e.preventDefault()
-    updateSearch({
-      ...queryDefaults,
-      q: e.target.query.value,
-    })
-  }
-
-  const mapSearchHits = (hits: object[]): JSX.Element[] => {
-    return hits.map((hit, i) => {
-      const doc = hit.document
-
-      return (
-        <SearchResult
-          key={i}
-          id={doc.id}
-          title={doc.title}
-          url={doc.url}
-          type={doc.type}
-          platform={doc.platform}
-          tags={doc.tags}
-          text={Parser().parseWithInstructions(
-            hit.highlight.text?.snippet || '',
-            () => true,
-            textToHtmlRules,
-          )}
-        />
-      )
-    })
-  }
-
-  const formatSearchSummary = (result: object) => {
-    const totalResults = result.found
-    const resultsPerPage = result.request_params.per_page
-    const currentPage = result.page || 1
-
-    // Calculate the range of results being shown
-    let start = Math.max(0, currentPage - 1) * resultsPerPage + 1
-    const end = Math.min(currentPage * resultsPerPage, totalResults)
-    start = Math.min(start, end)
-
-    // Create the string using template literals
-    return `Showing ${start}-${end} of ${totalResults} results`
-  }
-
   const FormattedResults = () => {
     if (error) return 'ERROR :('
     if (loading) return CardsSkeleton([100, 120, 80, 100, 130, 150, 100])
 
     if (result) {
       if (result.hits) {
-        return mapSearchHits(result.hits)
+        return <KObjectCards hits={result.hits} />
       } else {
         return 'no results'
       }
@@ -179,6 +207,19 @@ export default function Search() {
     return
   }
 
+  // Handlers
+  const handleSearchSubmit = (e: SubmitEvent) => {
+    e.preventDefault()
+    updateSearch({
+      ...QUERY_DEFAULTS,
+      q: e.target.query.value,
+    })
+  }
+
+  const handlePaginationChange = (newPage: number): void => {
+    updateSearch({ ...QUERY_DEFAULTS, q: currentQuery, page: newPage })
+  }
+
   return (
     <div>
       <SetTitle text='Search' />
@@ -187,7 +228,7 @@ export default function Search() {
           <TextInput name='query' placeholder={currentQuery} icon={<IconSearch />} />
         </form>
         <Divider
-          label={loading ? 'Waiting for results' : result && formatSearchSummary(result)}
+          label={loading ? 'Waiting for results' : result && searchSummaryString(result)}
           labelPosition='center'
         />
         {FormattedResults()}
@@ -197,9 +238,7 @@ export default function Search() {
               total={Math.ceil(result.found / result.request_params.per_page)}
               value={result.page}
               disabled={loading}
-              onChange={(newPage) => {
-                updateSearch({ ...queryDefaults, q: currentQuery, page: newPage })
-              }}
+              onChange={handlePaginationChange}
             />
           )}
         </Container>
