@@ -73,6 +73,5 @@ export function useApi(endpoint: string, options?: ApiOptions) {
     getData()
   }, [getAccessTokenSilently, _endpoint, data])
 
-  // TODO: rename 'refresh' to 'reload' or 'update' or 'call'
   return { result, loading, error, update }
 }

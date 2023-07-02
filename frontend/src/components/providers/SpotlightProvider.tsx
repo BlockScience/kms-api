@@ -156,8 +156,8 @@ export function SpotlightProvider({ children }: SpotlightProps) {
             token: 'atAEWRVEEZQ989TfTcGVNGOhb1U',
           },
         })
-      }
-    }
+      },
+    },
   ]
   const opSearch = [
     {
@@ -167,8 +167,8 @@ export function SpotlightProvider({ children }: SpotlightProps) {
         navigate({
           pathname: '/search',
           search: createSearchParams({
-            q: query
-          }).toString()
+            q: query,
+          }).toString(),
         })
       },
     },

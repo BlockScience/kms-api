@@ -17,7 +17,6 @@
     "axios": "^1.4.0",
     "cytoscape": "^3.25.0",
     "cytoscape-cola": "^2.5.1",
-    "html-to-react": "^1.6.0",
     "mantine-datatable": "^2.7.0",
     "markdown-to-jsx": "^7.2.1",
     "preact": "^10.15.1",
