@@ -1,6 +1,15 @@
-import ObjectRID from '@/components/ObjectRID'
+import { HTML_PARSER_RULES } from '@/config/parserRules'
+import { useEffect } from 'preact/hooks'
 import { useApi } from '@/hooks/useApi'
+import { useSearchParams, useNavigate, createSearchParams, useLocation } from 'react-router-dom'
 import { SetTitle } from '@/utils'
+import { notifications } from '@mantine/notifications'
+import { Parser } from 'html-to-react'
+
+// Import Components
+import { IconSearch } from '@tabler/icons-react'
+import { CardsSkeleton } from '@/components/Skeleton'
+import ObjectRID from '@/components/ObjectRID'
 import {
   Anchor,
   Center,
@@ -15,13 +24,6 @@ import {
   Title,
   useMantineTheme,
 } from '@mantine/core'
-import { IconSearch } from '@tabler/icons-react'
-import { useSearchParams, useNavigate, createSearchParams, useLocation } from 'react-router-dom'
-import { Parser } from 'html-to-react'
-import { notifications } from '@mantine/notifications'
-import { CardsSkeleton } from '@/components/Skeleton'
-import { useEffect } from 'preact/hooks'
-import { HTML_PARSER_RULES } from '@/config/parserRules'
 
 // Define constants
 const QUERY_DEFAULTS = {
@@ -90,18 +92,13 @@ interface KObjectProps {
 }
 
 // Define helpers
-const searchSummaryString = (result: TypesenseResponse) => {
-  const totalResults = result.found
-  const resultsPerPage = result.request_params.per_page
-  const currentPage = result.page || 1
-
-  // Calculate the range of results being shown
-  let start = Math.max(0, currentPage - 1) * resultsPerPage + 1
+const searchSummaryString = (response: TypesenseResponse) => {
+  const totalResults = response.found
+  const resultsPerPage = response.request_params.per_page
+  const currentPage = response.page || 1
   const end = Math.min(currentPage * resultsPerPage, totalResults)
-  start = Math.min(start, end)
-
-  // Create the string using template literals
-  return `Showing ${start}-${end} of ${totalResults} results`
+  const start = Math.min(Math.max(0, currentPage - 1) * resultsPerPage + 1, end)
+  return `showing ${start}-${end} of ${totalResults} results`
 }
 
 // Define subcomponents
@@ -136,6 +133,7 @@ const KObjectCards = ({ hits }: { hits: SearchHit[] }): JSX.Element => {
       type={hit.document.type}
       platform={hit.document.platform}
       tags={hit.document.tags}
+      // TODO: fix parsing bug which you can see by searching for "hello" and going to the last page
       text={Parser().parseWithInstructions(
         hit.highlight.text?.snippet || '',
         () => true,
@@ -196,7 +194,7 @@ export default function Search() {
   }
 
   // Handlers
-  const handleSearchSubmit = (e: SubmitEvent) => {
+  const handleSearchSubmit = (e: Event) => {
     e.preventDefault()
     updateSearch({
       ...QUERY_DEFAULTS,
@@ -216,7 +214,7 @@ export default function Search() {
           <TextInput name='query' placeholder={currentQuery} icon={<IconSearch />} />
         </form>
         <Divider
-          label={loading ? 'Waiting for results' : result && searchSummaryString(result)}
+          label={loading ? 'waiting for results' : result && searchSummaryString(result)}
           labelPosition='center'
         />
         <ConditionalResults />
