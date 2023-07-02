@@ -3,6 +3,7 @@ import { useApi } from '@/hooks/useApi'
 import { SetTitle } from '@/utils'
 import {
   Anchor,
+  Center,
   Container,
   Divider,
   Group,
@@ -16,14 +17,13 @@ import {
 } from '@mantine/core'
 import { IconSearch } from '@tabler/icons-react'
 import { useSearchParams, useNavigate, createSearchParams, useLocation } from 'react-router-dom'
-import { Parser, ProcessNodeDefinitions } from 'html-to-react'
+import { Parser } from 'html-to-react'
 import { notifications } from '@mantine/notifications'
 import { CardsSkeleton } from '@/components/Skeleton'
 import { useEffect } from 'preact/hooks'
+import { HTML_PARSER_RULES } from '@/config/parserRules'
 
 // Define constants
-const MARK_NODE_TYPE = 'mark'
-
 const QUERY_DEFAULTS = {
   query_by: 'tags, title, text',
   query_by_weights: '3, 2, 1',
@@ -34,24 +34,17 @@ const QUERY_DEFAULTS = {
   exclude_fields: 'text',
 }
 
-// TODO: use this to fix parsing bug thats breaking some search pages
-const HTML_PARSER_RULES = [
-  {
-    shouldProcessNode: function (node) {
-      return node.type === MARK_NODE_TYPE
-    },
-    processNode: function (node, children) {
-      return node.data.toUpperCase()
-    },
-  },
-  {
-    // Anything else
-    shouldProcessNode: function (node) {
-      return true
-    },
-    processNode: ProcessNodeDefinitions().processDefaultNode,
-  },
-]
+const RESULT_LOADING = <>{CardsSkeleton([100, 120, 80, 100, 130, 150, 100])}</>
+const RESULT_ERROR = (
+  <Center>
+    <Text>Could not load results</Text>
+  </Center>
+)
+const RESULT_NONE = (
+  <Center>
+    <Text>No results found</Text>
+  </Center>
+)
 
 // Define interfaces
 interface TypesenseQuery {
@@ -112,7 +105,6 @@ const searchSummaryString = (result: TypesenseResponse) => {
 }
 
 // Define subcomponents
-
 function KObjectCard({ title, text, url, type, platform, tags, id }: KObjectProps) {
   const theme = useMantineTheme()
   const bg = theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]
@@ -188,23 +180,19 @@ export default function Search() {
     )
   }
 
-  const FormattedResults = () => {
-    if (error) return 'ERROR :('
-    if (loading) return CardsSkeleton([100, 120, 80, 100, 130, 150, 100])
-
+  const ConditionalResults = (): JSX.Element => {
+    if (loading) return RESULT_LOADING
+    if (error) return RESULT_ERROR
     if (result) {
-      if (result.hits) {
-        return <KObjectCards hits={result.hits} />
-      } else {
-        return 'no results'
-      }
-    } else
-      notifications.show({
-        title: 'Something went wrong during search',
-        color: 'red',
-        message: 'We did not know this would happen, which is why you\'re seeing this message...',
-      })
-    return
+      if (result.found === 0) return RESULT_NONE
+      if (result.hits) return <KObjectCards hits={result.hits} />
+    }
+    notifications.show({
+      title: 'Something went wrong...',
+      color: 'red',
+      message: 'We did not know this would happen, which is why you\'re seeing this message...',
+    })
+    return null
   }
 
   // Handlers
@@ -231,7 +219,7 @@ export default function Search() {
           label={loading ? 'Waiting for results' : result && searchSummaryString(result)}
           labelPosition='center'
         />
-        {FormattedResults()}
+        <ConditionalResults />
         <Container>
           {result && (
             <Pagination
