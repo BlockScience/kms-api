@@ -1,10 +1,9 @@
-import { HTML_PARSER_RULES } from '@/config/parserRules'
 import { useEffect } from 'preact/hooks'
 import { useApi } from '@/hooks/useApi'
 import { useSearchParams, useNavigate, createSearchParams, useLocation } from 'react-router-dom'
 import { SetTitle } from '@/utils'
 import { notifications } from '@mantine/notifications'
-import { Parser } from 'html-to-react'
+import parseHtml from '@/utils/htmlParser'
 
 // Import Components
 import { IconSearch } from '@tabler/icons-react'
@@ -83,12 +82,12 @@ interface Document {
 
 interface KObjectProps {
   title: string
-  text: string
   url: string
   type: string
   platform: string
   tags: string[]
   id: string
+  text: string | JSX.Element
 }
 
 // Define helpers
@@ -133,12 +132,7 @@ const KObjectCards = ({ hits }: { hits: SearchHit[] }): JSX.Element => {
       type={hit.document.type}
       platform={hit.document.platform}
       tags={hit.document.tags}
-      // TODO: fix parsing bug which you can see by searching for "hello" and going to the last page
-      text={Parser().parseWithInstructions(
-        hit.highlight.text?.snippet || '',
-        () => true,
-        HTML_PARSER_RULES,
-      )}
+      text={parseHtml(hit.highlight.text?.snippet)}
     />
   ))
   return <>{cards}</>
