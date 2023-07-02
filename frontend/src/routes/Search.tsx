@@ -38,9 +38,12 @@ const QUERY_DEFAULTS = {
 const RESULT_LOADING = <>{CardsSkeleton([100, 120, 80, 100, 130, 150, 100])}</>
 const RESULT_ERROR = (
   <Center>
-    <Text>Could not load results</Text>
+    <Text>
+      Something went wrong. If the issue persists please <Anchor>file a bug report.</Anchor>
+    </Text>
   </Center>
 )
+
 const RESULT_NONE = (
   <Center>
     <Text>No results found</Text>
@@ -179,11 +182,6 @@ export default function Search() {
       if (result.found === 0) return RESULT_NONE
       if (result.hits) return <KObjectCards hits={result.hits} />
     }
-    notifications.show({
-      title: 'Something went wrong...',
-      color: 'red',
-      message: 'We did not know this would happen, which is why you\'re seeing this message...',
-    })
     return null
   }
 
