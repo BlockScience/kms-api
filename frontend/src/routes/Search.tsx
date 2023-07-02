@@ -15,10 +15,11 @@ import {
   useMantineTheme,
 } from '@mantine/core'
 import { IconSearch } from '@tabler/icons-react'
-import { useSearchParams, useNavigate, createSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate, createSearchParams, useLocation } from 'react-router-dom'
 import { Parser, ProcessNodeDefinitions } from 'html-to-react'
 import { notifications } from '@mantine/notifications'
 import { CardsSkeleton } from '@/components/Skeleton'
+import { useEffect, useState } from 'preact/hooks'
 
 // TODO: use this to fix parsing bug thats breaking some search pages
 const textToHtmlRules = [
@@ -81,7 +82,8 @@ function SearchResult({ title, text, url, type, platform, tags, id }: SearchResu
 
 export default function Search() {
   const [searchparams] = useSearchParams()
-  const currentQuery = searchparams.get('q')
+  const [currentQuery, setCurrentQuery] = useState(searchparams.get('q'))
+  const { search } = useLocation()
   const navigate = useNavigate()
 
   const { result, error, loading, update } = useApi('/object/query', {
@@ -92,11 +94,16 @@ export default function Search() {
     },
   })
 
-  console.log(result)
+  useEffect(() => {
+    setCurrentQuery(searchparams.get('q'))
+    update({
+      ...queryDefaults,
+      q: searchparams.get('q'),
+    })
+  }, [search])
 
   const updateSearch = (options: object) => {
     if (!options.q) throw new Error('updateSearch must be called with a q parameter')
-    update(options)
     navigate(
       {
         pathname: '/search',
@@ -119,15 +126,6 @@ export default function Search() {
   const mapSearchHits = (hits: object[]): JSX.Element[] => {
     return hits.map((hit, i) => {
       const doc = hit.document
-
-      console.log(
-        'parser...',
-        Parser().parseWithInstructions(
-          hit.highlight.text?.snippet || '',
-          () => true,
-          textToHtmlRules,
-        ),
-      )
 
       return (
         <SearchResult
@@ -165,7 +163,6 @@ export default function Search() {
   const FormattedResults = () => {
     if (error) return 'ERROR :('
     if (loading) return CardsSkeleton([100, 120, 80, 100, 130, 150, 100])
-    console.log('loading', loading)
 
     if (result) {
       if (result.hits) {
