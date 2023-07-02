@@ -81,9 +81,9 @@ function SearchResult({ title, text, url, type, platform, tags, id }: SearchResu
 }
 
 export default function Search() {
-  const [searchparams] = useSearchParams()
-  const [currentQuery, setCurrentQuery] = useState(searchparams.get('q'))
   const { search } = useLocation()
+  const [searchparams] = useSearchParams()
+  const currentQuery = searchparams.get('q')
   const navigate = useNavigate()
 
   const { result, error, loading, update } = useApi('/object/query', {
@@ -95,20 +95,20 @@ export default function Search() {
   })
 
   useEffect(() => {
-    setCurrentQuery(searchparams.get('q'))
     update({
       ...queryDefaults,
-      q: searchparams.get('q'),
+      q: currentQuery,
     })
   }, [search])
 
-  const updateSearch = (options: object) => {
-    if (!options.q) throw new Error('updateSearch must be called with a q parameter')
+  const updateSearch = (typesenseQuery: object) => {
+    if (!typesenseQuery.q) throw new Error('updateSearch must be called with a q parameter')
+    update(typesenseQuery)
     navigate(
       {
         pathname: '/search',
         search: createSearchParams({
-          q: options.q,
+          q: typesenseQuery.q,
         }).toString(),
       },
       { replace: true },
