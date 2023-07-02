@@ -109,7 +109,7 @@ function KObjectCard({ title, text, url, type, platform, tags, id }: KObjectProp
   const bg = theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]
   return (
     <Paper bg={bg} p='sm' radius='md' withBorder>
-      <Group position='apart'>
+      <Group position='apart' noWrap align='start'>
         <Title order={5}>
           <Anchor color='inherit' target='_blank' href={url}>
             {title}
