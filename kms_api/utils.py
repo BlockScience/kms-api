@@ -1,4 +1,5 @@
 from url_normalize import url_normalize
+from .term_color import white, green, yellow, red
 from base64 import b64encode
 import re
 import json
@@ -9,18 +10,24 @@ from kms_api import config
 from functools import wraps
 import time
 
+def rate_calltime(t):
+    tformat = f'{round(t, 2)}s'
+    ratings = {
+        t < 0.5: green(tformat),
+        0.5 <= t < 1.5: yellow(tformat),
+        t >= 1.5: red(tformat)
+    }
+    return ratings.get(True, t)
+
 # Decorator to measure execution time of synchronous functions
 def profile(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         start_time = time.perf_counter()
         result = func(*args, **kwargs)
-        elapsed_time = round(time.perf_counter() - start_time, 2)
+        elapsed_time = time.perf_counter() - start_time
         func_name = func.__name__
-
-        print(f"{func_name} - elapsed time: {elapsed_time}")
-
-        # ... print or store elapsed_time and func_name
+        print(f"{white('PROFILE:')}  {func_name}: {rate_calltime(elapsed_time)}")
 
         return result
 
