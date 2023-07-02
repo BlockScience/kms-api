@@ -195,11 +195,13 @@ export default function Search() {
 
   // Handlers
   const handleSearchSubmit = (e: Event) => {
-    e.preventDefault()
-    updateSearch({
-      ...QUERY_DEFAULTS,
-      q: e.target.query.value,
-    })
+    if (e.target instanceof HTMLFormElement) {
+      e.preventDefault()
+      updateSearch({
+        ...QUERY_DEFAULTS,
+        q: e.target.query.value,
+      })
+    } else throw new Error('handleSearchSubmit must be called with an HTMLFormElement')
   }
 
   const handlePaginationChange = (newPage: number): void => {
