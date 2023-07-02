@@ -21,7 +21,7 @@ export default function ObjectRID(props: {
       <Popover.Dropdown p={5} pl={10} m='xs'>
         <Group>
           <Text tt='uppercase' color='dimmed' size='xs' fw={500}>
-            RID: {id}
+            <b>RID (URL):</b> {id}
           </Text>
           <CopyButton value={id} timeout={2000}>
             {({ copied, copy }) => (

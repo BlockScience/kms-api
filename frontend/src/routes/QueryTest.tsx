@@ -8,7 +8,6 @@ import { useApi } from '@/hooks/useApi'
 
 export default function QueryTest() {
   const { result, error, setData, refresh } = useApi('/object/query', {
-    defer: true,
     method: 'POST',
   })
   const [parserResponse, setParserResponse] = useState('Parser response')

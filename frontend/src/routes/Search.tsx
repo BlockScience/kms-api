@@ -3,25 +3,51 @@ import { useApi } from '@/hooks/useApi'
 import { SetTitle } from '@/utils'
 import {
   Anchor,
-  Badge,
   Container,
   Divider,
   Group,
-  MantineTheme,
   Pagination,
   Paper,
-  Popover,
-  SegmentedControl,
-  Space,
   Stack,
   Text,
+  TextInput,
   Title,
-  px,
-  rem,
   useMantineTheme,
 } from '@mantine/core'
-import { IconCheck, IconMinus, IconX } from '@tabler/icons-react'
-import { useSearchParams } from 'react-router-dom'
+import { IconSearch } from '@tabler/icons-react'
+import { useSearchParams, useNavigate, createSearchParams } from 'react-router-dom'
+import { Parser, ProcessNodeDefinitions } from 'html-to-react'
+import { notifications } from '@mantine/notifications'
+import { CardsSkeleton } from '@/components/Skeleton'
+
+// TODO: use this to fix parsing bug thats breaking some search pages
+const textToHtmlRules = [
+  {
+    shouldProcessNode: function (node) {
+      return node.type === 'mark'
+    },
+    processNode: function (node, children) {
+      return node.data.toUpperCase()
+    },
+  },
+  {
+    // Anything else
+    shouldProcessNode: function (node) {
+      return true
+    },
+    processNode: ProcessNodeDefinitions().processDefaultNode,
+  },
+]
+
+const queryDefaults = {
+  query_by: 'tags, title, text',
+  query_by_weights: '3, 2, 1',
+  sort_by: 'rank:desc,_text_match:desc',
+  highlight_fields: 'tags, title, text',
+  highlight_full_fields: 'title, tags',
+  highlight_affix_num_tokens: 20,
+  exclude_fields: 'text',
+}
 
 interface SearchResultProps {
   title: string
@@ -30,241 +56,155 @@ interface SearchResultProps {
   type: string
   platform: string
   tags: string[]
-  theme: MantineTheme
+  id: string
 }
-
-interface FilterProps {
-  label: string
-  data: string[]
-  noFilters?: boolean
-}
-
-function SearchResult(props: SearchResultProps) {
-  const bg =
-    props.theme.colorScheme === 'dark' ? props.theme.colors.dark[6] : props.theme.colors.gray[0]
+function SearchResult({ title, text, url, type, platform, tags, id }: SearchResultProps) {
+  const theme = useMantineTheme()
+  const bg = theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]
   return (
-    <Paper bg={bg} p='sm' radius='md'>
+    <Paper bg={bg} p='sm' radius='md' withBorder>
       <Group position='apart'>
         <Title order={5}>
-          <Anchor color='inherit' target='_blank' href={props.url}>
-            {props.title}
+          <Anchor color='inherit' target='_blank' href={url}>
+            {title}
           </Anchor>
         </Title>
-        <ObjectRID id={props.text} />
+        <ObjectRID id={id} />
       </Group>
       <Text c='dimmed' fz='sm'>
-        {props.type} from {props.platform}
+        {type} from {platform}
       </Text>
-      <Text>{props.text}</Text>
+      <Text>{text}</Text>
     </Paper>
   )
 }
 
-function FilterState() {
-  return (
-    <SegmentedControl
-      size='xs'
-      defaultValue='ignore'
-      transitionDuration={0}
-      data={[
-        {
-          label: <IconCheck size={px('1rem')} />,
-          value: 'include',
-        },
-        { label: <IconMinus size={px('1rem')} />, value: 'ignore' },
-        { label: <IconX size={px('1rem')} />, value: 'exclude' },
-      ]}
-    />
-  )
-}
-
-function FilterDropdown(props: FilterProps) {
-  return (
-    <Popover width={300} position='bottom' withArrow shadow='md' arrowSize={20}>
-      <Popover.Target>
-        <Badge
-          variant={props.noFilters ? 'outline' : 'filled'}
-          component='a'
-          size='sm'
-          radius={5}
-          style={{ cursor: 'pointer' }}
-        >
-          {props.label}
-        </Badge>
-      </Popover.Target>
-      <Popover.Dropdown>
-        <Stack spacing='xs'>
-          <Group>
-            <FilterState />
-            <Text tt='uppercase' size='xs'>
-              all
-            </Text>
-          </Group>
-          <Divider />
-          {props.data.map((s: string) => (
-            <Group key={s}>
-              <FilterState />
-              <Text size='xs' tt='uppercase'>
-                {s}
-              </Text>
-            </Group>
-          ))}
-        </Stack>
-      </Popover.Dropdown>
-    </Popover>
-  )
-}
-
 export default function Search() {
-  const theme = useMantineTheme();
-  const [searchparams] = useSearchParams();
-  const query = searchparams.get('q');
+  const [searchparams] = useSearchParams()
+  const currentQuery = searchparams.get('q')
+  const navigate = useNavigate()
 
-  const { result, error, setData, refresh } = useApi('/object/query', {
-    // defer: true,
+  const { result, error, loading, update } = useApi('/object/query', {
     method: 'POST',
     data: {
-      "q": "kms",
-      "query_by": "tags, title, text",
-      "query_by_weights": "3, 2, 1",
-      "sort_by": "rank:desc,_text_match:desc",
-      "highlight_full_fields": "title, tags",
-      "highlight_affix_num_tokens": 20
-    }
+      ...queryDefaults,
+      q: currentQuery,
+    },
   })
 
-  const searchresults = result && result.hits.map(search => {
-    return (<SearchResult
-      title={search.document.title}
-      url={search.document.url}
-      theme={theme}
-      type='document'
-      platform={search.document.platform}
-      tags={search.document.tags}
-      text={search.highlight.text.snippet}
-    />)
-  });
+  console.log(result)
 
-  console.log(result);
+  const updateSearch = (options: object) => {
+    if (!options.q) throw new Error('updateSearch must be called with a q parameter')
+    update(options)
+    navigate(
+      {
+        pathname: '/search',
+        search: createSearchParams({
+          q: options.q,
+        }).toString(),
+      },
+      { replace: true },
+    )
+  }
 
+  const handleSearchSubmit = (e: SubmitEvent) => {
+    e.preventDefault()
+    updateSearch({
+      ...queryDefaults,
+      q: e.target.query.value,
+    })
+  }
+
+  const mapSearchHits = (hits: object[]): JSX.Element[] => {
+    return hits.map((hit, i) => {
+      const doc = hit.document
+
+      console.log(
+        'parser...',
+        Parser().parseWithInstructions(
+          hit.highlight.text?.snippet || '',
+          () => true,
+          textToHtmlRules,
+        ),
+      )
+
+      return (
+        <SearchResult
+          key={i}
+          id={doc.id}
+          title={doc.title}
+          url={doc.url}
+          type={doc.type}
+          platform={doc.platform}
+          tags={doc.tags}
+          text={Parser().parseWithInstructions(
+            hit.highlight.text?.snippet || '',
+            () => true,
+            textToHtmlRules,
+          )}
+        />
+      )
+    })
+  }
+
+  const formatSearchSummary = (result: object) => {
+    const totalResults = result.found
+    const resultsPerPage = result.request_params.per_page
+    const currentPage = result.page || 1
+
+    // Calculate the range of results being shown
+    let start = Math.max(0, currentPage - 1) * resultsPerPage + 1
+    const end = Math.min(currentPage * resultsPerPage, totalResults)
+    start = Math.min(start, end)
+
+    // Create the string using template literals
+    return `Showing ${start}-${end} of ${totalResults} results`
+  }
+
+  const FormattedResults = () => {
+    if (error) return 'ERROR :('
+    if (loading) return CardsSkeleton([100, 120, 80, 100, 130, 150, 100])
+    console.log('loading', loading)
+
+    if (result) {
+      if (result.hits) {
+        return mapSearchHits(result.hits)
+      } else {
+        return 'no results'
+      }
+    } else
+      notifications.show({
+        title: 'Something went wrong during search',
+        color: 'red',
+        message: 'We did not know this would happen, which is why you\'re seeing this message...',
+      })
+    return
+  }
 
   return (
     <div>
       <SetTitle text='Search' />
       <Stack maw={1000} mx='auto' mt={30}>
-        <Group spacing={rem(5)}>
-          <Text size='xs' fw={700} color='dimmed' tt='uppercase'>
-            Query
-          </Text>
-          <Badge variant='light' color='gray' radius='sm'>
-            {query}
-          </Badge>
-          <Space w='md' />
-          <Text size='xs' fw={700} color='dimmed' tt='uppercase'>
-            Filters
-          </Text>
-          <Badge variant='light' color='gray' radius='sm'>
-            19
-          </Badge>
-        </Group>
-        <Group spacing='xs'>
-          <FilterDropdown
-            label='Tags (5)'
-            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
-          />
-          <FilterDropdown
-            label='Platform (2)'
-            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
-          />
-          <FilterDropdown
-            label='Type (0)'
-            noFilters
-            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
-          />
-          <FilterDropdown
-            label='URL (5)'
-            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
-          />
-          <FilterDropdown
-            label='Rank (2)'
-            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
-          />
-          <FilterDropdown
-            label='Tags (5)'
-            noFilters
-            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
-          />
-          <FilterDropdown
-            label='Platform (2)'
-            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
-          />
-          <FilterDropdown
-            label='Type (0)'
-            noFilters
-            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
-          />
-          <FilterDropdown
-            label='URL (5)'
-            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
-          />
-          <FilterDropdown
-            label='Rank (2)'
-            noFilters
-            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
-          />
-          <FilterDropdown
-            label='Tags (5)'
-            noFilters
-            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
-          />
-          <FilterDropdown
-            label='Platform (2)'
-            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
-          />
-          <FilterDropdown
-            label='Type (0)'
-            noFilters
-            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
-          />
-          <FilterDropdown
-            label='URL (5)'
-            noFilters
-            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
-          />
-          <FilterDropdown
-            label='Rank (2)'
-            noFilters
-            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
-          />
-          <FilterDropdown
-            label='Tags (5)'
-            noFilters
-            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
-          />
-          <FilterDropdown
-            label='Platform (2)'
-            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
-          />
-          <FilterDropdown
-            label='Type (0)'
-            noFilters
-            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
-          />
-          <FilterDropdown
-            label='URL (5)'
-            noFilters
-            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
-          />
-          <FilterDropdown
-            label='Rank (2)'
-            noFilters
-            data={['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']}
-          />
-        </Group>
-        <Divider label={result && `showing ${result.hits.length}/${result.found} results`} labelPosition='center' />
-        {searchresults}
+        <form onSubmit={handleSearchSubmit}>
+          <TextInput name='query' placeholder={currentQuery} icon={<IconSearch />} />
+        </form>
+        <Divider
+          label={loading ? 'Waiting for results' : result && formatSearchSummary(result)}
+          labelPosition='center'
+        />
+        {FormattedResults()}
         <Container>
-          <Pagination total={10} />
+          {result && (
+            <Pagination
+              total={Math.ceil(result.found / result.request_params.per_page)}
+              value={result.page}
+              disabled={loading}
+              onChange={(newPage) => {
+                updateSearch({ ...queryDefaults, q: currentQuery, page: newPage })
+              }}
+            />
+          )}
         </Container>
       </Stack>
     </div>
