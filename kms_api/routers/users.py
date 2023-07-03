@@ -12,6 +12,7 @@ router = APIRouter(
 
 @router.post("/{user_id}")
 def set_user(response: Response, user_id: str, user: dict = Body(...)):
+    '''Takes a user ID and JSON and sets the data for that user'''
     try:
         validate(user, USER_SCHEMA)
     except ValidationError as e:
@@ -24,5 +25,6 @@ def set_user(response: Response, user_id: str, user: dict = Body(...)):
 
 @router.get("/{user_id}")
 def get_user(user_id: str):
+    '''Takes a user ID and returns that user object'''
     user = firestore_db.collection("users").document(user_id).get().to_dict()
     return user

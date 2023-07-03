@@ -15,6 +15,7 @@ router = APIRouter(
 
 @router.post("")
 def create_proposal(response: Response, proposal: dict = Body(...)):
+    '''Takes a proposal JSON and enters in the database. Returns a human readable confirmation'''
     try:
         validate(proposal, PROPOSAL_SCHEMA)
     except ValidationError as e:
@@ -38,6 +39,7 @@ def create_proposal(response: Response, proposal: dict = Body(...)):
 
 @router.get("")
 def get_proposals(status: str = None):
+    '''Returns all proposals or those of a specific status type'''
     if status:
         proposals = firestore_db.collection('proposals').where(u'status', u'==', status).get()
     else:
@@ -46,11 +48,13 @@ def get_proposals(status: str = None):
 
 @router.get("/{proposal_id}")
 def get_proposal(proposal_id: str):
+    '''Takes an ID and returns the corresponding proposal'''
     proposal = firestore_db.collection('proposals').document(proposal_id).get()
     return proposal.to_dict()
 
 @router.post("/{proposal_id}/resolve")
 def resolve_proposal(response: Response, proposal_id: str, resolution: dict = Body(...)):
+    '''Takes a proposal ID and resolution JSON and returns the outcome'''
     try:
         validate(resolution, RESOLUTION_SCHEMA)
     except ValidationError as e:

@@ -12,6 +12,7 @@ router = APIRouter(
 
 @router.post("")
 def submit_feedback(response: Response, feedback: dict = Body(...)):
+    '''Takes a feedback JSON and stores it in the database'''
     try:
         validate(feedback, FEEDBACK_SCHEMA)
     except ValidationError as e:
