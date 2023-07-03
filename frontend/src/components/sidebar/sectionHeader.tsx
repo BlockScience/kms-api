@@ -3,7 +3,6 @@ import {
   ActionIcon,
   useMantineColorScheme,
   Box,
-  rem,
   Text,
   createStyles,
   Center,
@@ -16,6 +15,7 @@ import { NavLink } from 'react-router-dom'
 import LogoLight from '@/assets/images/logoLight'
 import LogoDark from '@/assets/images/logoDark'
 import { NavTooltip } from './Tooltip'
+import { KMS_VERSION } from '@/config'
 
 const useStyles = createStyles((theme) => ({
   logoText: {
@@ -39,7 +39,6 @@ export function Header({ fullwidth, onToggle }: { fullwidth?: boolean; onToggle(
   const { colorScheme, toggleColorScheme } = useMantineColorScheme()
   const { classes } = useStyles()
   const theme = useMantineTheme()
-  const kmsVersion = 1.1
 
   const logoIcon = () => {
     return colorScheme === 'dark' ? <LogoLight /> : <LogoDark />
@@ -79,7 +78,7 @@ export function Header({ fullwidth, onToggle }: { fullwidth?: boolean; onToggle(
               KMS{' '}
               <Center inline>
                 <Text span inherit fz='sm' c='dimmed'>
-                  v{kmsVersion}
+                  {KMS_VERSION}
                 </Text>
               </Center>
             </Text>
