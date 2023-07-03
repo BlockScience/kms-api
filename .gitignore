@@ -2,6 +2,7 @@ __pycache__
 *.pyc
 .env
 api_keys.json
+history.json
 
 # Logs
 logs

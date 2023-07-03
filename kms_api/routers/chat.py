@@ -2,12 +2,14 @@ from fastapi import APIRouter, Depends, Body, Response, status
 from starlette.responses import StreamingResponse
 from kms_api.auth import validate_auth
 from kms_api.schema import CHAT_SCHEMA
+from kms_api.llm.history import histories
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 from kms_api.llm.interaction_handler import conversational
 from queue import Queue, Empty
 from threading import Thread
 import asyncio
+import nanoid
 
 router = APIRouter(
     prefix="/user/{user_id}/chat",
@@ -18,19 +20,23 @@ router = APIRouter(
 @router.post("")
 def create_chat(user_id: str):
     '''Takes a user ID and creates a new chat for that user. Returns the new chat ID'''
-    ...
+    chat_id = nanoid.generate()
+    histories.get(user_id, chat_id)
+    
+    return {'chat_id': chat_id}
 
 
 @router.get("/{chat_id}")
 def get_chat_history(user_id: str, chat_id: str):
     '''Takes a user ID and chat ID and returns the chat history for that chat'''
-    ...
+    chat_history = histories.get(user_id, chat_id)
+    return chat_history
 
 
 @router.get("")
 def get_chats(user_id: str):
     '''Takes a user ID and returns a list of chat IDs for that user'''
-    ...
+    return histories.get_chat_ids(user_id)
 
 
 @router.post("/{chat_id}")
