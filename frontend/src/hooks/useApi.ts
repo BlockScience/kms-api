@@ -6,20 +6,22 @@ import { api, auth0 } from '@/config'
 interface ApiOptions {
   method?: string
   data?: object
+  /** If true, call will happen on first call to update() instead of immediately. */
+  defer?: boolean
 }
 
 // TODO: Add caching to this hook
 /**
  * Securely calls an API endpoint with the given options.
- * @param endpoint the endpoint to call
+ * If the endpoint is null, the call will not be made. This is the same as setting deferred to true.
+ * @param endpoint the endpoint to call.
  * @param options set options like method, body, etc.
- * @param deferred If true, call will happen on first call to update() instead of immediately.
  */
-export function useApi(endpoint: string, options?: ApiOptions, deferred = false) {
+export function useApi(endpoint: string, options?: ApiOptions) {
   const { getAccessTokenSilently } = useAuth0()
 
   const method = options?.method || 'GET'
-  const [_deferred, setDeferred] = useState(deferred)
+  const [_deferred, setDeferred] = useState(options?.defer || false)
   const [_endpoint, setEndpoint] = useState(endpoint)
   const [data, setData] = useState(options?.data || {})
   const [loading, setLoading] = useState(false)
@@ -33,6 +35,7 @@ export function useApi(endpoint: string, options?: ApiOptions, deferred = false)
   }
 
   useEffect(() => {
+    if (_deferred || !endpoint) return
     const getToken = async () => {
       try {
         const accessToken = await getAccessTokenSilently({
@@ -71,7 +74,6 @@ export function useApi(endpoint: string, options?: ApiOptions, deferred = false)
           }
         })
     }
-    if (_deferred === true) return
     setLoading(true)
     getData()
   }, [getAccessTokenSilently, _endpoint, data, _deferred])
