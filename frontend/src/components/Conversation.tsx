@@ -1,38 +1,35 @@
 import {
   Group,
   Paper,
-  useMantineTheme,
   Text,
-  Textarea,
   Avatar,
   Box,
   Divider,
   ScrollArea,
   Center,
+  TextInput,
 } from '@mantine/core'
-import { IconBrain, IconRobot, IconSend } from '@tabler/icons-react'
-import { FunctionComponent, ComponentChildren, cloneElement, VNode, toChildArray } from 'preact'
+import { IconRobot, IconSend } from '@tabler/icons-react'
+import { FunctionComponent, ComponentChildren } from 'preact'
 
 type ChatComponent = FunctionComponent<ChatProps> & {
   Message: MessageComponent
-  Input: InputComponent
 }
 type MessageComponent = FunctionComponent<MessageProps>
-type InputComponent = FunctionComponent
 
 interface ChatProps {
   children: ComponentChildren
-  user: string
   height?: number | string
   maxHeight?: number | string
   startLabel?: string
+  onSubmit?: (message: string) => void
 }
 const Chat: ChatComponent = ({
   children,
-  user,
   startLabel,
   height,
   maxHeight,
+  onSubmit,
 }: ChatProps): JSX.Element => {
   return (
     <div>
@@ -46,9 +43,22 @@ const Chat: ChatComponent = ({
             {startLabel || 'start of conversation'}
           </Text>
         </Center>
-        {toChildArray(children).map((child) => cloneElement(child as VNode<any>, { user: user }))}
+        {children}
       </ScrollArea.Autosize>
-      <Chat.Input />
+
+      <form
+        onSubmit={(event) => {
+          event.preventDefault()
+          onSubmit(event.currentTarget.prompt.value)
+          event.currentTarget.prompt.value = ''
+        }}
+      >
+        <TextInput
+          icon={<IconSend size='1.2rem' />}
+          name='prompt'
+          placeholder='Send a message'
+        ></TextInput>
+      </form>
     </div>
   )
 }
@@ -59,7 +69,6 @@ interface MessageProps {
   user?: string
 }
 const Message: MessageComponent = ({ children, user, isResponse }: MessageProps): JSX.Element => {
-  const dark = useMantineTheme().colorScheme === 'dark'
   return (
     <>
       <Paper m='sm' p='sm'>
@@ -67,7 +76,7 @@ const Message: MessageComponent = ({ children, user, isResponse }: MessageProps)
         <Group position='left' align='start' noWrap>
           <Box size='2rem'>
             {isResponse ? (
-              <IconBrain size='2rem' stroke={1.5} />
+              <IconRobot size='2rem' stroke={1.5} />
             ) : (
               <Avatar size='2rem' radius='xl' color='gray' variant='filled'>
                 {user?.slice(0, 2).toUpperCase()}
@@ -80,24 +89,6 @@ const Message: MessageComponent = ({ children, user, isResponse }: MessageProps)
     </>
   )
 }
-const Input: InputComponent = (): JSX.Element => (
-  <Paper m={0} p={0}>
-    <Group position='left' align='top'>
-      <Textarea
-        w='100%'
-        h='100%'
-        // @ts-ignore
-        placeholder='Send a message'
-        icon={<IconSend size='1.2rem' />}
-        autosize
-        minRows={1}
-        maxRows={4}
-      />
-    </Group>
-  </Paper>
-)
 
 Chat.Message = Message
-Chat.Input = Input
-
 export default Chat

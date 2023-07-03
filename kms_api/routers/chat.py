@@ -11,14 +11,16 @@ import asyncio
 
 router = APIRouter(
     prefix="/user/{user_id}/chat",
-    dependencies=[Depends(validate_auth)]
+    # dependencies=[Depends(validate_auth)]
 )
 
 histories = {}
 
+
 @router.post("")
 def create_chat(user_id: str):
     ...
+
 
 @router.post("/{chat_id}")
 async def get_chat_response(user_id: str, chat_id: str, response: Response, prompt: dict = Body(...)):
@@ -27,7 +29,7 @@ async def get_chat_response(user_id: str, chat_id: str, response: Response, prom
     except ValidationError as e:
         response.status_code = status.HTTP_400_BAD_REQUEST
         return {"message": e.message}
-    
+
     prompt = prompt["prompt"]
 
     q = Queue()
@@ -48,15 +50,17 @@ async def get_chat_response(user_id: str, chat_id: str, response: Response, prom
                 yield next_token
             except Empty:
                 continue
-    
+
     return StreamingResponse(
         content=stream_tokens(q),
         media_type="text/html"
     )
 
+
 @router.get("")
 def get_chats(user_id: str):
     ...
+
 
 @router.get("/{chat_id}")
 def get_chat(user_id: str, chat_id: str):

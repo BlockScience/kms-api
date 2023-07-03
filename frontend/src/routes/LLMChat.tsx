@@ -1,24 +1,37 @@
 import Chat from '@/components/Conversation'
 import { PageTitle } from '@/components/typography/PageTitle'
+import { useApi } from '@/hooks/useApi'
 import { SetTitle } from '@/utils'
-import {
-  Box,
-  Button,
-  Center,
-  Divider,
-  Group,
-  Paper,
-  Select,
-  Stack,
-  Text,
-  TextInput,
-  useMantineTheme,
-} from '@mantine/core'
+import { useAuth0 } from '@auth0/auth0-react'
+import { Box, Button, Group, Select, Stack } from '@mantine/core'
 import { IconPlus } from '@tabler/icons-react'
+import { useEffect, useState } from 'preact/hooks'
 
 export default function LLMChat() {
-  const theme = useMantineTheme()
-  const dark = theme.colorScheme === 'dark'
+  const { user } = useAuth0()
+  const [currentPrompt, setCurrentPrompt] = useState('')
+  const [chatHistory, setChatHistory] = useState<[string, string][]>([])
+  // TODO: Get current chat ID
+  // TODO: Get chat history on first load
+
+  // TODO: handle cases where user is not logged in, or has no email, etc.
+  // ^ Is this a reachable state?
+
+  const { result, update } = useApi(`/user/${user.email}/chat/1`, {
+    method: 'POST',
+  })
+
+  useEffect(() => {
+    if (!result) return
+    setChatHistory([...chatHistory, [currentPrompt, result]])
+    setCurrentPrompt('')
+  }, [result])
+
+  const handleSubmit = (value: string) => {
+    setCurrentPrompt(value)
+    update({ prompt: value })
+  }
+
   return (
     <div>
       <SetTitle text='Chat' />
@@ -36,7 +49,10 @@ export default function LLMChat() {
                 defaultValue='conversational'
               />
               <Select
-                data={[{ value: 'general', label: 'General Embeddings' }]}
+                data={[
+                  { value: 'general', label: 'General Embeddings' },
+                  { value: 'none', label: 'None' },
+                ]}
                 defaultValue='general'
               />
               <Button variant='outline' component='a' leftIcon={<IconPlus />}>
@@ -44,65 +60,16 @@ export default function LLMChat() {
               </Button>
             </Group>
           </Group>
-          <Chat user='orion' height='80vh'>
-            <Chat.Message>Hello there! How are you doing?</Chat.Message>
-            <Chat.Message isResponse>
-              Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci
-              velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam
-              aliquam quaerat voluptatem.
-            </Chat.Message>
-            <Chat.Message>Gimme some lipsum</Chat.Message>
-            <Chat.Message isResponse>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-              laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
-              architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas
-              sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
-              voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit
-              amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut
-              labore et dolore magnam aliquam quaerat voluptatem.
-              <br /> <br /> Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-              accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo
-              inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
-              ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-              consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro
-              quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed
-              quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat
-              voluptatem.
-            </Chat.Message>
-            <Chat.Message>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-              laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
-              architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas
-              sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
-              voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit
-              amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut
-              labore et dolore magnam aliquam quaerat voluptatem.
-              <br /> <br /> Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-              accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo
-              inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
-              ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-              consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro
-              quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed
-              quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat
-              voluptatem.
-            </Chat.Message>
-            <Chat.Message isResponse>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-              laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
-              architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas
-              sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
-              voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit
-              amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut
-              labore et dolore magnam aliquam quaerat voluptatem.
-              <br /> <br /> Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-              accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo
-              inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim
-              ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-              consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro
-              quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed
-              quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat
-              voluptatem.
-            </Chat.Message>
+          <Chat height='80vh' onSubmit={handleSubmit}>
+            {chatHistory.map(([prompt, response], i) => (
+              <>
+                <Chat.Message user='orion' key={i}>
+                  {prompt}
+                </Chat.Message>
+                <Chat.Message isResponse>{response}</Chat.Message>
+              </>
+            ))}
+            {currentPrompt && <Chat.Message user='orion'>{currentPrompt}</Chat.Message>}
           </Chat>
         </Stack>
       </Box>

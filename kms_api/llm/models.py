@@ -1,4 +1,4 @@
-from langchain import chains
+from kms_api.llm.chains.conversational import ConversationChain
 from langchain.chat_models import ChatOpenAI
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.memory import ConversationBufferMemory
@@ -23,5 +23,4 @@ retriever = vectorstore.as_retriever()
 memory = ConversationBufferMemory(memory_key="chat_history", input_key='question', output_key='answer', return_messages=True)
 
 # -------------- CHAINS ---------------
-conversation_chain = chains.ConversationalRetrievalChain.from_llm(
-    llm_chat, retriever=retriever, return_source_documents=True, memory=memory)
+conversation_chain = ConversationChain(llm=llm_chat)

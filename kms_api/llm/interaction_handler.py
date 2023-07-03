@@ -3,11 +3,12 @@ from kms_api.llm.models import conversation_chain
 
 histories = {}
 
+
 class QueueCallback(BaseCallbackHandler):
     def __init__(self, queue):
         super().__init__()
         self.queue = queue
-    
+
     def on_llm_new_token(self, token: str, **kwargs) -> None:
         self.queue.put(token)
 
@@ -22,11 +23,11 @@ async def conversational(prompt: str, user_id: str, chat_id: str, queue):
     print(chat_history)
 
     response = await conversation_chain.acall(
-        {"question": prompt,
-         "chat_history": chat_history},
+        {"input": prompt,
+         "history": chat_history},
         callbacks=[QueueCallback(queue)])
-    
-    answer = response['answer']
+
+    answer = response['response']
     # sources = formatter.sources(query_result['source_documents'])
     # execution_time = formatter.time(time() - start_time)
     # formatted_message = f"{answer}\n\n*Generated for <@{initiated_by}> in {execution_time} from sources {sources}*"
