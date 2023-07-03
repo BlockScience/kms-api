@@ -12,3 +12,4 @@ sqlitedict~=2.1.0
 chromadb~=0.3.26
 tinydb~=4.8.0
 nanoid~=2.0.0
+pre-commit~=3.3.3 
