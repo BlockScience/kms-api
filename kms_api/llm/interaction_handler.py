@@ -1,7 +1,29 @@
 from langchain.callbacks.base import BaseCallbackHandler
 from kms_api.llm.models import conversation_chain
+from pprint import pprint
 
-histories = {}
+
+class ChatHistories:
+    def __init__(self):
+        # TODO: We need to store this outside of memory so we can persist it across API restarts
+        # {user_id: {chat_id: [(prompt, response)]}}
+        self.histories: dict[str, dict[str, list[tuple[str, str]]]] = {}
+
+    def get(self, user_id: str, chat_id: str):
+        if user_id not in self.histories:
+            print(f"No history found for user {user_id}. Creating new user chat dict")
+            self.histories[user_id] = {}
+        if chat_id not in self.histories[user_id]:
+            print(f"No history found for chat {chat_id}. Creating empty history")
+            self.histories[user_id][chat_id] = []
+
+        return self.histories[user_id][chat_id]
+
+    def append(self, user_id: str, chat_id: str, prompt_response_pair: tuple):
+        if user_id not in self.histories:
+            self.histories[user_id] = {}
+
+        self.histories[user_id][chat_id].append(prompt_response_pair)
 
 
 class QueueCallback(BaseCallbackHandler):
@@ -16,11 +38,13 @@ class QueueCallback(BaseCallbackHandler):
         return self.queue.empty()
 
 
-async def conversational(prompt: str, user_id: str, chat_id: str, queue):
-    user_history = histories.setdefault(user_id, {})
-    chat_history = user_history.setdefault(chat_id, [])
+histories = ChatHistories()
 
-    print(chat_history)
+
+async def conversational(prompt: str, user_id: str, chat_id: str, queue):
+    chat_history = histories.get(user_id, chat_id)
+
+    pprint(histories)
 
     response = await conversation_chain.acall(
         {"input": prompt,
@@ -28,9 +52,4 @@ async def conversational(prompt: str, user_id: str, chat_id: str, queue):
         callbacks=[QueueCallback(queue)])
 
     answer = response['response']
-    # sources = formatter.sources(query_result['source_documents'])
-    # execution_time = formatter.time(time() - start_time)
-    # formatted_message = f"{answer}\n\n*Generated for <@{initiated_by}> in {execution_time} from sources {sources}*"
-
-    # Update history
-    chat_history.append((prompt, answer))
+    histories.append(user_id, chat_id, (prompt, answer))

@@ -14,29 +14,42 @@ router = APIRouter(
     # dependencies=[Depends(validate_auth)]
 )
 
-histories = {}
-
 
 @router.post("")
 def create_chat(user_id: str):
+    '''Takes a user ID and creates a new chat for that user. Returns the new chat ID'''
+    ...
+
+
+@router.get("/{chat_id}")
+def get_chat_history(user_id: str, chat_id: str):
+    '''Takes a user ID and chat ID and returns the chat history for that chat'''
+    ...
+
+
+@router.get("")
+def get_chats(user_id: str):
+    '''Takes a user ID and returns a list of chat IDs for that user'''
     ...
 
 
 @router.post("/{chat_id}")
-async def get_chat_response(user_id: str, chat_id: str, response: Response, prompt: dict = Body(...)):
+async def get_chat_response(user_id: str, chat_id: str, response: Response, body: dict = Body(...)):
+    '''Takes a user ID, chat ID, and a request body and returns a response to that prompt'''
+    '''Returns a stream of tokens as they are generated'''
+    '''body must include a "prompt" key with a string value'''
+    '''body may optionally include an "options" key which conforms to the CHAT_OPTIONS_SCHEMA'''
     try:
-        validate(prompt, CHAT_SCHEMA)
+        validate(body, CHAT_SCHEMA)
     except ValidationError as e:
         response.status_code = status.HTTP_400_BAD_REQUEST
         return {"message": e.message}
 
-    prompt = prompt["prompt"]
-
-    q = Queue()
+    queue = Queue()
 
     async def task():
-        await conversational(prompt, user_id, chat_id, q)
-        q.put(False)
+        await conversational(body["prompt"], user_id, chat_id, queue)
+        queue.put(False)
 
     t = Thread(target=asyncio.run, args=(task(),))
     t.start()
@@ -45,23 +58,13 @@ async def get_chat_response(user_id: str, chat_id: str, response: Response, prom
         while True:
             try:
                 next_token = q.get(False, timeout=1)
-                if next_token == False:
+                if next_token is False:
                     break
                 yield next_token
             except Empty:
                 continue
 
     return StreamingResponse(
-        content=stream_tokens(q),
+        content=stream_tokens(queue),
         media_type="text/html"
     )
-
-
-@router.get("")
-def get_chats(user_id: str):
-    ...
-
-
-@router.get("/{chat_id}")
-def get_chat(user_id: str, chat_id: str):
-    ...
