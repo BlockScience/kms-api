@@ -1,36 +1,32 @@
 import { useState, useEffect } from 'preact/hooks'
 import axios from 'axios'
 import { useAuth0 } from '@auth0/auth0-react'
-import { api, auth0 } from '@/config'
+import { api, auth0 } from '@/config/config'
 
 interface ApiOptions {
   method?: string
-  defer?: boolean
   data?: object
 }
 
 // TODO: Add caching to this hook
-
 /**
  * Securely calls an API endpoint with the given options.
  * @param endpoint the endpoint to call
  * @param options set options like method, body, etc.
  */
 export function useApi(endpoint: string, options?: ApiOptions) {
-  const method = options?.method || 'GET'
-
-  const [data, setData] = useState(options?.data || {})
-  const [defer, setDefer] = useState(options?.defer || false)
   const { getAccessTokenSilently } = useAuth0()
-  const [result, setResult] = useState()
-  const [loading, setLoading] = useState(false)
-  const [loaded, setLoaded] = useState(false)
-  const [error, setError] = useState()
-  const [refreshIndex, setRefreshIndex] = useState(0)
 
-  const refresh = () => {
-    setDefer(false)
-    setRefreshIndex(refreshIndex + 1)
+  const method = options?.method || 'GET'
+  const [_endpoint, setEndpoint] = useState(endpoint)
+  const [data, setData] = useState(options?.data || {})
+  const [loading, setLoading] = useState(false)
+  const [result, setResult] = useState(null)
+  const [error, setError] = useState(null)
+
+  const update = (data: object, endpoint: string = _endpoint) => {
+    setData(data)
+    if (endpoint !== _endpoint) setEndpoint(endpoint)
   }
 
   useEffect(() => {
@@ -52,7 +48,7 @@ export function useApi(endpoint: string, options?: ApiOptions) {
       const token = await getToken()
       axios({
         method: method,
-        url: `${api.url}${endpoint}`,
+        url: `${api.url}${_endpoint}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -60,11 +56,8 @@ export function useApi(endpoint: string, options?: ApiOptions) {
         withCredentials: true,
       })
         .then((r) => {
-          if (!cancelled) {
-            setResult(r.data)
-            setLoading(false)
-            setLoaded(true)
-          }
+          setResult(r.data)
+          setLoading(false)
         })
         .catch((error) => {
           setLoading(false)
@@ -75,21 +68,9 @@ export function useApi(endpoint: string, options?: ApiOptions) {
           }
         })
     }
+    setLoading(true)
+    getData()
+  }, [getAccessTokenSilently, _endpoint, data])
 
-    let cancelled = false
-    if (defer) {
-      setResult(null)
-      setLoading(false)
-      setLoaded(false)
-    } else {
-      setLoading(true)
-      getData()
-    }
-    return () => {
-      cancelled = true
-    }
-  }, [getAccessTokenSilently, endpoint, data, refreshIndex])
-
-  // TODO: rename 'refresh' to 'reload' or 'update' or 'call'
-  return { result, loading, loaded, error, refresh, setData }
+  return { result, loading, error, update }
 }

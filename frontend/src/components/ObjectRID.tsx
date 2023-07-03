@@ -7,6 +7,7 @@ export default function ObjectRID(props: {
   charLimit?: number
   popoverPosition?: 'left' | 'right' | 'top' | 'bottom'
 }) {
+  const BADGE_COLOR = 'gray'
   const charLimit = props.charLimit || 7
   const popoverPosition = props.popoverPosition || 'left'
   // Will pull this out once we are using real IDs
@@ -14,14 +15,18 @@ export default function ObjectRID(props: {
   return (
     <Popover position={popoverPosition} withArrow shadow='md' arrowSize={15}>
       <Popover.Target>
-        <Badge style={{ cursor: 'pointer' }} radius='sm'>
+        <Badge
+          color={BADGE_COLOR}
+          style={{ cursor: 'pointer', border: '1px solid rgba(140,140,140,0.2)' }}
+          radius='sm'
+        >
           {id.slice(0, charLimit)}
         </Badge>
       </Popover.Target>
       <Popover.Dropdown p={5} pl={10} m='xs'>
         <Group>
           <Text tt='uppercase' color='dimmed' size='xs' fw={500}>
-            RID: {id}
+            <b>RID (URL):</b> {id}
           </Text>
           <CopyButton value={id} timeout={2000}>
             {({ copied, copy }) => (

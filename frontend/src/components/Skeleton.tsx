@@ -16,3 +16,7 @@ export function Paragraphs(lines: number[]) {
     </Box>
   ))
 }
+
+export function CardsSkeleton(cards: number[]) {
+  return cards.map((height, i) => <Skeleton key={i} height={height} radius='md' />)
+}

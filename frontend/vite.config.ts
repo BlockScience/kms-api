@@ -5,11 +5,7 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
   plugins: [
-    preact({
-      babel: {
-        plugins: ['@babel/plugin-transform-react-jsx-source'],
-      },
-    }),
+    preact(),
     vitePluginFaviconsInject('src/assets/images/logo-light.svg'),
     tsconfigPaths(),
   ],
@@ -17,5 +13,8 @@ export default defineConfig({
   server: {
     port: 3000,
     strictPort: true,
+    hmr: {
+      clientPort: 3000,
+    },
   },
 })

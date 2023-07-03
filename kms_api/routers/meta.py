@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from kms_api.core import firestore_db
 from kms_api.auth import validate_auth
+from kms_api.utils import profile
 
 router = APIRouter(
     prefix="/meta",
@@ -9,8 +10,10 @@ router = APIRouter(
 
 
 @router.get("/schema")
+@profile
 def get_schema():
-    return firestore_db.collection("meta").document("schema").get().get("markdown")
+    schema = firestore_db.collection("meta").document("schema").get().get("markdown")
+    return schema
 
 
 @router.get("/tagsets")

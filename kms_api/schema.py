@@ -85,5 +85,5 @@ QUERY_SCHEMA = {
         "per_page": {"type": "number"},
         "filter_by": {"type": "string"}
     },
-    "required": ["q", "filter_by"]
+    "required": ["q"]
 }
