@@ -13,11 +13,13 @@ interface ApiOptions {
  * Securely calls an API endpoint with the given options.
  * @param endpoint the endpoint to call
  * @param options set options like method, body, etc.
+ * @param deferred If true, call will happen on first call to update() instead of immediately.
  */
-export function useApi(endpoint: string, options?: ApiOptions) {
+export function useApi(endpoint: string, options?: ApiOptions, deferred = false) {
   const { getAccessTokenSilently } = useAuth0()
 
   const method = options?.method || 'GET'
+  const [_deferred, setDeferred] = useState(deferred)
   const [_endpoint, setEndpoint] = useState(endpoint)
   const [data, setData] = useState(options?.data || {})
   const [loading, setLoading] = useState(false)
@@ -26,7 +28,8 @@ export function useApi(endpoint: string, options?: ApiOptions) {
 
   const update = (data: object, endpoint: string = _endpoint) => {
     setData(data)
-    if (endpoint !== _endpoint) setEndpoint(endpoint)
+    if (_endpoint !== endpoint) setEndpoint(endpoint)
+    if (_deferred === true) setDeferred(false)
   }
 
   useEffect(() => {
@@ -68,9 +71,10 @@ export function useApi(endpoint: string, options?: ApiOptions) {
           }
         })
     }
+    if (_deferred === true) return
     setLoading(true)
     getData()
-  }, [getAccessTokenSilently, _endpoint, data])
+  }, [getAccessTokenSilently, _endpoint, data, _deferred])
 
   return { result, loading, error, update }
 }

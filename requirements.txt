@@ -8,4 +8,5 @@ firebase-admin~=6.1.0
 fastapi~=0.97
 PyJWT~=2.7.0
 langchain~=0.0.174
-chromadb
+sqlitedict~=2.1.0
+chromadb~=0.3.26

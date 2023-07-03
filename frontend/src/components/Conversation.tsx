@@ -39,7 +39,7 @@ const Chat: ChatComponent = ({
       // @ts-ignore */}
       <ScrollArea.Autosize mah={maxHeight} h={height}>
         <Center>
-          <Text mt='xl' tt='uppercase' size='sm' color='dimmed'>
+          <Text mt='xl' tt='uppercase' size='xs' color='dimmed'>
             {startLabel || 'start of conversation'}
           </Text>
         </Center>

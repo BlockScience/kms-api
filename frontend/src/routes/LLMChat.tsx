@@ -11,13 +11,14 @@ export default function LLMChat() {
   const { user } = useAuth0()
   const [currentPrompt, setCurrentPrompt] = useState('')
   const [chatHistory, setChatHistory] = useState<[string, string][]>([])
-  // TODO: Get current chat ID
+  const userId = user.email
+  const chatId = 1
   // TODO: Get chat history on first load
 
   // TODO: handle cases where user is not logged in, or has no email, etc.
   // ^ Is this a reachable state?
 
-  const { result, update } = useApi(`/user/${user.email}/chat/1`, {
+  const { result, update } = useApi(`/user/${userId}/chat/${chatId}`, {
     method: 'POST',
   })
 
@@ -54,6 +55,13 @@ export default function LLMChat() {
                   { value: 'none', label: 'None' },
                 ]}
                 defaultValue='general'
+              />
+              <Select
+                data={[
+                  { value: '1', label: 'Chat #1' },
+                  { value: '2', label: 'Chat #2' },
+                ]}
+                defaultValue='1'
               />
               <Button variant='outline' component='a' leftIcon={<IconPlus />}>
                 New
