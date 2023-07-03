@@ -1,5 +1,6 @@
 from fastapi import FastAPI
-from kms_api.routers import knowledge, proposals, users, feedback, meta, test, chat
+
+from kms_api.routers import chat, feedback, knowledge, meta, proposals, test, users
 
 app = FastAPI()
 app.include_router(knowledge.router)

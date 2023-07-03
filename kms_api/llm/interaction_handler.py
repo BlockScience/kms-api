@@ -1,7 +1,9 @@
-from langchain.callbacks.base import BaseCallbackHandler
-from kms_api.llm.models import conversation_chain
-from kms_api.llm.history import histories
 from pprint import pprint
+
+from langchain.callbacks.base import BaseCallbackHandler
+
+from kms_api.llm.history import histories
+from kms_api.llm.models import conversation_chain
 
 
 class QueueCallback(BaseCallbackHandler):
@@ -20,9 +22,8 @@ async def conversational(prompt: str, user_id: str, chat_id: str, queue):
     chat_history = histories.get(user_id, chat_id)
 
     response = await conversation_chain.acall(
-        {"input": prompt,
-         "history": chat_history},
-        callbacks=[QueueCallback(queue)])
+        {"input": prompt, "history": chat_history}, callbacks=[QueueCallback(queue)]
+    )
 
-    answer = response['response']
+    answer = response["response"]
     histories.append(user_id, chat_id, (prompt, answer))

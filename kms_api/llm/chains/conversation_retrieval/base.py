@@ -6,8 +6,6 @@ from abc import abstractmethod
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
-from pydantic import Extra, Field, root_validator
-
 from langchain.base_language import BaseLanguageModel
 from langchain.callbacks.manager import (
     AsyncCallbackManagerForChainRun,
@@ -23,6 +21,7 @@ from langchain.chains.question_answering import load_qa_chain
 from langchain.prompts.base import BasePromptTemplate
 from langchain.schema import BaseMessage, BaseRetriever, Document
 from langchain.vectorstores.base import VectorStore
+from pydantic import Extra, Field, root_validator
 
 # Depending on the memory type and configuration, the chat history format may differ.
 # This needs to be consolidated.

@@ -1,14 +1,8 @@
 """Chain that carries on a conversation and calls an LLM."""
 from typing import Dict, List
 
-from pydantic import Extra, Field, root_validator
-
-
 from langchain.chains.llm import LLMChain
 from langchain.memory.buffer import ConversationBufferMemory
-from langchain.prompts.base import BasePromptTemplate
-from langchain.schema import BaseMemory
-from langchain.prompts.prompt import PromptTemplate
 from langchain.memory.prompt import (
     ENTITY_EXTRACTION_PROMPT,
     ENTITY_MEMORY_CONVERSATION_TEMPLATE,
@@ -16,6 +10,10 @@ from langchain.memory.prompt import (
     KNOWLEDGE_TRIPLE_EXTRACTION_PROMPT,
     SUMMARY_PROMPT,
 )
+from langchain.prompts.base import BasePromptTemplate
+from langchain.prompts.prompt import PromptTemplate
+from langchain.schema import BaseMemory
+from pydantic import Extra, Field, root_validator
 
 DEFAULT_TEMPLATE = """The following is a friendly conversation between a human and an AI. The AI is talkative and provides lots of specific details from its context. If the AI does not know the answer to a question, it truthfully says it does not know.
 
