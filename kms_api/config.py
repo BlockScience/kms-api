@@ -25,3 +25,4 @@ AUTH0_ALGORITHMS = 'RS256'
 # LLMs
 LLM_EMBEDDINGS = './embeddings'
 LLM_DATASET = './data.json'
+LLM_CHAT_HISTORY_DB = 'history.json'
