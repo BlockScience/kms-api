@@ -15,7 +15,7 @@ export default function Schema() {
   return (
     <div>
       <SetTitle text='Schema' />
-      <Box maw={1000} mx='auto'>
+      <Box maw={1200} mx='auto'>
         <Group position='apart'>
           <PageTitle>Schema</PageTitle>
           <Button

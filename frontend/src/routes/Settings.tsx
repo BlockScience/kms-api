@@ -21,7 +21,7 @@ export default function Settings() {
   return (
     <div>
       <SetTitle text='Settings' />
-      <Box maw={1000} mx='auto'>
+      <Box maw={1200} mx='auto'>
         <PageTitle>Settings</PageTitle>
         <Divider label={user ? `Signed in as ${user.name}` : null} labelPosition='center' />
         <form onSubmit={settings.onSubmit((values) => console.log(values))}>

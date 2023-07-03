@@ -11,7 +11,7 @@ export default function Dashboard() {
   return (
     <div>
       <SetTitle text='Dashboard' />
-      <Box maw={1000} mx='auto'>
+      <Box maw={1200} mx='auto'>
         <PageTitle>Dashboard</PageTitle>
         <Stack>
           <StatsGrid

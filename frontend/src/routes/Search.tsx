@@ -2,10 +2,8 @@ import { useEffect } from 'preact/hooks'
 import { useApi } from '@/hooks/useApi'
 import { useSearchParams, useNavigate, createSearchParams, useLocation } from 'react-router-dom'
 import { SetTitle } from '@/utils'
-import { notifications } from '@mantine/notifications'
 import parseHtml from '@/utils/htmlParser'
 
-// Import Components
 import { IconSearch } from '@tabler/icons-react'
 import { CardsSkeleton } from '@/components/Skeleton'
 import ObjectRID from '@/components/ObjectRID'
@@ -24,7 +22,7 @@ import {
   useMantineTheme,
 } from '@mantine/core'
 
-// Define constants
+// -------- CONSTANTS -------- //
 const QUERY_DEFAULTS = {
   query_by: 'tags, title, text',
   query_by_weights: '3, 2, 1',
@@ -50,7 +48,7 @@ const RESULT_NONE = (
   </Center>
 )
 
-// Define interfaces
+// -------- INTERFACES -------- //
 interface TypesenseQuery {
   q: string
   [key: string]: any
@@ -93,7 +91,7 @@ interface KObjectProps {
   text: string | JSX.Element
 }
 
-// Define helpers
+// ----------- HELPERS ----------- //
 const searchSummaryString = (response: TypesenseResponse) => {
   const totalResults = response.found
   const resultsPerPage = response.request_params.per_page
@@ -103,7 +101,7 @@ const searchSummaryString = (response: TypesenseResponse) => {
   return `showing ${start}-${end} of ${totalResults} results`
 }
 
-// Define subcomponents
+// -------- SUBCOMPONENTS -------- //
 function KObjectCard({ title, text, url, type, platform, tags, id }: KObjectProps) {
   const theme = useMantineTheme()
   const bg = theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]

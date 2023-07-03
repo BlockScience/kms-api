@@ -8,7 +8,7 @@ export default function Governance() {
   return (
     <div>
       <SetTitle text='Governance' />
-      <Box maw={1000} mx='auto'>
+      <Box maw={1200} mx='auto'>
         <Group position='apart'>
           <PageTitle>Curation Proposals</PageTitle>
           <Button

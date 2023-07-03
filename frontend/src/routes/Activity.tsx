@@ -9,7 +9,7 @@ export default function Activity() {
   return (
     <div>
       <SetTitle text='Activity' />
-      <Box maw={1000} mx='auto'>
+      <Box maw={1200} mx='auto'>
         <Group position='apart'>
           <PageTitle>Activity</PageTitle>
           <Button
