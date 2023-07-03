@@ -1,37 +1,34 @@
 import Chat from '@/components/Conversation'
+import { SplitButton } from '@/components/SplitButton'
 import { PageTitle } from '@/components/typography/PageTitle'
 import { useApi } from '@/hooks/useApi'
 import { SetTitle } from '@/utils'
 import { useAuth0 } from '@auth0/auth0-react'
-import { Box, Button, Group, Select, Stack } from '@mantine/core'
-import { IconPlus } from '@tabler/icons-react'
+import { Box, Group, Select, Stack } from '@mantine/core'
 import { useEffect, useState } from 'preact/hooks'
 
 export default function LLMChat() {
-  const { user } = useAuth0()
+  const userId = useAuth0().user.email
   const [currentPrompt, setCurrentPrompt] = useState('')
-  const [chatHistory, setChatHistory] = useState<[string, string][]>([])
-  const userId = user.email
-  const chatId = 1
-  // TODO: Get chat history on first load
+  const [localChatHistory, setLocalChatHistory] = useState<[string, string][]>([])
+  const [currentChatId, setCurrentChatId] = useState(null)
 
-  // TODO: handle cases where user is not logged in, or has no email, etc.
-  // ^ Is this a reachable state?
-
-  const { result, update } = useApi(`/user/${userId}/chat/${chatId}`, {
+  const { result, update } = useApi(null, {
     method: 'POST',
+    defer: true,
   })
 
   useEffect(() => {
     if (!result) return
-    setChatHistory([...chatHistory, [currentPrompt, result]])
+    setLocalChatHistory([...localChatHistory, [currentPrompt, result]])
     setCurrentPrompt('')
   }, [result])
 
-  const handleSubmit = (value: string) => {
+  const handlePromptSubmit = (value: string) => {
     setCurrentPrompt(value)
     update({ prompt: value })
   }
+  const hanndleChatSelect = (value: string) => {}
 
   return (
     <div>
@@ -39,7 +36,7 @@ export default function LLMChat() {
       <Box maw={1200} mx='auto'>
         <Stack spacing='xs'>
           <Group position='apart'>
-            <PageTitle>LLM Chat</PageTitle>
+            <PageTitle>Chat</PageTitle>
             <Group>
               <Select
                 placeholder='Mode'
@@ -56,20 +53,19 @@ export default function LLMChat() {
                 ]}
                 defaultValue='general'
               />
-              <Select
-                data={[
-                  { value: '1', label: 'Chat #1' },
-                  { value: '2', label: 'Chat #2' },
+              <SplitButton
+                label='Previous Chats'
+                onSubmit={hanndleChatSelect}
+                items={[
+                  ['1', 'Chat #1'],
+                  ['2', 'Chat #2'],
+                  ['3', 'Chat #3'],
                 ]}
-                defaultValue='1'
               />
-              <Button variant='outline' component='a' leftIcon={<IconPlus />}>
-                New
-              </Button>
             </Group>
           </Group>
-          <Chat height='80vh' onSubmit={handleSubmit}>
-            {chatHistory.map(([prompt, response], i) => (
+          <Chat height='80vh' onSubmit={handlePromptSubmit}>
+            {localChatHistory.map(([prompt, response], i) => (
               <>
                 <Chat.Message user='orion' key={i}>
                   {prompt}
