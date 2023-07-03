@@ -32,3 +32,4 @@ dist-ssr
 .vite/
 .certs/
 embeddings
+.python-version
