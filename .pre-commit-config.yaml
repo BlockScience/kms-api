@@ -1,30 +1,35 @@
-default_language_version: 
+default_language_version:
   python: python3.11.4
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.2.0
     hooks:
-    -   id: check-byte-order-marker
-    -   id: check-case-conflict
-    -   id: check-json
-    -   id: check-yaml
-    -   id: end-of-file-fixer
-    -   id: mixed-line-ending
-    -   id: check-ast
-    -   id: debug-statements
-    -   id: detect-private-key
-    -   id: check-added-large-files
+      - id: check-byte-order-marker
+      - id: check-case-conflict
+      - id: check-json
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+      - id: check-ast
+      - id: debug-statements
+      - id: detect-private-key
+      - id: check-added-large-files
+      - id: requirements-txt-fixer
+      - id: sort-simple-yaml
+
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.4.1
     hooks:
-    -   id: mypy
+      - id: mypy
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.0.276
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+
+  # Run black last to normalise python formatting
   - repo: https://github.com/psf/black
     rev: 23.3.0
     hooks:
       - id: black
-  - repo: https://github.com/pycqa/isort
-    rev: 5.12.0
-    hooks:
-      - id: isort
-        name: isort (python)
-        args: ["--profile", "black", "--filter-files"]
