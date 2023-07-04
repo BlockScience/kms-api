@@ -20,7 +20,7 @@ llm_chat = ChatOpenAI(
 
 # ----------- VECTORSTORE -------------
 vectorstore = Chroma(
-    embedding_function=OpenAIEmbeddings(), persist_directory=LLM_EMBEDDINGS
+    embedding_function=OpenAIEmbeddings(), persist_directory=str(LLM_EMBEDDINGS)
 )
 retriever = vectorstore.as_retriever()
 

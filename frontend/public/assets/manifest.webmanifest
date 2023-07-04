@@ -1,1 +1,5 @@
-{}
+{
+  "name": "BlockScience KMS",
+  "short_name": "KMS",
+  "description": "A knowledge management system for BlockScience"
+}

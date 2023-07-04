@@ -1,6 +1,6 @@
 # KMS API
 
-This is the repository for the Knowledge Management System API. It is currently in the process of being refactored from the old pipeline and contains endpoint for creating, reading, updating, deleting, and querying knowledge objects from the FireStore database.
+This is the repository for the Knowledge Management System API. It is currently in the process of being refactored from the old pipeline and contains endpoint for creating, reading, updating, deleting, and querying knowledge objects from the FireStore database.  
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 # Setup
@@ -91,3 +91,7 @@ You can also run it manually with
 ```bash
 pre-commit run --all-files
 ```
+### Used Ports
+- 8000: API Backend
+- 3000: Frontend Dev Server
+- 7000: Chroma Embeddings Server

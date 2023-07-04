@@ -1,10 +1,6 @@
-__pycache__
 *.pyc
 .env
-api_keys.json
-history.json
 
-# Logs
 logs
 *.log
 npm-debug.log*
@@ -17,10 +13,13 @@ node_modules
 dist
 dist-ssr
 *.local
+__pycache__
 .pytest_cache
+.mypy_cache
+.ruff_cache
+
 # Editor directories and files
-.vscode/*
-!.vscode/extensions.json
+.vscode/
 .idea
 .DS_Store
 *.suo
@@ -29,7 +28,9 @@ dist-ssr
 *.sln
 *.sw?
 
+# Our stuff
 .vite/
 .certs/
-embeddings
+local/*
 .python-version
+api_keys.json

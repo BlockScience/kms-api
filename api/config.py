@@ -1,3 +1,8 @@
+from pathlib import Path
+
+
+LOCAL_STORAGE_DIR = Path("./local/")
+
 # firebase
 FIREBASE_SERVICE_ACCOUNT_ID = (
     "firebase-adminsdk-mzr6v@knowledge-management-333914.iam.gserviceaccount.com"
@@ -22,7 +27,8 @@ AUTH0_ISSUER = "https://auth.kms-beta.block.science/"
 AUTH0_CLIENT = "dev-67fgpygy2qoenl7r"
 AUTH0_ALGORITHMS = "RS256"
 
+
 # LLMs
-LLM_EMBEDDINGS = "./embeddings"
-LLM_DATASET = "./data.json"
-LLM_CHAT_HISTORY_DB = "history.json"
+LLM_EMBEDDINGS = LOCAL_STORAGE_DIR / "embeddings"
+LLM_DATASET = LOCAL_STORAGE_DIR / "data.json"
+LLM_CHAT_HISTORY_DB = LOCAL_STORAGE_DIR / "history.json"

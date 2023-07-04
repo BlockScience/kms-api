@@ -27,6 +27,7 @@
     "mantine-datatable": "^2.7.0",
     "markdown-to-jsx": "^7.2.1",
     "preact": "^10.15.1",
+    "preact-lazy": "^0.0.3",
     "react-cytoscapejs": "^2.0.0",
     "react-helmet": "^6.1.0",
     "react-joyride": "^2.5.4",
@@ -53,6 +54,7 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "^2.8.8",
+    "rollup-plugin-visualizer": "^5.9.2",
     "ts-prune": "^0.10.3",
     "typescript": "^5.1.5",
     "vite": "^4.3.9"
