@@ -6,10 +6,10 @@ google-crc32c~=1.0
 jsonschema~=4.17
 langchain~=0.0.174
 nanoid~=2.0.0
+openai
 pre-commit~=3.3.3 
 PyJWT~=2.7.0
 tinydb~=4.8.0
 typesense~=0.15.0
 url-normalize~=1.4.3
 uvicorn~=0.22.0
-openai
