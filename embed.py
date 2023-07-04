@@ -51,8 +51,8 @@ class Embedder:
         text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=chunk_size, chunk_overlap=chunk_overlap, length_function=len
         )
-        self.split_docs = [doc.page_content for doc in text_splitter.split_documents(self.cleaned_docs)]
-        total = sum([len(doc) for doc in self.split_docs]) 
+        self.split_docs = text_splitter.split_documents(self.cleaned_docs)
+        total = sum([len(doc) for doc in self.split_docs])
         print(f"* Total length of all documents is {total} characters")
         print(
             f"* Split {len(self.cleaned_docs)} documents into {len(self.split_docs)} chunks"
@@ -70,7 +70,13 @@ class Embedder:
         collection = client.create_collection(
             "general", embedding_function=embedding_function
         )
-        collection.add(documents=self.split_docs, ids=[str(x) for x in range(len(self.split_docs))])
+
+        ids = [str(x) for x in range(len(self.split_docs))]
+        documents = [doc.page_content for doc in self.split_docs]
+        metadatas = [
+            {"id": doc["id"], "title": doc["title"]} for doc in self.split_docs
+        ]
+        collection.add(ids=ids, documents=documents, metadatas=metadatas)
         print("* Finished embedding documents")
 
 
