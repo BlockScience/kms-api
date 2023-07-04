@@ -1,6 +1,10 @@
-from fastapi import FastAPI
+from dotenv import load_dotenv
 
+load_dotenv(verbose=True)
+
+from fastapi import FastAPI
 from kms_api.routers import chat, feedback, knowledge, meta, proposals, test, users
+
 
 app = FastAPI()
 app.include_router(knowledge.router)
