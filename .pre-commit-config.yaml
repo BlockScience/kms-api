@@ -1,6 +1,25 @@
 default_language_version:
   python: python3.11.4
 repos:
+  # TYPESCRIPT
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: "v8.44.0"
+    hooks:
+      - id: eslint
+        files: \.[t]sx?$ # *.ts and *.tsx
+        types: [file]
+        args: [--quiet]
+
+  - repo: local
+    hooks:
+      - id: typescript-typecheck
+        name: TypeScript Typecheck
+        language: system
+        entry: npm --prefix frontend run typecheck
+        files: \.[t]sx?$
+        pass_filenames: false
+
+  # PYTHON
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.2.0
     hooks:
@@ -28,7 +47,6 @@ repos:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
 
-  # Run black last to normalise python formatting
   - repo: https://github.com/psf/black
     rev: 23.3.0
     hooks:
