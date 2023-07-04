@@ -4,8 +4,7 @@ import jwt
 from fastapi import Security, HTTPException, Depends
 from fastapi.security.api_key import APIKeyHeader
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from kms_api.config import API_KEYS_FILENAME, API_KEY_LENGTH, API_KEY_HEADER_NAME
-from kms_api.config import AUTH0_ALGORITHMS, AUTH0_AUDIENCE, AUTH0_ISSUER, AUTH0_DOMAIN
+from config import *
 
 def create_keys(n=1):
     new_keys = [secrets.token_urlsafe(API_KEY_LENGTH) for i in range(n)]

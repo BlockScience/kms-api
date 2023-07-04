@@ -5,7 +5,7 @@ import json
 from hashlib import md5
 from typing import Dict, Any
 from kms_api.core import typesense_db, firestore_db
-from kms_api import config
+from config import *
 
 def encode_url(string):
     return b64encode(string.encode('ascii')).decode('ascii')
@@ -26,7 +26,7 @@ def query(query: str, page: int, per_page: int) -> dict:
         'query_by_weights': '3, 2, 1',
         'sort_by': 'rank:desc,_text_match:desc',
         'highlight_full_fields': 'title,tags',
-        'highlight_affix_num_tokens': config.HIGHLIGHT_AFFIX_NUM_TOKENS,
+        'highlight_affix_num_tokens': HIGHLIGHT_AFFIX_NUM_TOKENS,
         'per_page': per_page,
         'page': page
     }
