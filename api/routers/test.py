@@ -3,7 +3,7 @@ from pprint import pprint
 from fastapi import APIRouter, Body, Depends, Response
 from starlette.responses import StreamingResponse
 
-from kms_api.auth import validate_auth
+from api.auth import validate_auth
 
 router = APIRouter(prefix="/test", dependencies=[Depends(validate_auth)])
 

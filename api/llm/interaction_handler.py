@@ -1,7 +1,7 @@
 from langchain.callbacks.base import BaseCallbackHandler
 
-from kms_api.llm.history import histories
-from kms_api.llm.models import conversation_chain
+from api.llm.history import histories
+from api.llm.models import conversation_chain
 
 
 class QueueCallback(BaseCallbackHandler):

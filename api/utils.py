@@ -7,8 +7,8 @@ from hashlib import md5
 from typing import Any
 
 
-from kms_api import config
-from kms_api.core import firestore_db, typesense_db
+from api import config
+from api.core import firestore_db, typesense_db
 
 from .term_color import green, red, white, yellow
 

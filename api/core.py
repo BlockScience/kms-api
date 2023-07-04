@@ -1,8 +1,8 @@
 import typesense
 from firebase_admin import firestore, initialize_app
 
-from kms_api import config
-from kms_api.secret_manager import access_secret_version
+from api import config
+from api.secret_manager import access_secret_version
 
 TYPESENSE_API_KEY = access_secret_version(
     "knowledge-management-333914", "TYPESENSE_ADMIN_API_KEY"

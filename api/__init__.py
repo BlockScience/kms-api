@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 load_dotenv(verbose=True)
 
 from fastapi import FastAPI
-from kms_api.routers import chat, feedback, knowledge, meta, proposals, test, users
+from api.routers import chat, feedback, knowledge, meta, proposals, test, users
 
 
 app = FastAPI()

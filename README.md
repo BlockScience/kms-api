@@ -35,7 +35,7 @@ python -m pip install -r requirements.txt
 ```
 
 ### For Development
-For local testing, you can execute `python -m kms_api` to run a server on `localhost:8000`. You can also run `python -m generate_key` to create an API key for testing.
+For local testing, you can execute `python -m api` to run a server on `localhost:8000`. You can also run `python -m generate_key` to create an API key for testing.
 
 ### For Production
 For production deployment, systemd is configured to run the API as a systemd service via Uvicorn also locally hosted at `localhost:8000`. Nginx is used as a reverse proxy to forward requests to the Uvicorn server.

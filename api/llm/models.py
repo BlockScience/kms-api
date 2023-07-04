@@ -3,8 +3,8 @@ from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.memory import ConversationBufferMemory
 from langchain.vectorstores import Chroma
 
-from kms_api.config import LLM_EMBEDDINGS
-from kms_api.llm.chains.conversational import ConversationChain
+from api.config import LLM_EMBEDDINGS
+from api.llm.chains.conversational import ConversationChain
 
 CHAT_MODEL = "gpt-4"
 BASE_MODEL = "gpt-3.5-turbo"

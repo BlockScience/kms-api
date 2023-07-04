@@ -3,10 +3,10 @@ from firebase_admin import firestore
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 
-from kms_api.auth import validate_auth
-from kms_api.core import firestore_db
-from kms_api.schema import PROPOSAL_SCHEMA, RESOLUTION_SCHEMA
-from kms_api.utils import check_for_missing_ids, md5_dict, simplify_ops
+from api.auth import validate_auth
+from api.core import firestore_db
+from api.schema import PROPOSAL_SCHEMA, RESOLUTION_SCHEMA
+from api.utils import check_for_missing_ids, md5_dict, simplify_ops
 
 router = APIRouter(prefix="/proposal", dependencies=[Depends(validate_auth)])
 

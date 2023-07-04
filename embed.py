@@ -7,7 +7,7 @@ from langchain.schema import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import Chroma
 
-from kms_api.config import LLM_DATASET, LLM_EMBEDDINGS
+from api.config import LLM_DATASET, LLM_EMBEDDINGS
 
 
 class Embedder:

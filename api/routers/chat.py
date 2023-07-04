@@ -8,9 +8,9 @@ from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 from starlette.responses import StreamingResponse
 
-from kms_api.llm.history import histories
-from kms_api.llm.interaction_handler import conversational
-from kms_api.schema import CHAT_SCHEMA
+from api.llm.history import histories
+from api.llm.interaction_handler import conversational
+from api.schema import CHAT_SCHEMA
 
 router = APIRouter(
     prefix="/user/{user_id}/chat",
