@@ -1,26 +1,29 @@
 import json
-from os import environ
 from pathlib import Path
 
-from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.schema import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import Chroma
+from chromadb.utils import embedding_functions
 
 from api.config import LLM_DATASET, LLM_EMBEDDINGS
 
 
 class Embedder:
-    def __init__(self):
+    def __init__(self, dataset, dest_dir):
         self.docs = []
+        self.dataset = dataset
+        self.dest_dir = dest_dir
 
-    def clean(self, path):
-        with open(path) as r:
+    def clean(self):
+        with open(self.dataset) as r:
             docs_raw = list(json.loads(r.read()))
 
             docs_clean = []
             for e in docs_raw:
                 if "text" not in e:
+                    continue
+                if not e["text"]:
                     continue
                 if e["text"] == "":
                     continue
@@ -45,14 +48,20 @@ class Embedder:
         )
         return self
 
-    def embed(self, path) -> Chroma:
-        embeddings = OpenAIEmbeddings(openai_api_key=environ["OPENAI_API_KEY"])
-        Path(path).mkdir(parents=True, exist_ok=True)
+    def embed(self, embedding_function) -> Chroma:
+        Path(self.dest_dir).mkdir(parents=True, exist_ok=True)
         print("* Embedding documents (this may take a while)")
         Chroma.from_documents(
-            self.split_docs, embeddings, persist_directory=path
+            self.split_docs, embedding_function, persist_directory=str(self.dest_dir)
         ).persist()
         print("* Finished embedding documents")
 
 
-Embedder().clean(LLM_DATASET).split(1000, 100).embed(LLM_EMBEDDINGS)
+embed_func = embedding_functions.InstructorEmbeddingFunction(
+    model_name="hkunlp/instructor-large", device="gpu"
+)
+
+
+embedder = Embedder(LLM_DATASET, LLM_EMBEDDINGS)
+embedder.clean().split(1000, 100)
+embedder.embed(embed_func)
