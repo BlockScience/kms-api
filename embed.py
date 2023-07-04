@@ -52,7 +52,7 @@ class Embedder:
             chunk_size=chunk_size, chunk_overlap=chunk_overlap, length_function=len
         )
         self.split_docs = text_splitter.split_documents(self.cleaned_docs)
-        total = sum([len(doc) for doc in self.split_docs])
+        total = sum([len(doc.page_content) for doc in self.split_docs])
         print(f"* Total length of all documents is {total} characters")
         print(
             f"* Split {len(self.cleaned_docs)} documents into {len(self.split_docs)} chunks"
@@ -74,7 +74,8 @@ class Embedder:
         ids = [str(x) for x in range(len(self.split_docs))]
         documents = [doc.page_content for doc in self.split_docs]
         metadatas = [
-            {"id": doc["id"], "title": doc["title"]} for doc in self.split_docs
+            {"id": doc.metadata["id"], "title": doc.metadata["title"]}
+            for doc in self.split_docs
         ]
         collection.add(ids=ids, documents=documents, metadatas=metadatas)
         print("* Finished embedding documents")
