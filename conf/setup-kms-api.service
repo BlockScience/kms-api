@@ -1,0 +1,11 @@
+[Unit]
+Description=KMS API Service
+After=network.target
+
+[Service]
+WorkingDirectory={0}
+ExecStart={0}/.venv/bin/uvicorn kms_api:app --host 127.0.0.1 --port 8000
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

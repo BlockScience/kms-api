@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 WorkingDirectory=/home/admin/kms-api
-ExecStart=/home/admin/kms-api/.env/bin/uvicorn kms_api:app --host 127.0.0.1 --port 8000
+ExecStart=/home/admin/kms-api/.venv/bin/uvicorn kms_api:app --host 127.0.0.1 --port 8000
 Restart=always
 
 [Install]
