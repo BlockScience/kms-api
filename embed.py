@@ -30,12 +30,18 @@ class Embedder:
                     continue
                 if e["text"] == "":
                     continue
-                if len(e["text"]) < 50:
+                if len(e["text"]) < 100:
                     continue
                 docs_clean.append(e)
             print(f"\n* Filtered {len(docs_raw)} sources down to {len(docs_clean)}")
             self.cleaned_docs = [
-                Document(page_content=doc["text"], metadata={"id": doc["id"]})
+                Document(
+                    page_content=doc["text"],
+                    metadata={
+                        "id": doc["id"],
+                        "title": doc.get("title", ""),
+                    },
+                )
                 for doc in docs_clean
             ]
             print("* Cleaned documents")
@@ -72,5 +78,5 @@ embed_func = embedding_functions.InstructorEmbeddingFunction(
 
 
 embedder = Embedder(LLM_DATASET, LLM_EMBEDDINGS)
-embedder.clean().split(1000, 100)
+embedder.clean().split(1024, 128)
 embedder.embed(embed_func)
