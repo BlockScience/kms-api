@@ -6,7 +6,7 @@ from api.auth import validate_auth
 from api.core import firestore_db
 from api.schema import FEEDBACK_SCHEMA
 
-router = APIRouter(prefix="/feedback", dependencies=[Depends(validate_auth)])
+router: APIRouter = APIRouter(prefix="/feedback", dependencies=[Depends(validate_auth)])
 
 
 @router.post("")

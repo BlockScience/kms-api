@@ -5,7 +5,7 @@ from starlette.responses import StreamingResponse
 
 from api.auth import validate_auth
 
-router = APIRouter(prefix="/test", dependencies=[Depends(validate_auth)])
+router: APIRouter = APIRouter(prefix="/test", dependencies=[Depends(validate_auth)])
 
 # token_auth_scheme = HTTPBearer()
 

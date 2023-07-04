@@ -12,7 +12,7 @@ from api.llm.history import histories
 from api.llm.interaction_handler import conversational
 from api.schema import CHAT_SCHEMA
 
-router = APIRouter(
+router: APIRouter = APIRouter(
     prefix="/user/{user_id}/chat",
     # dependencies=[Depends(validate_auth)]
 )

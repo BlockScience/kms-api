@@ -6,7 +6,7 @@ from api.auth import validate_auth
 from api.core import firestore_db
 from api.schema import USER_SCHEMA
 
-router = APIRouter(prefix="/user", dependencies=[Depends(validate_auth)])
+router: APIRouter = APIRouter(prefix="/user", dependencies=[Depends(validate_auth)])
 
 
 @router.post("/{user_id}")

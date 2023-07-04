@@ -9,7 +9,7 @@ from api.schema import KNOWLEDGE_SCHEMA, QUERY_SCHEMA
 from api.utils import encode_url, profile, query, search_typesense
 from url_normalize import url_normalize
 
-router = APIRouter(prefix="/object", dependencies=[Depends(validate_auth)])
+router: APIRouter = APIRouter(prefix="/object", dependencies=[Depends(validate_auth)])
 
 
 @router.post("")

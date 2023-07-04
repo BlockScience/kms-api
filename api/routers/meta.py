@@ -4,7 +4,7 @@ from api.auth import validate_auth
 from api.core import firestore_db
 from api.utils import profile
 
-router = APIRouter(prefix="/meta", dependencies=[Depends(validate_auth)])
+router: APIRouter = APIRouter(prefix="/meta", dependencies=[Depends(validate_auth)])
 
 
 @router.get("/schema")
