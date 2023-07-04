@@ -12,3 +12,4 @@ tinydb~=4.8.0
 typesense~=0.15.0
 url-normalize~=1.4.3
 uvicorn~=0.22.0
+openai
