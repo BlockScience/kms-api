@@ -3,8 +3,11 @@ from pathlib import Path
 
 from langchain.schema import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.vectorstores import Chroma
+
 from chromadb.utils import embedding_functions
+
+import chromadb
+from chromadb.config import Settings
 
 from api.config import LLM_DATASET, LLM_EMBEDDINGS
 
@@ -48,17 +51,23 @@ class Embedder:
         )
         return self
 
-    def embed(self, embedding_function) -> Chroma:
+    def embed(self, embedding_function):
         Path(self.dest_dir).mkdir(parents=True, exist_ok=True)
         print("* Embedding documents (this may take a while)")
-        Chroma.from_documents(
-            self.split_docs, embedding_function, persist_directory=str(self.dest_dir)
-        ).persist()
+        client = chromadb.Client(
+            Settings(
+                chroma_db_impl="duckdb+parquet", persist_directory=str(self.dest_dir)
+            )
+        )
+        collection = client.create_collection(
+            "general", embedding_function=embedding_function
+        )
+        collection.add(documents=self.split_docs)
         print("* Finished embedding documents")
 
 
 embed_func = embedding_functions.InstructorEmbeddingFunction(
-    model_name="hkunlp/instructor-large", device="gpu"
+    model_name="hkunlp/instructor-large", device="cuda"
 )
 
 
