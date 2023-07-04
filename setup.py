@@ -1,3 +1,14 @@
+import os.path
+
+DEFAULT_CONFIG = 'conf/default-config.py'
+LIVE_CONFIG = 'config.py'
+
+if not os.path.exists(LIVE_CONFIG):
+    print("config.py not found, cloning from default")
+    with open(DEFAULT_CONFIG, 'r') as f:
+        with open(LIVE_CONFIG, 'w') as g:
+            g.write(f.read())
+
 from config import *
 
 with open(SYSTEMD_SETUP_FILE, 'r') as f:

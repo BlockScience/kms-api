@@ -2,6 +2,10 @@ __pycache__
 *.pyc
 .venv
 api_keys.json
+config.py
+
+conf/nginx.conf
+conf/kms-api.service
 
 # Logs
 logs
