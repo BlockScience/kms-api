@@ -4,9 +4,8 @@ import time
 from base64 import b64encode
 from functools import wraps
 from hashlib import md5
-from typing import Any, Dict
+from typing import Any
 
-from url_normalize import url_normalize
 
 from kms_api import config
 from kms_api.core import firestore_db, typesense_db
@@ -173,7 +172,7 @@ def check_for_missing_ids(proposal: dict) -> list:
     return [x for x in ids if x not in found]
 
 
-def md5_dict(dictionary: Dict[str, Any]) -> str:
+def md5_dict(dictionary: dict[str, Any]) -> str:
     """MD5 hash of a dictionary."""
     dhash = md5()
     encoded = json.dumps(dictionary, sort_keys=True).encode()

@@ -2,7 +2,7 @@ import json
 import secrets
 
 import jwt
-from fastapi import Depends, HTTPException, Security
+from fastapi import Depends, HTTPException
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from fastapi.security.api_key import APIKeyHeader
 
@@ -33,7 +33,7 @@ def create_keys(n=1):
 def get_keys():
     # attempts to read existing keys
     try:
-        with open(API_KEYS_FILENAME, "r") as f:
+        with open(API_KEYS_FILENAME) as f:
             keys = json.load(f)
 
     except (FileNotFoundError, json.decoder.JSONDecodeError):

@@ -15,7 +15,7 @@ class Embedder:
         self.docs = []
 
     def clean(self, path):
-        with open(path, "r") as r:
+        with open(path) as r:
             docs_raw = list(json.loads(r.read()))
 
             docs_clean = []

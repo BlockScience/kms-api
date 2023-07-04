@@ -1,5 +1,3 @@
-from typing import Union
-
 from fastapi import APIRouter, Body, Depends, Response, status
 from firebase_admin import firestore
 from jsonschema import validate

@@ -7,7 +7,7 @@ import { parser } from '@/utils/parser'
 import { useApi } from '@/hooks/useApi'
 
 export default function QueryTest() {
-  const { result, error, setData, refresh } = useApi('/object/query', {
+  const { result, error, update } = useApi('/object/query', {
     method: 'POST',
   })
   const [parserResponse, setParserResponse] = useState('Parser response')
@@ -30,9 +30,8 @@ export default function QueryTest() {
 
   const handleInputSubmit = (e) => {
     e.preventDefault()
-    setData({ q: '*', filter_by: e.target.filterString.value })
     setCurrentTest(e.target.filterString.value)
-    refresh()
+    update({ q: '*', filter_by: e.target.filterString.value })
   }
 
   const handleTestSubmit = (e) => {
@@ -85,12 +84,16 @@ export default function QueryTest() {
 
           {/* TESTS */}
           <form onSubmit={handleTestSubmit}>
+            {/* 
+            // @ts-ignore */}
             <Textarea name='shouldPass' label='Valid filter strings' />
             {shouldPassTests && (
               <Prism withLineNumbers language='json'>
                 {shouldPassTests.join('\n')}
               </Prism>
             )}
+            {/* 
+            // @ts-ignore */}
             <Textarea name='shouldFail' label='Invalid filter strings' />
             <Button mt='sm' type='submit'>
               {shouldFailTests && (

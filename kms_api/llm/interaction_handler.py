@@ -1,5 +1,3 @@
-from pprint import pprint
-
 from langchain.callbacks.base import BaseCallbackHandler
 
 from kms_api.llm.history import histories

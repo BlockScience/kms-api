@@ -3,12 +3,11 @@ from queue import Empty, Queue
 from threading import Thread
 
 import nanoid
-from fastapi import APIRouter, Body, Depends, Response, status
+from fastapi import APIRouter, Body, Response, status
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 from starlette.responses import StreamingResponse
 
-from kms_api.auth import validate_auth
 from kms_api.llm.history import histories
 from kms_api.llm.interaction_handler import conversational
 from kms_api.schema import CHAT_SCHEMA

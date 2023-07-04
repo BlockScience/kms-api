@@ -80,3 +80,9 @@ npm run dev
 ```bash
 npm run build
 ```
+
+### Contributing
+We are using pre-commit hooks in aid of a clean and consistent codebase. Hooks are run automatically on each commit but you can also run it manually with
+```bash
+pre-commit run --all-files
+```

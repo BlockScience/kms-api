@@ -1,6 +1,6 @@
 from pprint import pprint
 
-from fastapi import APIRouter, Body, Depends, Response, status
+from fastapi import APIRouter, Body, Depends, Response
 from starlette.responses import StreamingResponse
 
 from kms_api.auth import validate_auth

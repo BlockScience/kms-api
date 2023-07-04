@@ -1,5 +1,4 @@
 from tinydb import Query, TinyDB
-from tinydb.database import Document
 
 from kms_api.config import LLM_CHAT_HISTORY_DB
 

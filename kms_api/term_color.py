@@ -41,14 +41,36 @@ def style(text: str, color: str, styles: list[int | None] | None = None):
             ";".join(str(x) for x in styles), code, text
         )
     else:
-        return "\033[{}m{}\033[0m".format(code, text)
+        return f"\033[{code}m{text}\033[0m"
 
 
-black = lambda text: style(text, "black")
-red = lambda text: style(text, "red")
-green = lambda text: style(text, "green")
-yellow = lambda text: style(text, "yellow")
-blue = lambda text: style(text, "blue")
-magenta = lambda text: style(text, "magenta")
-cyan = lambda text: style(text, "cyan")
-white = lambda text: style(text, "white")
+def black(text):
+    return style(text, "black")
+
+
+def red(text):
+    return style(text, "red")
+
+
+def green(text):
+    return style(text, "green")
+
+
+def yellow(text):
+    return style(text, "yellow")
+
+
+def blue(text):
+    return style(text, "blue")
+
+
+def magenta(text):
+    return style(text, "magenta")
+
+
+def cyan(text):
+    return style(text, "cyan")
+
+
+def white(text):
+    return style(text, "white")

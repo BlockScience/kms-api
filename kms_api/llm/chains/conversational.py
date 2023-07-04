@@ -1,15 +1,7 @@
 """Chain that carries on a conversation and calls an LLM."""
-from typing import Dict, List
 
 from langchain.chains.llm import LLMChain
 from langchain.memory.buffer import ConversationBufferMemory
-from langchain.memory.prompt import (
-    ENTITY_EXTRACTION_PROMPT,
-    ENTITY_MEMORY_CONVERSATION_TEMPLATE,
-    ENTITY_SUMMARIZATION_PROMPT,
-    KNOWLEDGE_TRIPLE_EXTRACTION_PROMPT,
-    SUMMARY_PROMPT,
-)
 from langchain.prompts.base import BasePromptTemplate
 from langchain.prompts.prompt import PromptTemplate
 from langchain.schema import BaseMemory
@@ -50,12 +42,12 @@ class ConversationChain(LLMChain):
         arbitrary_types_allowed = True
 
     @property
-    def input_keys(self) -> List[str]:
+    def input_keys(self) -> list[str]:
         """Use this since so some prompt vars come from history."""
         return [self.input_key]
 
     @root_validator()
-    def validate_prompt_input_variables(cls, values: Dict) -> Dict:
+    def validate_prompt_input_variables(cls, values: dict) -> dict:
         """Validate that prompt input variables are consistent."""
         memory_keys = values["memory"].memory_variables
         input_key = values["input_key"]
