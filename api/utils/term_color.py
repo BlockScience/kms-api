@@ -36,7 +36,6 @@ def style(text: str, color: str, styles: list[str] | None = None):
         return f"\033[{';'.join(str(x) for x in style_codes)};{code}m{text}\033[0m"
     else:
         res = f"\033[{code}m{text}\033[0m"
-        print(text, color, style_codes, res)
         return res
 
 

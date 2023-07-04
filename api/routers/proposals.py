@@ -6,7 +6,7 @@ from jsonschema.exceptions import ValidationError
 from api.auth import validate_auth
 from api.core import firestore_db
 from api.schema import PROPOSAL_SCHEMA, RESOLUTION_SCHEMA
-from api.utils import check_for_missing_ids, md5_dict, simplify_ops
+from api.utils.query import check_for_missing_ids, md5_dict, simplify_ops
 
 router: APIRouter = APIRouter(prefix="/proposal", dependencies=[Depends(validate_auth)])
 

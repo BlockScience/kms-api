@@ -1,7 +1,6 @@
 import json
 import secrets
 
-import jwt
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from fastapi.security.api_key import APIKeyHeader
@@ -10,11 +9,8 @@ from api.config import (
     API_KEY_HEADER_NAME,
     API_KEY_LENGTH,
     API_KEYS_FILENAME,
-    AUTH0_ALGORITHMS,
-    AUTH0_AUDIENCE,
-    AUTH0_DOMAIN,
-    AUTH0_ISSUER,
 )
+from api.core import jwtAuth
 
 
 def create_keys(n=1):
@@ -55,12 +51,12 @@ async def validate_key(
 
 
 async def validate_jwt(
-    token: HTTPAuthorizationCredentials = Depends(HTTPBearer(auto_error=False)),
+    http_auth: HTTPAuthorizationCredentials = Depends(HTTPBearer(auto_error=False)),
 ):
-    if not token:
+    if not http_auth:
         return None
 
-    result = VerifyToken(token.credentials).verify()
+    result = jwtAuth.verify(http_auth.credentials)
     if result.get("status"):
         raise HTTPException(status_code=403, detail="Invalid JWT token")
     return result
@@ -72,36 +68,6 @@ async def validate_auth(api_key=Depends(validate_key), token=Depends(validate_jw
         # raise HTTPException(
         #     status_code=403, detail="Missing authorization"
         # )
-
-
-class VerifyToken:
-    """Does all the token verification using PyJWT"""
-
-    def __init__(self, token):
-        self.token = token
-        jwks_url = f"https://{AUTH0_DOMAIN}/.well-known/jwks.json"
-        self.jwks_client = jwt.PyJWKClient(jwks_url)
-
-    def verify(self):
-        try:
-            self.signing_key = self.jwks_client.get_signing_key_from_jwt(self.token).key
-        except jwt.exceptions.PyJWKClientError as error:
-            return {"status": "error", "msg": error.__str__()}
-        except jwt.exceptions.DecodeError as error:
-            return {"status": "error", "msg": error.__str__()}
-
-        try:
-            payload = jwt.decode(
-                self.token,
-                self.signing_key,
-                algorithms=AUTH0_ALGORITHMS,
-                audience=AUTH0_AUDIENCE,
-                issuer=AUTH0_ISSUER,
-            )
-        except Exception as e:
-            return {"status": "error", "message": str(e)}
-
-        return payload
 
 
 if __name__ == "__main__":

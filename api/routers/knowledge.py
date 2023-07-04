@@ -6,7 +6,8 @@ from typesense.exceptions import ObjectNotFound, RequestMalformed
 from api.auth import validate_auth
 from api.core import firestore_db
 from api.schema import KNOWLEDGE_SCHEMA, QUERY_SCHEMA
-from api.utils import encode_url, profile, query, search_typesense
+from api.utils.query import encode_url, query, search_typesense
+from api.utils.profile import profile
 from url_normalize import url_normalize
 
 router: APIRouter = APIRouter(prefix="/object", dependencies=[Depends(validate_auth)])
