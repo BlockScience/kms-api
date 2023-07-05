@@ -10,7 +10,7 @@ export default defineConfig({
     vitePluginFaviconsInject('src/assets/images/favicon-glyph.svg'),
     tsconfigPaths(),
     visualizer({
-      template: 'treemap', // treemap / sunburst
+      template: 'treemap', // treemap/sunburst/network
       open: true,
       gzipSize: true,
       brotliSize: true,
