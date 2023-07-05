@@ -18,7 +18,7 @@ from config import *
 with open(SYSTEMD_SETUP_FILE, 'r') as f:
     with open(SYSTEMD_LIVE_FILE, 'w') as g:
         setup = f.read()
-        live = setup.format(PROJECT_PATH, VENV_NAME, PROJECT_NAME, FASTAPI_HOSTNAME, FASTAPI_PORT)
+        live = setup.format(PROJECT_PATH, VENV_NAME, BACKEND_NAME, FASTAPI_HOSTNAME, FASTAPI_PORT)
         g.write(live)
     print("generated systemd service file")
 
