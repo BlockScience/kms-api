@@ -1,5 +1,5 @@
 default_language_version:
-  python: python3.11.4
+  python: python3.11
 repos:
   # TYPESCRIPT
   - repo: https://github.com/pre-commit/mirrors-eslint
