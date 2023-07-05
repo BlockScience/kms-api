@@ -5,8 +5,11 @@ SSL_CERT_PATH = '/etc/letsencrypt/live/kms-beta.block.science/fullchain.pem'
 SSL_CERT_KEY_PATH = '/etc/letsencrypt/live/kms-beta.block.science/privkey.pem'
 
 DOMAIN = 'kms-beta.block.science'
-FASTAPI_LOCAL_URI = 'http://localhost:8000'
-VITE_DEV_LOCAL_URI = 'https://localhost:3000'
+
+FASTAPI_SCHEME, FASTAPI_HOSTNAME, FASTAPI_PORT = 'http', 'localhost', 8000
+VITE_DEV_SCHEME, VITE_DEV_HOSTNAME, VITE_DEV_PORT = 'http', 'localhost', 3000
+FASTAPI_URI = f'{FASTAPI_SCHEME}://{FASTAPI_HOSTNAME}:{FASTAPI_PORT}'
+VITE_DEV_URI = f'{VITE_DEV_SCHEME}://{VITE_DEV_HOSTNAME}:{VITE_DEV_PORT}'
 
 # setup
 VENV_NAME = '.venv'
