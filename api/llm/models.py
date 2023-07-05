@@ -1,7 +1,8 @@
 from langchain.chat_models import ChatOpenAI
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.memory import ConversationBufferMemory
 from langchain.vectorstores import Chroma
+from langchain.embeddings.base import Embeddings
+from api.llm.chains.conversation_retrieval.base import ConversationalRetrievalChain
+from chromadb.utils import embedding_functions
 
 from api.config import LLM_EMBEDDINGS
 from api.llm.chains.conversational import ConversationChain
@@ -19,18 +20,39 @@ llm_chat = ChatOpenAI(
 )
 
 # ----------- VECTORSTORE -------------
+
+
+class InstructorEmbedder(Embeddings):
+    def __init__(self) -> None:
+        super().__init__()
+        self.embed_func = embedding_functions.InstructorEmbeddingFunction(
+            model_name="hkunlp/instructor-large", device="cpu"
+        )
+
+    def embed_documents(
+        self, texts: list[str], chunk_size: int | None = 0
+    ) -> list[list[float]]:
+        return self.embed_func(texts)
+
+    def embed_query(self, text: str) -> list[float]:
+        return self.embed_func([text])[0]
+
+
 vectorstore = Chroma(
-    embedding_function=OpenAIEmbeddings(), persist_directory=str(LLM_EMBEDDINGS)
+    embedding_function=InstructorEmbedder(), persist_directory=str(LLM_EMBEDDINGS)
 )
 retriever = vectorstore.as_retriever()
 
 # -------------- MEMORIES -------------
-memory = ConversationBufferMemory(
-    memory_key="chat_history",
-    input_key="question",
-    output_key="answer",
-    return_messages=True,
-)
+# memory = ConversationBufferMemory(
+#     memory_key="chat_history",
+#     input_key="question",
+#     output_key="answer",
+#     return_messages=True,
+# )
 
 # -------------- CHAINS ---------------
 conversation_chain = ConversationChain(llm=llm_chat)
+conversation_retrieval_chain = ConversationalRetrievalChain.from_llm(
+    llm_chat, vectorstore.as_retriever()
+)

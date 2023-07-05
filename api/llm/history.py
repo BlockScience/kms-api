@@ -24,7 +24,7 @@ class ChatHistories:
 
     def get(self, user_id: str, chat_id: str):
         doc = self.get_doc(user_id, chat_id)
-        return doc["history"]
+        return [tuple(entry) for entry in doc["history"]]
 
     def get_chat_ids(self, user_id: str):
         Item = Query()
