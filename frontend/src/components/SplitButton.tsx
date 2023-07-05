@@ -24,16 +24,14 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-export function SplitButton({
-  label,
-  items,
-  onSubmit,
-}: {
+interface SplitButtonProps {
   label: string
   /** Array of [value, name] pairs*/
   items: [value: string, name: string][]
-  onSubmit: (value: string) => void
-}) {
+  onSelect: (value: string) => void
+  onNew: () => void
+}
+export function SplitButton({ label, items, onSelect, onNew }: SplitButtonProps) {
   const { classes, theme } = useStyles()
   const menuIconColor = theme.colors[theme.primaryColor][theme.colorScheme === 'dark' ? 5 : 6]
 
@@ -55,7 +53,7 @@ export function SplitButton({
               <Menu.Item
                 key={i}
                 icon={<IconMessage size='1rem' stroke={1.5} color={menuIconColor} />}
-                onClick={() => onSubmit(value)}
+                onClick={() => onSelect(value)}
               >
                 {name}
               </Menu.Item>
@@ -70,6 +68,7 @@ export function SplitButton({
         color={theme.primaryColor}
         size={36}
         className={classes.menuControl}
+        onClick={onNew}
       >
         <IconPlus stroke={1} />
       </ActionIcon>

@@ -75,10 +75,14 @@ export default function LLMChat() {
     }
     setCurrentPrompt(value)
   }
-  const hanndleChatSelect = (value: string) => {
-    // TODO: fetch previous chats
+  const handleChatSelect = (value: string) => {
     setCurrentChat(value)
     getPreviousChatHistory({}, `/user/${userId}/chat/${value}`)
+  }
+  const handleChatNew = () => {
+    setCurrentChat(null)
+    setLocalChatHistory([])
+    getChatId({})
   }
 
   return (
@@ -106,7 +110,8 @@ export default function LLMChat() {
               />
               <SplitButton
                 label='Previous Chats'
-                onSubmit={hanndleChatSelect}
+                onSelect={handleChatSelect}
+                onNew={handleChatNew}
                 items={
                   previousChats &&
                   previousChats.length > 0 &&
@@ -115,7 +120,13 @@ export default function LLMChat() {
               />
             </Group>
           </Group>
-          <Chat height='80vh' onSubmit={handlePromptSubmit}>
+          <Chat
+            height='80vh'
+            onSubmit={handlePromptSubmit}
+            startLabel={
+              currentChat ? `start of conversation #${currentChat}` : 'start of new conversation'
+            }
+          >
             {localChatHistory.map(([prompt, response], i) => (
               <>
                 <Chat.Message user={userId} key={i}>
