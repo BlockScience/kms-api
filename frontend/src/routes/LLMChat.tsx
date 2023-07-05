@@ -5,82 +5,68 @@ import { useApi } from '@/hooks/useApi'
 import { SetTitle } from '@/utils'
 import { useAuth0 } from '@auth0/auth0-react'
 import { Box, Group, Select, Stack } from '@mantine/core'
-import { use } from 'cytoscape'
 import { useEffect, useState } from 'preact/hooks'
 
 export default function LLMChat() {
-  // get userId on load
+  // SETUP STATE
   const userId = useAuth0().user.email
   const [previousChats, setPreviousChats] = useState<string[]>([])
-  const [currentPrompt, setCurrentPrompt] = useState(null)
-  const [currentChat, setCurrentChat] = useState(null)
+  const [currentPrompt, setCurrentPrompt] = useState<string | null>(null)
+  const [currentChatId, setCurrentChatId] = useState<string | null>(null)
   const [localChatHistory, setLocalChatHistory] = useState<[string, string][]>([])
 
-  const { result: previousChatsResult } = useApi(`/user/${userId}/chat`, {
+  // SETUP API CALLS
+
+  // Get all chats for this user on load (returns list of chat ids)
+  useApi(`/user/${userId}/chat`, {
     method: 'GET',
+    onResult: (result) => setPreviousChats(result),
   })
-  const { result: previousChatHistoryResult, update: getPreviousChatHistory } = useApi(null, {
+
+  // Get chat history for a given chat id (result is list of [prompt, response] tuples) - call is deferred
+  const { update: getChatHistory } = useApi(null, {
     method: 'GET',
     defer: true,
+    onResult: (result) => setLocalChatHistory(result),
   })
-  const { result: chatIdResult, update: getChatId } = useApi(`/user/${userId}/chat`, {
+
+  // Get chat id for a new chat (result is chat id str) - call is deferred
+  const { update: getChatId } = useApi(`/user/${userId}/chat`, {
     method: 'POST',
     defer: true,
+    onResult: (result) => setCurrentChatId(result['chat_id']),
   })
-  const { result: promptResult, update: getPromptResponse } = useApi(null, {
+
+  // Get response to a prompt (result is response str) - call is deferred
+  const { update: getPromptResponse } = useApi(null, {
     method: 'POST',
     defer: true,
+    onResult: (result) => {
+      setLocalChatHistory([...localChatHistory, [currentPrompt, result]])
+      setCurrentPrompt(null)
+    },
   })
 
+  // MANAGE STATE
   useEffect(() => {
-    if (!previousChatHistoryResult) return
-    console.log(previousChatHistoryResult)
-    setLocalChatHistory(previousChatHistoryResult)
-  }, [previousChatHistoryResult])
+    // get response only when it makes sense to do so
+    if (!currentChatId || !currentPrompt) return
+    getPromptResponse({ prompt: currentPrompt }, `/user/${userId}/chat/${currentChatId}`)
+  }, [currentChatId, currentPrompt])
 
-  useEffect(() => {
-    if (!previousChatsResult) return
-    console.log(previousChatsResult)
-    setPreviousChats(previousChatsResult)
-  }, [previousChatsResult])
-
-  // when we get a chatId (from creating a new chat), set it.
-  useEffect(() => {
-    if (!chatIdResult) return
-    console.log(chatIdResult)
-
-    setCurrentChat(chatIdResult['chat_id'])
-  }, [chatIdResult])
-
-  // process prompt when we can
-  useEffect(() => {
-    if (!currentChat) return
-    if (!currentPrompt) return
-    console.log(currentPrompt, currentChat)
-
-    getPromptResponse({ prompt: currentPrompt }, `/user/${userId}/chat/${currentChat}`)
-  }, [currentChat, currentPrompt])
-
-  // update local state when we get new reponse to prompt
-  useEffect(() => {
-    if (!promptResult) return
-    console.log(promptResult)
-    setLocalChatHistory([...localChatHistory, [currentPrompt, promptResult]])
-    setCurrentPrompt(null)
-  }, [promptResult])
-
+  // HANDLE USER EVENTS
   const handlePromptSubmit = (value: string) => {
-    if (!currentChat) {
+    if (!currentChatId) {
       getChatId({})
     }
     setCurrentPrompt(value)
   }
   const handleChatSelect = (value: string) => {
-    setCurrentChat(value)
-    getPreviousChatHistory({}, `/user/${userId}/chat/${value}`)
+    setCurrentChatId(value)
+    getChatHistory({}, `/user/${userId}/chat/${value}`)
   }
   const handleChatNew = () => {
-    setCurrentChat(null)
+    setCurrentChatId(null)
     setLocalChatHistory([])
     getChatId({})
   }
@@ -124,7 +110,9 @@ export default function LLMChat() {
             height='80vh'
             onSubmit={handlePromptSubmit}
             startLabel={
-              currentChat ? `start of conversation #${currentChat}` : 'start of new conversation'
+              currentChatId
+                ? `start of conversation #${currentChatId}`
+                : 'start of new conversation'
             }
           >
             {localChatHistory.map(([prompt, response], i) => (

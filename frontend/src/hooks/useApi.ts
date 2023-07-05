@@ -8,6 +8,7 @@ interface ApiOptions {
   data?: object
   /** If true, call will happen on first call to update() instead of immediately. */
   defer?: boolean
+  onResult?: (result: any) => void
 }
 
 // TODO: Add caching to this hook
@@ -35,6 +36,11 @@ export function useApi(endpoint: string, options?: ApiOptions) {
 
     setDeferred(false)
   }
+
+  useEffect(() => {
+    if (!result || error) return
+    if (options?.onResult) options.onResult(result)
+  }, [result])
 
   useEffect(() => {
     console.log('useEffect', _deferred, _endpoint)
