@@ -31,11 +31,15 @@ export function useApi(endpoint: string, options?: ApiOptions) {
   const update = (data: object, endpoint: string = _endpoint) => {
     setData(data)
     if (_endpoint !== endpoint) setEndpoint(endpoint)
-    if (_deferred === true) setDeferred(false)
+    console.log('updating', data, endpoint, _endpoint)
+
+    setDeferred(false)
   }
 
   useEffect(() => {
-    if (_deferred || !endpoint) return
+    console.log('useEffect', _deferred, _endpoint)
+
+    if (_deferred || !_endpoint) return
     const getToken = async () => {
       try {
         const accessToken = await getAccessTokenSilently({
@@ -76,6 +80,7 @@ export function useApi(endpoint: string, options?: ApiOptions) {
     }
     setLoading(true)
     getData()
+    console.log('calling api', _endpoint)
   }, [getAccessTokenSilently, _endpoint, data, _deferred])
 
   return { result, loading, error, update }

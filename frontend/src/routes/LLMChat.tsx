@@ -5,30 +5,61 @@ import { useApi } from '@/hooks/useApi'
 import { SetTitle } from '@/utils'
 import { useAuth0 } from '@auth0/auth0-react'
 import { Box, Group, Select, Stack } from '@mantine/core'
+import { use } from 'cytoscape'
 import { useEffect, useState } from 'preact/hooks'
 
 export default function LLMChat() {
+  // get userId on load
   const userId = useAuth0().user.email
-  const [currentPrompt, setCurrentPrompt] = useState('')
-  const [localChatHistory, setLocalChatHistory] = useState<[string, string][]>([])
-  const [currentChatId, setCurrentChatId] = useState(null)
 
-  const { result, update } = useApi(null, {
+  // no current prompt on initial load
+  const [currentPrompt, setCurrentPrompt] = useState(null)
+  const [currentChat, setCurrentChat] = useState(null)
+  const [localChatHistory, setLocalChatHistory] = useState<[string, string][]>([])
+
+  const { result: chatIdResult, update: getChatId } = useApi(`/user/${userId}/chat`, {
+    method: 'POST',
+    defer: true,
+  })
+  const { result: promptResult, update: getPromptResponse } = useApi(null, {
     method: 'POST',
     defer: true,
   })
 
+  // when we get a chatId (from creating a new chat), set it.
   useEffect(() => {
-    if (!result) return
-    setLocalChatHistory([...localChatHistory, [currentPrompt, result]])
-    setCurrentPrompt('')
-  }, [result])
+    if (!chatIdResult) return
+    console.log(chatIdResult)
+
+    setCurrentChat(chatIdResult['chat_id'])
+  }, [chatIdResult])
+
+  // process prompt when we can
+  useEffect(() => {
+    if (!currentChat) return
+    if (!currentPrompt) return
+    console.log(currentPrompt, currentChat)
+
+    getPromptResponse({ prompt: currentPrompt }, `/user/${userId}/chat/${currentChat}`)
+  }, [currentChat, currentPrompt])
+
+  // update local state when we get new reponse to prompt
+  useEffect(() => {
+    if (!promptResult) return
+    console.log(promptResult)
+    setLocalChatHistory([...localChatHistory, [currentPrompt, promptResult]])
+    setCurrentPrompt(null)
+  }, [promptResult])
 
   const handlePromptSubmit = (value: string) => {
+    if (!currentChat) {
+      getChatId({})
+    }
     setCurrentPrompt(value)
-    update({ prompt: value })
   }
-  const hanndleChatSelect = (value: string) => {}
+  const hanndleChatSelect = (value: string) => {
+    // TODO: fetch previous chats
+  }
 
   return (
     <div>
