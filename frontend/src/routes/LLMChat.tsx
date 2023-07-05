@@ -11,12 +11,18 @@ import { useEffect, useState } from 'preact/hooks'
 export default function LLMChat() {
   // get userId on load
   const userId = useAuth0().user.email
-
-  // no current prompt on initial load
+  const [previousChats, setPreviousChats] = useState<string[]>([])
   const [currentPrompt, setCurrentPrompt] = useState(null)
   const [currentChat, setCurrentChat] = useState(null)
   const [localChatHistory, setLocalChatHistory] = useState<[string, string][]>([])
 
+  const { result: previousChatsResult } = useApi(`/user/${userId}/chat`, {
+    method: 'GET',
+  })
+  const { result: previousChatHistoryResult, update: getPreviousChatHistory } = useApi(null, {
+    method: 'GET',
+    defer: true,
+  })
   const { result: chatIdResult, update: getChatId } = useApi(`/user/${userId}/chat`, {
     method: 'POST',
     defer: true,
@@ -25,6 +31,18 @@ export default function LLMChat() {
     method: 'POST',
     defer: true,
   })
+
+  useEffect(() => {
+    if (!previousChatHistoryResult) return
+    console.log(previousChatHistoryResult)
+    setLocalChatHistory(previousChatHistoryResult)
+  }, [previousChatHistoryResult])
+
+  useEffect(() => {
+    if (!previousChatsResult) return
+    console.log(previousChatsResult)
+    setPreviousChats(previousChatsResult)
+  }, [previousChatsResult])
 
   // when we get a chatId (from creating a new chat), set it.
   useEffect(() => {
@@ -59,6 +77,8 @@ export default function LLMChat() {
   }
   const hanndleChatSelect = (value: string) => {
     // TODO: fetch previous chats
+    setCurrentChat(value)
+    getPreviousChatHistory({}, `/user/${userId}/chat/${value}`)
   }
 
   return (
@@ -87,18 +107,18 @@ export default function LLMChat() {
               <SplitButton
                 label='Previous Chats'
                 onSubmit={hanndleChatSelect}
-                items={[
-                  ['1', 'Chat #1'],
-                  ['2', 'Chat #2'],
-                  ['3', 'Chat #3'],
-                ]}
+                items={
+                  previousChats &&
+                  previousChats.length > 0 &&
+                  previousChats.map((id) => [id, `Chat #${id}`])
+                }
               />
             </Group>
           </Group>
           <Chat height='80vh' onSubmit={handlePromptSubmit}>
             {localChatHistory.map(([prompt, response], i) => (
               <>
-                <Chat.Message user='orion' key={i}>
+                <Chat.Message user={userId} key={i}>
                   {prompt}
                 </Chat.Message>
                 <Chat.Message isResponse>{response}</Chat.Message>

@@ -50,15 +50,19 @@ export function SplitButton({
           </Button>
         </Menu.Target>
         <Menu.Dropdown>
-          {items.map(([value, name], i) => (
-            <Menu.Item
-              key={i}
-              icon={<IconMessage size='1rem' stroke={1.5} color={menuIconColor} />}
-              onClick={() => onSubmit(value)}
-            >
-              {name}
-            </Menu.Item>
-          ))}
+          {items ? (
+            items.map(([value, name], i) => (
+              <Menu.Item
+                key={i}
+                icon={<IconMessage size='1rem' stroke={1.5} color={menuIconColor} />}
+                onClick={() => onSubmit(value)}
+              >
+                {name}
+              </Menu.Item>
+            ))
+          ) : (
+            <Menu.Item>No previous conversations</Menu.Item>
+          )}
         </Menu.Dropdown>
       </Menu>
       <ActionIcon
