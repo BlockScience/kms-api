@@ -1,5 +1,6 @@
 # local paths
-PROJECT_PATH = '/home/admin/kms-api'
+PROJECT_NAME = 'kms-api'
+PROJECT_PATH = '/home/admin/' + PROJECT_NAME
 SSL_CERT_PATH = '/etc/letsencrypt/live/kms-beta.block.science/fullchain.pem'
 SSL_CERT_KEY_PATH = '/etc/letsencrypt/live/kms-beta.block.science/privkey.pem'
 
@@ -8,6 +9,7 @@ FASTAPI_LOCAL_URI = 'http://localhost:8000'
 VITE_DEV_LOCAL_URI = 'https://localhost:3000'
 
 # setup
+VENV_NAME = '.venv'
 CONF_PATH = 'conf/'
 SYSTEMD_SETUP_FILE = CONF_PATH + 'setup-kms-api.service'
 SYSTEMD_LIVE_FILE = CONF_PATH + 'kms-api.service'
