@@ -7,7 +7,7 @@ import { visualizer } from 'rollup-plugin-visualizer'
 export default defineConfig({
   plugins: [
     preact(),
-    vitePluginFaviconsInject('src/assets/images/favicon-glyph.svg'),
+    vitePluginFaviconsInject('src/assets/images/bsci_glyph_light.svg'),
     tsconfigPaths(),
     visualizer({
       template: 'treemap', // treemap/sunburst/network
