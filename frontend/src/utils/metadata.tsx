@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet';
+import { useEffect } from 'preact/hooks'
 
 interface TitleProps {
   text: string
@@ -6,9 +6,8 @@ interface TitleProps {
 }
 
 export function SetTitle(props: TitleProps) {
-  return (
-    <Helmet>
-      <title>{props.noPrefix ? '' : 'KMS/'}{props.text}</title>
-    </Helmet>
-  )
+  useEffect(() => {
+    document.title = props.noPrefix ? '' : 'KMS/' + props.text
+  }, [])
+  return <></>
 }
