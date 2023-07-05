@@ -41,6 +41,7 @@ export default function LLMChat() {
   const { update: getPromptResponse } = useApi(null, {
     method: 'POST',
     defer: true,
+    stream: true,
     onResult: (result) => {
       setLocalChatHistory([...localChatHistory, [currentPrompt, result]])
       setCurrentPrompt(null)

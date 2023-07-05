@@ -6,6 +6,7 @@ import { api, auth0 } from '@/config'
 interface ApiOptions {
   method?: string
   data?: object
+  stream?: boolean
   /** If true, call will happen on first call to update() instead of immediately. */
   defer?: boolean
   onResult?: (result: any) => void
@@ -25,6 +26,7 @@ export function useApi(endpoint: string, options?: ApiOptions) {
   const [_deferred, setDeferred] = useState(options?.defer || false)
   const [_endpoint, setEndpoint] = useState(endpoint)
   const [data, setData] = useState(options?.data || {})
+  const [stream, setStream] = useState(options?.stream || false)
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState(null)
   const [error, setError] = useState(null)
@@ -43,7 +45,7 @@ export function useApi(endpoint: string, options?: ApiOptions) {
   }, [result])
 
   useEffect(() => {
-    console.log('useEffect', _deferred, _endpoint)
+    console.log('useEffect', _deferred, _endpoint, `stream: ${stream}`)
 
     if (_deferred || !_endpoint) return
     const getToken = async () => {
@@ -62,7 +64,7 @@ export function useApi(endpoint: string, options?: ApiOptions) {
 
     const getData = async () => {
       const token = await getToken()
-      axios({
+      const response = await axios({
         method: method,
         url: `${api.url}${_endpoint}`,
         headers: {
@@ -70,19 +72,32 @@ export function useApi(endpoint: string, options?: ApiOptions) {
         },
         data: data,
         withCredentials: true,
+        responseType: stream ? 'stream' : null
       })
-        .then((r) => {
-          setResult(r.data)
-          setLoading(false)
-        })
-        .catch((error) => {
-          setLoading(false)
-          if (error.response) {
-            setError(error.response.data)
-          } else {
-            setError(error.message)
-          }
-        })
+      
+      console.log(response);
+
+      if (stream) {
+        console.log(response.data);
+        response.data.on('data', data => {
+          console.log(data);
+        });
+        response.data.on('end', () => {
+          console.log('stream ended');
+        });
+      } else {
+        setResult(response.data)
+        setLoading(false)
+      }
+
+        // .catch((error) => {
+        //   setLoading(false)
+        //   if (error.response) {
+        //     setError(error.response.data)
+        //   } else {
+        //     setError(error.message)
+        //   }
+        // })
     }
     setLoading(true)
     getData()
