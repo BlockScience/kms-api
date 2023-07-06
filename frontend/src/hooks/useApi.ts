@@ -62,45 +62,80 @@ export function useApi(endpoint: string, options?: ApiOptions) {
       }
     }
 
+    async function getStream() {
+      console.log('streaming');
+      const resp = await fetch('http://127.0.0.1:8000/user/luke/chat/test', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          prompt: 'what is your purpose'
+        })
+      })
+
+      console.log('send');
+
+      const reader = resp.body.getReader();
+
+      let completion = '';
+
+      while (true) {
+        const { value, done } = await reader.read();
+        const decoder = new TextDecoder('utf-8');
+
+        if (done) {
+          break;
+        }
+
+        if (value) {
+          let data = decoder.decode(value, { stream: true })
+          completion += data;
+          setResult(completion);
+
+          console.log(data, completion);
+        }
+
+      }
+    }
+
     const getData = async () => {
       const token = await getToken()
-      const response = await axios({
+
+      fetch(`${api.url}${_endpoint}`, {
         method: method,
-        url: `${api.url}${_endpoint}`,
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
         },
-        data: data,
-        withCredentials: true,
-        responseType: stream ? 'stream' : null
+        body: method != 'GET' ? JSON.stringify(data) : null,
+        credentials: 'include'
       })
-      
-      console.log(response);
+        .then(resp => {
+          if (!stream) return resp.json();
+        })
+        .then(data => {
+          setResult(data)
+          setLoading(false);
+        })
 
-      if (stream) {
-        console.log(response.data);
-        response.data.on('data', data => {
-          console.log(data);
-        });
-        response.data.on('end', () => {
-          console.log('stream ended');
-        });
-      } else {
-        setResult(response.data)
-        setLoading(false)
-      }
-
-        // .catch((error) => {
-        //   setLoading(false)
-        //   if (error.response) {
-        //     setError(error.response.data)
-        //   } else {
-        //     setError(error.message)
-        //   }
-        // })
+      // .catch((error) => {
+      //   setLoading(false)
+      //   if (error.response) {
+      //     setError(error.response.data)
+      //   } else {
+      //     setError(error.message)
+      //   }
+      // })
     }
     setLoading(true)
-    getData()
+
+    if (stream) {
+      getStream()
+    } else {
+      getData()
+    }
+
     console.log('calling api', _endpoint)
   }, [getAccessTokenSilently, _endpoint, data, _deferred])
 

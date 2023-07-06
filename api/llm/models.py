@@ -18,7 +18,13 @@ llm_chat = ChatOpenAI(
     temperature=0.7,
     streaming=True,
 )
-
+llm_compression = ChatOpenAI(
+    model_name=BASE_MODEL,
+    verbose=False,
+    request_timeout=240,
+    temperature=0.3,
+    streaming=False,
+)
 # ----------- VECTORSTORE -------------
 
 
@@ -54,5 +60,5 @@ retriever = vectorstore.as_retriever()
 # -------------- CHAINS ---------------
 conversation_chain = ConversationChain(llm=llm_chat)
 conversation_retrieval_chain = ConversationalRetrievalChain.from_llm(
-    llm_chat, vectorstore.as_retriever()
+    llm_chat, vectorstore.as_retriever(), condense_question_llm=llm_compression
 )
