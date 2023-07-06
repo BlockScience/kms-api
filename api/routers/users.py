@@ -1,14 +1,12 @@
 from fastapi import APIRouter, Depends, Body, Response, status
-from kms_api.core import firestore_db
-from kms_api.auth import validate_auth
-from kms_api.schema import USER_SCHEMA
+from api.core import firestore_db
+from api.auth import validate_auth
+from api.schema import USER_SCHEMA
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 
-router = APIRouter(
-    prefix="/user",
-    dependencies=[Depends(validate_auth)]
-)
+router = APIRouter(prefix="/user", dependencies=[Depends(validate_auth)])
+
 
 @router.post("/{user_id}")
 def set_user(response: Response, user_id: str, user: dict = Body(...)):
@@ -21,6 +19,7 @@ def set_user(response: Response, user_id: str, user: dict = Body(...)):
 
     firestore_db.collection("users").document(user_id).set(user)
     return user
+
 
 @router.get("/{user_id}")
 def get_user(user_id: str):

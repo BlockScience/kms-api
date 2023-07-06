@@ -1,17 +1,15 @@
 from fastapi import APIRouter, Depends, Body, Response, status
-from kms_api.core import firestore_db
-from kms_api.auth import validate_auth
-from kms_api.utils import simplify_ops, check_for_missing_ids, md5_dict
-from kms_api.schema import PROPOSAL_SCHEMA, RESOLUTION_SCHEMA
+from api.core import firestore_db
+from api.auth import validate_auth
+from api.utils import simplify_ops, check_for_missing_ids, md5_dict
+from api.schema import PROPOSAL_SCHEMA, RESOLUTION_SCHEMA
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 from firebase_admin import firestore
 from typing import Union
 
-router = APIRouter(
-    prefix="/proposal",
-    dependencies=[Depends(validate_auth)]
-)
+router = APIRouter(prefix="/proposal", dependencies=[Depends(validate_auth)])
+
 
 @router.post("")
 def create_proposal(response: Response, proposal: dict = Body(...)):
@@ -21,46 +19,55 @@ def create_proposal(response: Response, proposal: dict = Body(...)):
         print(e)
         response.status_code = status.HTTP_400_BAD_REQUEST
         return {"message": e.message}
-    
+
     proposal["operations"] = simplify_ops(proposal["operations"])
     missing = check_for_missing_ids(proposal)
 
     if missing:
-        nl = '\n'
+        nl = "\n"
         message = f"Error: Proposal contains {len(missing)} operations for non-existent artifacts:\n{nl.join(missing[:10])}{'...' if len(missing) > 10 else ''}"
         response.status_code = status.HTTP_400_BAD_REQUEST
         return {"message": message}
 
     CID: str = md5_dict(proposal["operations"])
-    firestore_db.collection(u'proposals').document(CID).set(proposal)
+    firestore_db.collection("proposals").document(CID).set(proposal)
 
-    return {"message": f"Submitted proposal \033[1m{proposal['name']}\033[0m ({CID}) successfully with {len(proposal['operations'])} operations"}
+    return {
+        "message": f"Submitted proposal \033[1m{proposal['name']}\033[0m ({CID}) successfully with {len(proposal['operations'])} operations"
+    }
+
 
 @router.get("")
 def get_proposals(status: str = None):
     if status:
-        proposals = firestore_db.collection('proposals').where(u'status', u'==', status).get()
+        proposals = (
+            firestore_db.collection("proposals").where("status", "==", status).get()
+        )
     else:
-        proposals = firestore_db.collection('proposals').get()
+        proposals = firestore_db.collection("proposals").get()
     return [proposal.to_dict() | {"id": proposal.id} for proposal in proposals]
+
 
 @router.get("/{proposal_id}")
 def get_proposal(proposal_id: str):
-    proposal = firestore_db.collection('proposals').document(proposal_id).get()
+    proposal = firestore_db.collection("proposals").document(proposal_id).get()
     return proposal.to_dict()
 
+
 @router.post("/{proposal_id}/resolve")
-def resolve_proposal(response: Response, proposal_id: str, resolution: dict = Body(...)):
+def resolve_proposal(
+    response: Response, proposal_id: str, resolution: dict = Body(...)
+):
     try:
         validate(resolution, RESOLUTION_SCHEMA)
     except ValidationError as e:
         print(e)
         response.status_code = status.HTTP_400_BAD_REQUEST
         return {"message": e.message}
-    
+
     new_status = resolution["status"]
     resolved_by = resolution["resolved_by"]
-    
+
     transaction = firestore_db.transaction()
     proposal_ref = firestore_db.collection("proposals").document(proposal_id)
 
@@ -68,7 +75,7 @@ def resolve_proposal(response: Response, proposal_id: str, resolution: dict = Bo
     if proposal is None:
         response.status_code = status.HTTP_400_BAD_REQUEST
         return {"message": "Proposal does not exist"}
-    
+
     current_status: str = proposal["status"]
     if current_status == "applied":
         response.status_code = status.HTTP_400_BAD_REQUEST
@@ -88,11 +95,16 @@ def resolve_proposal(response: Response, proposal_id: str, resolution: dict = Bo
         return f"\033[1m{text}\033[0m"
 
     # APPLY PROPOSAL
-    curation_ref = firestore_db.collection(u"curation")
-    knowledge_ref = firestore_db.collection(u"knowledge")
+    curation_ref = firestore_db.collection("curation")
+    knowledge_ref = firestore_db.collection("knowledge")
 
     @firestore.transactional
-    def apply_proposal(transaction: firestore.Transaction, curation_collection, knowledge_collection, operations: list) -> Union[str, None]:
+    def apply_proposal(
+        transaction: firestore.Transaction,
+        curation_collection,
+        knowledge_collection,
+        operations: list,
+    ) -> Union[str, None]:
         tagsets: dict = {}
         refs: dict = {}
 
@@ -106,17 +118,27 @@ def resolve_proposal(response: Response, proposal_id: str, resolution: dict = Bo
                 # get existing tags if they exist
                 if refs[target].get(transaction=transaction).exists:
                     tagsets[target] = set(
-                        refs[target].get(transaction=transaction).to_dict()["tags"])
+                        refs[target].get(transaction=transaction).to_dict()["tags"]
+                    )
                 # else set tags to empty set
-                elif knowledge_collection.document(target).get(transaction=transaction).exists:
+                elif (
+                    knowledge_collection.document(target)
+                    .get(transaction=transaction)
+                    .exists
+                ):
                     tagsets[target] = set()
                 # raise if id is not in knowledge or curation
                 else:
-                    print(ValueError(
-                        f"Proposal was not applied because ID {bold(target)} does not exist in knowledgebase"))
-                    
+                    print(
+                        ValueError(
+                            f"Proposal was not applied because ID {bold(target)} does not exist in knowledgebase"
+                        )
+                    )
+
                     response.status_code = status.HTTP_400_BAD_REQUEST
-                    return {"message": f"Proposal was not applied because ID {bold(target)} does not exist in knowledgebase"}
+                    return {
+                        "message": f"Proposal was not applied because ID {bold(target)} does not exist in knowledgebase"
+                    }
 
             if action == "remove_tags":
                 tagsets[target] -= set(payload)
@@ -128,23 +150,29 @@ def resolve_proposal(response: Response, proposal_id: str, resolution: dict = Bo
 
         # Do all the writes
         for target, proposed_op in tagsets.items():
-            transaction.set(
-                refs[target], {"tags": list(proposed_op)}, merge=True)
+            transaction.set(refs[target], {"tags": list(proposed_op)}, merge=True)
 
     try:
-        proposal_result = apply_proposal(transaction, curation_ref, knowledge_ref, proposal["operations"])
+        proposal_result = apply_proposal(
+            transaction, curation_ref, knowledge_ref, proposal["operations"]
+        )
         if proposal_result is not None:
             response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
             return {"message": proposal_result}
-        proposal_ref.set(
-            {"status": "applied", "resolved_by": resolved_by}, merge=True)
+        proposal_ref.set({"status": "applied", "resolved_by": resolved_by}, merge=True)
     except Exception as e:
-        proposal_ref.set(
-            {"status": "accepted", "resolved_by": resolved_by}, merge=True)
+        proposal_ref.set({"status": "accepted", "resolved_by": resolved_by}, merge=True)
         print(
-            Exception(f"Proposal {proposal_id} was accepted but not applied. Error: {e}"))
-        
-        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return {"message": f"Proposal {proposal_id} was accepted but not applied. Error: {e}"}
+            Exception(
+                f"Proposal {proposal_id} was accepted but not applied. Error: {e}"
+            )
+        )
 
-    return {"message": f"Proposal {bold(proposal_id)} was accepted by {bold(resolved_by)} and applied successfully"}
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {
+            "message": f"Proposal {proposal_id} was accepted but not applied. Error: {e}"
+        }
+
+    return {
+        "message": f"Proposal {bold(proposal_id)} was accepted by {bold(resolved_by)} and applied successfully"
+    }

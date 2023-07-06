@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from kms_api.routers import knowledge, proposals, users, feedback, meta, test
+from api.routers import knowledge, proposals, users, feedback, meta, test
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -11,7 +11,7 @@ app.include_router(feedback.router)
 app.include_router(meta.router)
 app.include_router(test.router)
 
-origins = ['https://localhost:3000']
+origins = ["https://localhost:3000"]
 
 app.add_middleware(
     CORSMiddleware,
