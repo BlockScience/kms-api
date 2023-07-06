@@ -26,7 +26,7 @@ export function useApi(endpoint: string, options?: ApiOptions) {
   const method = options?.method || 'GET'
   const [_deferred, setDeferred] = useState(options?.defer || false)
   const [_endpoint, setEndpoint] = useState(endpoint)
-  const [data, setData] = useState(options?.data || {})
+  const [data, setData] = useState(options?.data || null)
   const [stream, setStream] = useState(options?.stream || false)
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState(null)
@@ -48,13 +48,10 @@ export function useApi(endpoint: string, options?: ApiOptions) {
 
   useEffect(() => {
     if (!result_stream || error) return
-    console.log(result_stream);
     if (options?.onResultStream) options.onResultStream(result_stream)
   }, [result_stream])
 
   useEffect(() => {
-    console.log('useEffect', _deferred, _endpoint, `stream: ${stream}`)
-
     if (_deferred || !_endpoint) return
     const getToken = async () => {
       try {
@@ -70,59 +67,49 @@ export function useApi(endpoint: string, options?: ApiOptions) {
       }
     }
 
-    async function getStream() {
-      const token = await getToken()
-
-      console.log('streaming');
-      const resp = await fetch(`${api.url}${_endpoint}`, {
-        method: method,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      })
-
-      const reader = resp.body.getReader();
-
-      setResultStream([]);
-
-      while (true) {
-        const { value, done } = await reader.read();
-        const decoder = new TextDecoder('utf-8');
-
-        if (done) {
-          setLoading(false);
-          break;
-        }
-
-        if (value) {
-          let data = decoder.decode(value, { stream: true })
-          setResultStream(array => [...array, data]);
-        }
-
-      }
-    }
-
     const getData = async () => {
       const token = await getToken()
+      const url = `${api.url}${_endpoint}`
 
-      fetch(`${api.url}${_endpoint}`, {
+      if (method == 'GET' && data) {
+        console.error(`Attempting to send GET request with body: ${data} to ${url}`)
+      }
+
+      const resp = await fetch(url, {
         method: method,
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
-        body: method != 'GET' ? JSON.stringify(data) : null,
-        credentials: 'include'
+        body: data ? JSON.stringify(data) : null
       })
-        .then(resp => {
-          if (!stream) return resp.json();
-        })
-        .then(data => {
-          setResult(data)
-          setLoading(false);
-        })
+
+      if (stream) {
+        const reader = resp.body.getReader();
+
+        setResultStream([]);
+
+        while (true) {
+          const { value, done } = await reader.read();
+          const decoder = new TextDecoder('utf-8');
+
+          if (done) {
+            // TODO: setResult after streaming is complete
+            setLoading(false);
+            break;
+          }
+
+          if (value) {
+            let data = decoder.decode(value, { stream: true })
+            setResultStream(array => [...array, data]);
+          }
+
+        }
+      } else {
+        let resp_json = await resp.json();
+        setResult(resp_json);
+        setLoading(false);
+      }
 
       // .catch((error) => {
       //   setLoading(false)
@@ -134,13 +121,7 @@ export function useApi(endpoint: string, options?: ApiOptions) {
       // })
     }
     setLoading(true)
-
-    if (stream) {
-      getStream()
-    } else {
-      getData()
-    }
-
+    getData()
     console.log('calling api', _endpoint)
   }, [getAccessTokenSilently, _endpoint, data, _deferred])
 
