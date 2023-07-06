@@ -46,10 +46,10 @@ export default function LLMChat() {
         setLocalChatHistory([...localChatHistory, [currentPrompt, ""]])
         setCurrentPrompt(null)
       } else {
-        let lastEntry = localChatHistory[localChatHistory.length - 1]
-        lastEntry[1] = result_stream.join('')
-        localChatHistory[localChatHistory.length - 1] = lastEntry
-        setLocalChatHistory(localChatHistory)
+        setLocalChatHistory(history => {
+          history[history.length -1][1] = result_stream.join('')
+          return history
+        })
       }      
     },
   })
