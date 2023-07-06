@@ -40,9 +40,17 @@ export default function LLMChat() {
   const { loading: getPromptLoading, update: getPromptResponse } = useApi(null, {
     method: 'POST',
     defer: true,
-    onResult: (result) => {
-      setLocalChatHistory([...localChatHistory, [currentPrompt, result]])
-      setCurrentPrompt(null)
+    stream: true,
+    onResultStream: (result_stream) => {
+      if (result_stream.length == 0) {
+        setLocalChatHistory([...localChatHistory, [currentPrompt, ""]])
+        setCurrentPrompt(null)
+      } else {
+        let lastEntry = localChatHistory[localChatHistory.length - 1]
+        lastEntry[1] = result_stream.join('')
+        localChatHistory[localChatHistory.length - 1] = lastEntry
+        setLocalChatHistory(localChatHistory)
+      }      
     },
   })
 
