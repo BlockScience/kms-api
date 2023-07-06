@@ -20,7 +20,7 @@ node_modules
 dist
 dist-ssr
 *.local
-
+local/
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -34,3 +34,5 @@ dist-ssr
 
 .vite/
 .certs/
+.python-version
+.env
