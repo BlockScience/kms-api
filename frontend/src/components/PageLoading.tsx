@@ -6,7 +6,7 @@ export function PageLoading() {
     <Center style={{ height: useViewportSize().height }}>
       <Stack align='center'>
         <Text size='xs' color='dimmed' tt='uppercase'>
-          hold on a moment
+          authenticating
         </Text>
         <Loader variant='dots' />
       </Stack>

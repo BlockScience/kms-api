@@ -1,7 +1,6 @@
 """Chain for chatting with a vector database."""
 from __future__ import annotations
 
-import warnings
 from abc import abstractmethod
 from collections.abc import Callable
 from pathlib import Path
@@ -20,10 +19,12 @@ from langchain.chains.llm import LLMChain
 from langchain.chains.question_answering import load_qa_chain
 from langchain.prompts.base import BasePromptTemplate
 from langchain.schema import BaseMessage, BaseRetriever, Document
-from langchain.vectorstores.base import VectorStore
-from pydantic import Extra, Field, root_validator
+from pydantic import Extra
 
-from api.llm.chains.conversation_retrieval.prompts import CONDENSE_QUESTION_PROMPT
+from api.llm.chains.conversation_retrieval.prompts_revised import (
+    CONDENSE_QUESTION_PROMPT,
+    QA_PROMPT,
+)
 
 # Depending on the memory type and configuration, the chat history format may differ.
 # This needs to be consolidated.
@@ -211,6 +212,7 @@ class ConversationalRetrievalChain(BaseConversationalRetrievalChain):
     ) -> BaseConversationalRetrievalChain:
         """Load chain from LLM."""
         combine_docs_chain_kwargs = combine_docs_chain_kwargs or {}
+        combine_docs_chain_kwargs["prompt"] = QA_PROMPT
         doc_chain = load_qa_chain(
             llm,
             chain_type=chain_type,
@@ -228,66 +230,6 @@ class ConversationalRetrievalChain(BaseConversationalRetrievalChain):
         )
         return cls(
             retriever=retriever,
-            combine_docs_chain=doc_chain,
-            question_generator=condense_question_chain,
-            callbacks=callbacks,
-            **kwargs,
-        )
-
-
-class ChatVectorDBChain(BaseConversationalRetrievalChain):
-    """Chain for chatting with a vector database."""
-
-    vectorstore: VectorStore = Field(alias="vectorstore")
-    top_k_docs_for_context: int = 4
-    search_kwargs: dict = Field(default_factory=dict)
-
-    @property
-    def _chain_type(self) -> str:
-        return "chat-vector-db"
-
-    @root_validator()
-    def raise_deprecation(cls, values: dict) -> dict:
-        warnings.warn(
-            "`ChatVectorDBChain` is deprecated - "
-            "please use `from langchain.chains import ConversationalRetrievalChain`"
-        )
-        return values
-
-    def _get_docs(self, question: str, inputs: dict[str, Any]) -> list[Document]:
-        vectordbkwargs = inputs.get("vectordbkwargs", {})
-        full_kwargs = {**self.search_kwargs, **vectordbkwargs}
-        return self.vectorstore.similarity_search(
-            question, k=self.top_k_docs_for_context, **full_kwargs
-        )
-
-    async def _aget_docs(self, question: str, inputs: dict[str, Any]) -> list[Document]:
-        raise NotImplementedError("ChatVectorDBChain does not support async")
-
-    @classmethod
-    def from_llm(
-        cls,
-        llm: BaseLanguageModel,
-        vectorstore: VectorStore,
-        condense_question_prompt: BasePromptTemplate = CONDENSE_QUESTION_PROMPT,
-        chain_type: str = "stuff",
-        combine_docs_chain_kwargs: dict | None = None,
-        callbacks: Callbacks = None,
-        **kwargs: Any,
-    ) -> BaseConversationalRetrievalChain:
-        """Load chain from LLM."""
-        combine_docs_chain_kwargs = combine_docs_chain_kwargs or {}
-        doc_chain = load_qa_chain(
-            llm,
-            chain_type=chain_type,
-            callbacks=callbacks,
-            **combine_docs_chain_kwargs,
-        )
-        condense_question_chain = LLMChain(
-            llm=llm, prompt=condense_question_prompt, callbacks=callbacks
-        )
-        return cls(
-            vectorstore=vectorstore,
             combine_docs_chain=doc_chain,
             question_generator=condense_question_chain,
             callbacks=callbacks,

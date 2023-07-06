@@ -1,10 +1,9 @@
 import Chat from '@/components/Conversation'
 import { SplitButton } from '@/components/SplitButton'
-import { PageTitle } from '@/components/typography/PageTitle'
 import { useApi } from '@/hooks/useApi'
 import { SetTitle } from '@/utils'
 import { useAuth0 } from '@auth0/auth0-react'
-import { Box, Group, Select, Stack } from '@mantine/core'
+import { Box, Group, Loader, Select, Stack, Title } from '@mantine/core'
 import { useEffect, useState } from 'preact/hooks'
 
 export default function LLMChat() {
@@ -38,7 +37,7 @@ export default function LLMChat() {
   })
 
   // Get response to a prompt (result is response str) - call is deferred
-  const { update: getPromptResponse } = useApi(null, {
+  const { loading: getPromptLoading, update: getPromptResponse } = useApi(null, {
     method: 'POST',
     defer: true,
     onResult: (result) => {
@@ -76,8 +75,10 @@ export default function LLMChat() {
       <SetTitle text='Chat' />
       <Box maw={1200} mx='auto'>
         <Stack spacing='xs'>
-          <Group position='apart'>
-            <PageTitle>Chat</PageTitle>
+          <Group mt={30} position='apart' align='start'>
+            <Title m={0} p={0} order={2}>
+              Chat
+            </Title>
             <Group>
               <Select
                 placeholder='Mode'
@@ -124,6 +125,11 @@ export default function LLMChat() {
               </>
             ))}
             {currentPrompt && <Chat.Message user='orion'>{currentPrompt}</Chat.Message>}
+            {getPromptLoading && (
+              <Chat.Message isResponse>
+                <Loader variant='dots' />
+              </Chat.Message>
+            )}
           </Chat>
         </Stack>
       </Box>
