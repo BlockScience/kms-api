@@ -15,7 +15,6 @@ import {
 import { useState } from 'preact/hooks'
 import { notifications } from '@mantine/notifications'
 import { VNode } from 'preact'
-import axios from 'axios'
 
 function ActionsWrapper({ children }: { children: VNode[] | VNode }) {
   const navigate = useNavigate()
@@ -142,20 +141,6 @@ export function SpotlightProvider({ children }: SpotlightProps) {
       icon: <IconTerminal2 size={px('1.2rem')} />,
       onTrigger: () => {
         navigate('/experimental')
-      },
-    },
-    {
-      title: 'dev/test',
-      description: 'Dummy endpoint',
-      icon: <IconTerminal2 size={px('1.2rem')} />,
-      onTrigger: () => {
-        axios({
-          method: 'GET',
-          url: '/api/test',
-          headers: {
-            token: 'atAEWRVEEZQ989TfTcGVNGOhb1U',
-          },
-        })
       },
     },
   ]

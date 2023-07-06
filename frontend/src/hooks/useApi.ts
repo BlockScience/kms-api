@@ -71,15 +71,16 @@ export function useApi(endpoint: string, options?: ApiOptions) {
     }
 
     async function getStream() {
+      const token = await getToken()
+
       console.log('streaming');
-      const resp = await fetch('http://127.0.0.1:8000/user/luke/chat/test', {
-        method: 'POST',
+      const resp = await fetch(`${api.url}${_endpoint}`, {
+        method: method,
         headers: {
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          prompt: 'what is your purpose'
-        })
+        body: JSON.stringify(data)
       })
 
       const reader = resp.body.getReader();
@@ -91,6 +92,7 @@ export function useApi(endpoint: string, options?: ApiOptions) {
         const decoder = new TextDecoder('utf-8');
 
         if (done) {
+          setLoading(false);
           break;
         }
 
