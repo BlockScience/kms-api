@@ -10,6 +10,7 @@ interface ApiOptions {
   /** If true, call will happen on first call to update() instead of immediately. */
   defer?: boolean
   onResult?: (result: any) => void
+  onResultStream?: (result: any) => void
 }
 
 // TODO: Add caching to this hook
@@ -29,6 +30,7 @@ export function useApi(endpoint: string, options?: ApiOptions) {
   const [stream, setStream] = useState(options?.stream || false)
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState(null)
+  const [result_stream, setResultStream] = useState(null)
   const [error, setError] = useState(null)
 
   const update = (data: object, endpoint: string = _endpoint) => {
@@ -43,6 +45,12 @@ export function useApi(endpoint: string, options?: ApiOptions) {
     if (!result || error) return
     if (options?.onResult) options.onResult(result)
   }, [result])
+
+  useEffect(() => {
+    if (!result_stream || error) return
+    console.log(result_stream);
+    if (options?.onResultStream) options.onResultStream(result_stream)
+  }, [result_stream])
 
   useEffect(() => {
     console.log('useEffect', _deferred, _endpoint, `stream: ${stream}`)
@@ -74,11 +82,9 @@ export function useApi(endpoint: string, options?: ApiOptions) {
         })
       })
 
-      console.log('send');
-
       const reader = resp.body.getReader();
 
-      let completion = '';
+      setResultStream([]);
 
       while (true) {
         const { value, done } = await reader.read();
@@ -90,10 +96,7 @@ export function useApi(endpoint: string, options?: ApiOptions) {
 
         if (value) {
           let data = decoder.decode(value, { stream: true })
-          completion += data;
-          setResult(completion);
-
-          console.log(data, completion);
+          setResultStream(array => [...array, data]);
         }
 
       }
@@ -139,5 +142,5 @@ export function useApi(endpoint: string, options?: ApiOptions) {
     console.log('calling api', _endpoint)
   }, [getAccessTokenSilently, _endpoint, data, _deferred])
 
-  return { result, loading, error, update }
+  return { result, result_stream, loading, error, update }
 }
