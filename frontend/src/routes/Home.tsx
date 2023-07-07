@@ -82,20 +82,20 @@ export default function Home() {
 
               <List mt={30} spacing='sm' size='sm'>
                 <List.Item icon={<IconListSearch stroke={1.5} color={color} />}>
-                  <b>Search-based UX</b> – just hit <Code color='gray'>/</Code> to start searching.
+                  <b>Search-based UX</b> — just hit <Code color='gray'>/</Code> to start searching.
                   No knowledge required.
                 </List.Item>
                 <List.Item icon={<IconMathSymbols stroke={1.5} color={color} />}>
-                  <b>Powerful query system</b> – searches can be filtered, sorted, and grouped with
+                  <b>Powerful query system</b> — searches can be filtered, sorted, and grouped with
                   both UI and text syntax. <Anchor>Learn more.</Anchor>
                 </List.Item>
                 <List.Item icon={<IconTerminal2 stroke={1.5} color={color} />}>
-                  <b>Programmatically accessible</b> – want to do curation en masse? Do some data
+                  <b>Programmatically accessible</b> — want to do curation en masse? Do some data
                   science? You can interact with the system via its <Anchor>APIs</Anchor> and{' '}
                   <Anchor>libraries</Anchor>.
                 </List.Item>
                 <List.Item icon={<IconWallOff stroke={1.4} color={color} />}>
-                  <b>Anti-software</b> – KMS is part of an effort to improve our collective{' '}
+                  <b>Anti-software</b> — KMS is part of an effort to improve our collective{' '}
                   <Text span fs='italic'>
                     knowledge organisation infrastructure.
                   </Text>{' '}
