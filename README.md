@@ -11,7 +11,7 @@ This codebase requires Python 3.11 or higher and since most default Python insta
 ```bash
 sudo apt update
 sudo apt upgrade
-sudo apt install build-essential python-dev python-setuptools python3-pip python3-smbus libncursesw5-dev libgdbm-dev libc6-dev zlib1g-dev libsqlite3-dev tk-dev libssl-dev openssl libffi-dev
+sudo apt install build-essential python-dev python-setuptools python3-pip python3-smbus libncursesw5-dev libgdbm-dev libc6-dev zlib1g-dev libsqlite3-dev tk-dev libssl-dev openssl libffi-dev libbz2-dev
 ```
 
 Now Python can be compiled from source. You can find all of the releases [here](https://www.python.org/downloads/source/). Look for the "Gzipped source tarball" link for the next step. Replace the links and zip/directory name with your version of Python.
