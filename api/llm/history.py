@@ -1,6 +1,6 @@
 from tinydb import Query, TinyDB
 
-from api.config import LLM_CHAT_HISTORY_DB
+from config import LLM_CHAT_HISTORY_DB
 
 
 class ChatHistories:

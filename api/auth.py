@@ -5,7 +5,7 @@ from fastapi import Depends, HTTPException
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from fastapi.security.api_key import APIKeyHeader
 
-from api.config import (
+from config import (
     API_KEY_HEADER_NAME,
     API_KEY_LENGTH,
     API_KEYS_FILENAME,

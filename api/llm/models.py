@@ -4,7 +4,7 @@ from langchain.embeddings.base import Embeddings
 from api.llm.chains.conversation_retrieval.base import ConversationalRetrievalChain
 from chromadb.utils import embedding_functions
 
-from api.config import LLM_EMBEDDINGS
+from config import LLM_EMBEDDINGS
 
 CHAT_MODEL = "gpt-4"
 BASE_MODEL = "gpt-3.5-turbo"

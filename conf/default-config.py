@@ -3,6 +3,7 @@ PROJECT_NAME = "kms-api"
 BACKEND_NAME = "api"
 FRONTEND_NAME = "frontend"
 PROJECT_PATH = "/home/admin/" + PROJECT_NAME
+LOCAL_STORAGE_DIR = PROJECT_PATH + "/local/"
 SSL_CERT_PATH = "/etc/letsencrypt/live/kms-beta.block.science/fullchain.pem"
 SSL_CERT_KEY_PATH = "/etc/letsencrypt/live/kms-beta.block.science/privkey.pem"
 
@@ -44,3 +45,9 @@ AUTH0_AUDIENCE = "https://127.0.0.1:8000"
 AUTH0_ISSUER = "https://auth.kms-beta.block.science/"
 AUTH0_CLIENT = "dev-67fgpygy2qoenl7r"
 AUTH0_ALGORITHMS = "RS256"
+
+
+# LLMs
+LLM_EMBEDDINGS = LOCAL_STORAGE_DIR + "embeddings"
+LLM_DATASET = LOCAL_STORAGE_DIR + "data.json"
+LLM_CHAT_HISTORY_DB = LOCAL_STORAGE_DIR + "history.json"

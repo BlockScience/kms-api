@@ -1,6 +1,6 @@
 import jwt
 
-from api.config import (
+from config import (
     AUTH0_ALGORITHMS,
     AUTH0_AUDIENCE,
     AUTH0_DOMAIN,
