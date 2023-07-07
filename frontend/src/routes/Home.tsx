@@ -6,14 +6,13 @@ import {
   Group,
   Text,
   List,
-  ThemeIcon,
   rem,
   Code,
   Anchor,
   Box,
-  px,
+  useMantineTheme,
 } from '@mantine/core'
-import { IconCheck } from '@tabler/icons-react'
+import { IconListSearch, IconMathSymbols, IconTerminal2, IconWallOff } from '@tabler/icons-react'
 import { trigger, SetTitle } from '@/utils'
 import { useNavigate } from 'react-router-dom'
 
@@ -50,19 +49,13 @@ const useStyles = createStyles((theme) => ({
       flex: 1,
     },
   },
-
-  image: {
-    flex: 1,
-
-    [theme.fn.smallerThan('md')]: {
-      display: 'none',
-    },
-  },
 }))
 
 export default function Home() {
   const { classes } = useStyles()
   const navigate = useNavigate()
+  const theme = useMantineTheme()
+  const color = theme.colors.blue[theme.primaryShade['light']]
   return (
     <>
       <SetTitle text='KMS' noPrefix />
@@ -88,44 +81,20 @@ export default function Home() {
               </Text>
 
               <List mt={30} spacing='sm' size='sm'>
-                <List.Item
-                  icon={
-                    <ThemeIcon size={20} radius='xl'>
-                      <IconCheck size={px('0.8rem')} />
-                    </ThemeIcon>
-                  }
-                >
+                <List.Item icon={<IconListSearch stroke={1.5} color={color} />}>
                   <b>Search-based UX</b> – just hit <Code color='gray'>/</Code> to start searching.
                   No knowledge required.
                 </List.Item>
-                <List.Item
-                  icon={
-                    <ThemeIcon size={20} radius='xl'>
-                      <IconCheck size={px('0.8rem')} />
-                    </ThemeIcon>
-                  }
-                >
+                <List.Item icon={<IconMathSymbols stroke={1.5} color={color} />}>
                   <b>Powerful query system</b> – searches can be filtered, sorted, and grouped with
                   both UI and text syntax. <Anchor>Learn more.</Anchor>
                 </List.Item>
-                <List.Item
-                  icon={
-                    <ThemeIcon size={20} radius='xl'>
-                      <IconCheck size={px('0.8rem')} />
-                    </ThemeIcon>
-                  }
-                >
+                <List.Item icon={<IconTerminal2 stroke={1.5} color={color} />}>
                   <b>Programmatically accessible</b> – want to do curation en masse? Do some data
                   science? You can interact with the system via its <Anchor>APIs</Anchor> and{' '}
                   <Anchor>libraries</Anchor>.
                 </List.Item>
-                <List.Item
-                  icon={
-                    <ThemeIcon size={20} radius='xl'>
-                      <IconCheck size={px('0.8rem')} />
-                    </ThemeIcon>
-                  }
-                >
+                <List.Item icon={<IconWallOff stroke={1.4} color={color} />}>
                   <b>Anti-software</b> – KMS is part of an effort to improve our collective{' '}
                   <Text span fs='italic'>
                     knowledge organisation infrastructure.
