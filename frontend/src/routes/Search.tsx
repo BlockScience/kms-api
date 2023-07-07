@@ -144,7 +144,7 @@ export default function Search() {
   const { search } = useLocation()
   const [searchparams] = useSearchParams()
   const currentQuery = searchparams.get('q')
-  const { result, error, loading, update } = useApi('/object/query', {
+  const { result, error, loading, update } = useApi('/objects/query', {
     method: 'POST',
     data: {
       ...QUERY_DEFAULTS,
