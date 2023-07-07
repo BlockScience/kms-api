@@ -14,8 +14,6 @@ export default function LLMChat() {
   const [currentChatId, setCurrentChatId] = useState<string | null>(null)
   const [localChatHistory, setLocalChatHistory] = useState<[string, string][]>([])
 
-  // SETUP API CALLS
-
   // Get all chats for this user on load (returns list of chat ids)
   useApi(`/user/${userId}/chat`, {
     method: 'GET',
@@ -23,7 +21,7 @@ export default function LLMChat() {
   })
 
   // Get chat history for a given chat id (result is list of [prompt, response] tuples) - call is deferred
-  const { update: getChatHistory } = useApi(null, {
+  const { update: getChatHistory, loading: getChatHistoryLoading } = useApi(null, {
     method: 'GET',
     defer: true,
     onResult: (result) => setLocalChatHistory(result),
@@ -59,8 +57,6 @@ export default function LLMChat() {
     },
   })
 
-  console.log(getPromptError)
-
   // MANAGE STATE
   useEffect(() => {
     // get response only when it makes sense to do so
@@ -77,7 +73,7 @@ export default function LLMChat() {
   }
   const handleChatSelect = (value: string) => {
     setCurrentChatId(value)
-    getChatHistory({}, `/user/${userId}/chat/${value}`)
+    getChatHistory(null, `/user/${userId}/chat/${value}`)
   }
   const handleChatNew = () => {
     setCurrentChatId(null)
@@ -126,9 +122,13 @@ export default function LLMChat() {
             height='80vh'
             onSubmit={handlePromptSubmit}
             startLabel={
-              currentChatId
-                ? `start of conversation #${currentChatId}`
-                : 'start of new conversation'
+              getChatHistoryLoading ? (
+                <Loader variant='dots' />
+              ) : currentChatId ? (
+                `start of conversation #${currentChatId}`
+              ) : (
+                'start of new conversation'
+              )
             }
           >
             {localChatHistory.map(([prompt, response], i) => (
