@@ -5,8 +5,14 @@ from api.config import LLM_CHAT_HISTORY_DB
 
 class ChatHistories:
     def __init__(self):
-        # TODO: We need to store this outside of memory so we can persist it across API restarts
         self.db = TinyDB(LLM_CHAT_HISTORY_DB, indent=2)
+        self.clean_empty()
+
+    def clean_empty(self):
+        Item = Query()
+        print(Item.history)
+        self.db.remove(Item.history == [[]])
+        self.db.remove(Item.history == [])
 
     def get_doc(self, user_id: str, chat_id: str):
         Item = Query()
