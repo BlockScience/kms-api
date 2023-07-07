@@ -48,7 +48,7 @@ export function Header({ fullwidth, onToggle }: { fullwidth?: boolean; onToggle(
 
   const DarkmodeButton = (
     <ActionIcon
-      id='tour-toggleDarkmode'
+      className='tour-toggleDarkmode'
       variant='default'
       onClick={() => toggleColorScheme()}
       size={30}

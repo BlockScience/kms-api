@@ -57,22 +57,10 @@ const tourSteps = [
   },
   {
     title: 'Have a look around',
-    target: '#tour-navInternal',
+    target: '.tour-navInternal',
     content: (
       <Text align='left'>
         <List>
-          <List.Item
-            icon={
-              <ThemeIcon color='gray' size={24} radius='xl'>
-                <IconLayoutDashboard size={px('1rem')} />
-              </ThemeIcon>
-            }
-          >
-            <Text span fw={700}>
-              Dashboard
-            </Text>{' '}
-            is a birds-eye view of the system
-          </List.Item>
           <List.Item
             icon={
               <ThemeIcon color='gray' size={24} radius='xl'>
@@ -84,6 +72,18 @@ const tourSteps = [
               Governance
             </Text>{' '}
             is where collective decisions are made
+          </List.Item>
+          <List.Item
+            icon={
+              <ThemeIcon color='gray' size={24} radius='xl'>
+                <IconLayoutDashboard size={px('1rem')} />
+              </ThemeIcon>
+            }
+          >
+            <Text span fw={700}>
+              Dashboard
+            </Text>{' '}
+            is a birds-eye view of the system
           </List.Item>
           <List.Item
             icon={
@@ -129,17 +129,12 @@ const tourSteps = [
   {
     title: 'Changing your preferences',
     target: '#tour-userSettings',
-    content: (
-      <Text align='left'>
-        You can view and update your preferences here. E.g. to customise how many search results you
-        see at once.
-      </Text>
-    ),
+    content: <Text align='left'>You can view and update your preferences here.</Text>,
     disableBeacon: true,
   },
   {
     title: 'Useful links',
-    target: '#tour-navExternal',
+    target: '.tour-navExternal',
     content: (
       <Text align='left'>
         Down here are links if you want to jump into Slack, view the KMS repositories or dive deeper
@@ -150,7 +145,7 @@ const tourSteps = [
   },
   {
     title: 'Toggling dark mode',
-    target: '#tour-toggleDarkmode',
+    target: '.tour-toggleDarkmode',
     content: (
       <Text align='left'>
         Wether you're in a cave or on a beach, KMS has you covered. Try giving that button a click.
@@ -160,7 +155,7 @@ const tourSteps = [
   },
   {
     title: 'Collapsing the sidebar',
-    target: '#tour-toggleSidebar',
+    target: '.tour-toggleSidebar',
     content: <Text align='left'>If you prefer more space you can toggle the sidebar here.</Text>,
     disableBeacon: true,
   },

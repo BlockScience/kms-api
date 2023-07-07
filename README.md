@@ -124,3 +124,6 @@ To reload the nginx server:
 ```bash
 sudo nginx -s reload
 ```
+
+### Deployment Checklist
+1. OnboardingTour is up to date (and working for all states)

@@ -141,10 +141,14 @@ export function Sidebar() {
           <Header fullwidth={fullWidthNav} onToggle={toggle} />
           <Divider />
           <Search fullwidth={fullWidthNav} />
-          <Stack spacing={0}>{upperNavLinks}</Stack>
+          <Stack className='tour-navInternal' spacing={0}>
+            {upperNavLinks}
+          </Stack>
         </Stack>
         <Stack spacing='xs'>
-          <Stack spacing={0}>{lowerNavLinks}</Stack>
+          <Stack className='tour-navExternal' spacing={0}>
+            {lowerNavLinks}
+          </Stack>
           <Divider />
           <User fullwidth={fullWidthNav} />
         </Stack>

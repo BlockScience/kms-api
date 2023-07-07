@@ -149,8 +149,6 @@ export default function Home() {
                   radius='xl'
                   size='md'
                   className={classes.control}
-                  // component='a'
-                  // target='_blank'
                   onClick={() => navigate('/docs')}
                 >
                   Read the docs
