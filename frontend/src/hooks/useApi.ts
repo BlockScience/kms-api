@@ -115,6 +115,7 @@ export function useApi(endpoint: string, options?: ApiOptions): ApiReturn {
             if (done) {
               // TODO: setResult after streaming is complete
               setLoading(false)
+              setStream(null)
               break
             }
 

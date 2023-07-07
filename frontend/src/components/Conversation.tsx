@@ -21,7 +21,7 @@ interface ChatProps {
   children: ComponentChildren
   height?: number | string
   maxHeight?: number | string
-  startLabel?: string
+  startLabel?: string | JSX.Element
   onSubmit?: (message: string) => void
 }
 const Chat: ChatComponent = ({
@@ -83,7 +83,7 @@ const Message: MessageComponent = ({ children, user, isResponse }: MessageProps)
               </Avatar>
             )}
           </Box>
-          <Text>{children}</Text>
+          <Text style={{ whiteSpace: 'pre-wrap' }}>{children}</Text>
         </Group>
       </Paper>
     </>
