@@ -38,25 +38,28 @@ export default function LLMChat() {
 
   // Get response to a prompt (result is response str) - call is deferred
   const {
-    result_stream: getPromptResponseStream,
+    stream: getPromptResponseStream,
+    error: getPromptError,
     loading: getPromptLoading,
     update: getPromptResponse,
   } = useApi(null, {
     method: 'POST',
     defer: true,
-    stream: true,
-    onResultStream: (result_stream) => {
-      if (result_stream.length == 0) {
+    streaming: true,
+    onStream: (stream) => {
+      if (stream.length == 0) {
         setLocalChatHistory([...localChatHistory, [currentPrompt, '']])
         setCurrentPrompt(null)
       } else {
         setLocalChatHistory((history) => {
-          history[history.length - 1][1] = result_stream.join('')
+          history[history.length - 1][1] = stream.join('')
           return history
         })
       }
     },
   })
+
+  console.log(getPromptError)
 
   // MANAGE STATE
   useEffect(() => {
@@ -136,7 +139,7 @@ export default function LLMChat() {
                 <Chat.Message isResponse>{response}</Chat.Message>
               </>
             ))}
-            {currentPrompt && <Chat.Message user='orion'>{currentPrompt}</Chat.Message>}
+            {currentPrompt && <Chat.Message user={userId}>{currentPrompt}</Chat.Message>}
             {getPromptLoading && !getPromptResponseStream && (
               <Chat.Message isResponse>
                 <Loader variant='dots' />
