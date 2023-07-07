@@ -10,7 +10,6 @@ class ChatHistories:
 
     def clean_empty(self):
         Item = Query()
-        print(Item.history)
         self.db.remove(Item.history == [[]])
         self.db.remove(Item.history == [])
 

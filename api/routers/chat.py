@@ -31,7 +31,6 @@ def create_chat(user_id: str):
 def get_chat_history(user_id: str, chat_id: str):
     """Takes a user ID and chat ID and returns the chat history for that chat"""
     chat_history = histories.get(user_id, chat_id)
-    print(chat_history)
     return chat_history
 
 
