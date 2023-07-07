@@ -3,18 +3,18 @@ from queue import Empty, Queue
 from threading import Thread
 
 import nanoid
-from fastapi import APIRouter, Body, Response, status
+from fastapi import APIRouter, Body, Response, status, Depends
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 from starlette.responses import StreamingResponse
+from api.auth import validate_auth
 
 from api.llm.history import histories
 from api.llm.interaction_handler import conversational
 from api.schema import CHAT_SCHEMA
 
 router: APIRouter = APIRouter(
-    prefix="/user/{user_id}/chat",
-    # dependencies=[Depends(validate_auth)]
+    prefix="/user/{user_id}/chat", dependencies=[Depends(validate_auth)]
 )
 
 
