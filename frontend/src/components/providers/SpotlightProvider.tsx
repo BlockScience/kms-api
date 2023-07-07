@@ -4,7 +4,7 @@ import {
   useSpotlight,
 } from '@/components/mantine-spotlight'
 import { Group, rem, Text, Anchor, useMantineColorScheme, px } from '@mantine/core'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, createSearchParams } from 'react-router-dom'
 import {
   IconSearch,
   IconSun,
@@ -149,7 +149,12 @@ export function SpotlightProvider({ children }: SpotlightProps) {
       title: `Search for "${query}"`,
       description: 'Search will match any title, text, or tags in the knowledgebase',
       onTrigger: () => {
-        navigate('/search', { state: { q: query } })
+        navigate({
+          pathname: '/search',
+          search: createSearchParams({
+            q: query,
+          }).toString(),
+        })
       },
     },
   ]

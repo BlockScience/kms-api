@@ -1,18 +1,19 @@
-from fastapi import APIRouter, Depends, Body, Response, status
-from api.core import firestore_db
-from api.auth import validate_auth
-from api.utils import simplify_ops, check_for_missing_ids, md5_dict
-from api.schema import PROPOSAL_SCHEMA, RESOLUTION_SCHEMA
+from fastapi import APIRouter, Body, Depends, Response, status
+from firebase_admin import firestore
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
-from firebase_admin import firestore
-from typing import Union
 
-router = APIRouter(prefix="/proposal", dependencies=[Depends(validate_auth)])
+from api.auth import validate_auth
+from api.core import firestore_db
+from api.schema import PROPOSAL_SCHEMA, RESOLUTION_SCHEMA
+from api.utils.query import check_for_missing_ids, md5_dict, simplify_ops
+
+router: APIRouter = APIRouter(prefix="/proposal", dependencies=[Depends(validate_auth)])
 
 
 @router.post("")
 def create_proposal(response: Response, proposal: dict = Body(...)):
+    """Takes a proposal JSON and enters in the database. Returns a human readable confirmation"""
     try:
         validate(proposal, PROPOSAL_SCHEMA)
     except ValidationError as e:
@@ -38,7 +39,8 @@ def create_proposal(response: Response, proposal: dict = Body(...)):
 
 
 @router.get("")
-def get_proposals(status: str = None):
+def get_proposals(status: str | None = None):
+    """Returns all proposals or those of a specific status type"""
     if status:
         proposals = (
             firestore_db.collection("proposals").where("status", "==", status).get()
@@ -50,6 +52,7 @@ def get_proposals(status: str = None):
 
 @router.get("/{proposal_id}")
 def get_proposal(proposal_id: str):
+    """Takes an ID and returns the corresponding proposal"""
     proposal = firestore_db.collection("proposals").document(proposal_id).get()
     return proposal.to_dict()
 
@@ -58,6 +61,7 @@ def get_proposal(proposal_id: str):
 def resolve_proposal(
     response: Response, proposal_id: str, resolution: dict = Body(...)
 ):
+    """Takes a proposal ID and resolution JSON and returns the outcome"""
     try:
         validate(resolution, RESOLUTION_SCHEMA)
     except ValidationError as e:
@@ -104,7 +108,7 @@ def resolve_proposal(
         curation_collection,
         knowledge_collection,
         operations: list,
-    ) -> Union[str, None]:
+    ) -> dict[str, str] | None:
         tagsets: dict = {}
         refs: dict = {}
 
@@ -151,6 +155,7 @@ def resolve_proposal(
         # Do all the writes
         for target, proposed_op in tagsets.items():
             transaction.set(refs[target], {"tags": list(proposed_op)}, merge=True)
+        return None
 
     try:
         proposal_result = apply_proposal(

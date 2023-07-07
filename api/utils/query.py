@@ -1,11 +1,12 @@
-from url_normalize import url_normalize
-from base64 import b64encode
-import re
 import json
+import re
+from base64 import b64encode
 from hashlib import md5
-from typing import Dict, Any
-from api.core import typesense_db, firestore_db
-from config import *
+from typing import Any
+
+
+from api import config
+from api.core import firestore_db, typesense_db
 
 
 def encode_url(string):
@@ -30,7 +31,7 @@ def query(query: str, page: int, per_page: int) -> dict:
         "query_by_weights": "3, 2, 1",
         "sort_by": "rank:desc,_text_match:desc",
         "highlight_full_fields": "title,tags",
-        "highlight_affix_num_tokens": HIGHLIGHT_AFFIX_NUM_TOKENS,
+        "highlight_affix_num_tokens": config.HIGHLIGHT_AFFIX_NUM_TOKENS,
         "per_page": per_page,
         "page": page,
     }
@@ -142,7 +143,7 @@ def check_for_missing_ids(proposal: dict) -> list:
     return [x for x in ids if x not in found]
 
 
-def md5_dict(dictionary: Dict[str, Any]) -> str:
+def md5_dict(dictionary: dict[str, Any]) -> str:
     """MD5 hash of a dictionary."""
     dhash = md5()
     encoded = json.dumps(dictionary, sort_keys=True).encode()

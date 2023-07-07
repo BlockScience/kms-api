@@ -1,39 +1,57 @@
 import { useState, useEffect } from 'preact/hooks'
-import axios from 'axios'
 import { useAuth0 } from '@auth0/auth0-react'
 import { api, auth0 } from '@/config'
 
 interface ApiOptions {
   method?: string
-  defer?: boolean
   data?: object
+  stream?: boolean
+  /** If true, call will happen on first call to update() instead of immediately. */
+  defer?: boolean
+  onResult?: (result: any) => void
+  onResultStream?: (result: any) => void
 }
 
 // TODO: Add caching to this hook
-
 /**
  * Securely calls an API endpoint with the given options.
- * @param endpoint the endpoint to call
+ * If the endpoint is null, the call will not be made. This is the same as setting deferred to true.
+ * @param endpoint the endpoint to call.
  * @param options set options like method, body, etc.
  */
 export function useApi(endpoint: string, options?: ApiOptions) {
-  const method = options?.method || 'GET'
-  const data = options?.data || {}
-  let defer = options?.defer || false
-
   const { getAccessTokenSilently } = useAuth0()
-  const [result, setResult] = useState()
-  const [loading, setLoading] = useState(false)
-  const [loaded, setLoaded] = useState(false)
-  const [error, setError] = useState()
-  const [refreshIndex, setRefreshIndex] = useState(0)
 
-  const refresh = () => {
-    defer = false
-    setRefreshIndex(refreshIndex + 1)
+  const method = options?.method || 'GET'
+  const [_deferred, setDeferred] = useState(options?.defer || false)
+  const [_endpoint, setEndpoint] = useState(endpoint)
+  const [data, setData] = useState(options?.data || null)
+  const [stream, setStream] = useState(options?.stream || false)
+  const [loading, setLoading] = useState(false)
+  const [result, setResult] = useState(null)
+  const [result_stream, setResultStream] = useState(null)
+  const [error, setError] = useState(null)
+
+  const update = (data: object, endpoint: string = _endpoint) => {
+    setData(data)
+    if (_endpoint !== endpoint) setEndpoint(endpoint)
+    console.log('updating', data, endpoint, _endpoint)
+
+    setDeferred(false)
   }
 
   useEffect(() => {
+    if (!result || error) return
+    if (options?.onResult) options.onResult(result)
+  }, [result])
+
+  useEffect(() => {
+    if (!result_stream || error) return
+    if (options?.onResultStream) options.onResultStream(result_stream)
+  }, [result_stream])
+
+  useEffect(() => {
+    if (_deferred || !_endpoint) return
     const getToken = async () => {
       try {
         const accessToken = await getAccessTokenSilently({
@@ -50,45 +68,60 @@ export function useApi(endpoint: string, options?: ApiOptions) {
 
     const getData = async () => {
       const token = await getToken()
-      axios({
+      const url = `${api.url}${_endpoint}`
+
+      if (method == 'GET' && data) {
+        console.error(`Attempting to send GET request with body: ${data} to ${url}`)
+      }
+
+      const resp = await fetch(url, {
         method: method,
-        url: `${api.url}${endpoint}`,
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
-        data: data,
-        withCredentials: true,
+        body: data ? JSON.stringify(data) : null,
       })
-        .then((r) => {
-          if (!cancelled) {
-            setResult(r.data)
+
+      if (stream) {
+        const reader = resp.body.getReader()
+
+        setResultStream([])
+
+        for (;;) {
+          const { value, done } = await reader.read()
+          const decoder = new TextDecoder('utf-8')
+
+          if (done) {
+            // TODO: setResult after streaming is complete
             setLoading(false)
-            setLoaded(true)
+            break
           }
-        })
-        .catch((error) => {
-          setLoading(false)
-          if (error.response) {
-            setError(error.response.data)
-          } else {
-            setError(error.message)
+
+          if (value) {
+            const data = decoder.decode(value, { stream: true })
+            setResultStream((array) => [...array, data])
           }
-        })
-    }
+        }
+      } else {
+        const resp_json = await resp.json()
+        setResult(resp_json)
+        setLoading(false)
+      }
 
-    let cancelled = false
-    if (defer) {
-      setResult(null)
-      setLoading(false)
-      setLoaded(false)
-    } else {
-      setLoading(true)
-      getData()
+      // .catch((error) => {
+      //   setLoading(false)
+      //   if (error.response) {
+      //     setError(error.response.data)
+      //   } else {
+      //     setError(error.message)
+      //   }
+      // })
     }
-    return () => {
-      cancelled = true
-    }
-  }, [getAccessTokenSilently, endpoint, refreshIndex])
+    setLoading(true)
+    getData()
+    console.log('calling api', _endpoint)
+  }, [getAccessTokenSilently, _endpoint, data, _deferred])
 
-  return { result, loading, loaded, error, refresh, setResult }
+  return { result, result_stream, loading, error, update }
 }

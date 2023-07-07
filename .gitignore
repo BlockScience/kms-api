@@ -1,4 +1,3 @@
-__pycache__
 *.pyc
 .venv
 api_keys.json
@@ -15,15 +14,13 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-
 node_modules
 dist
 dist-ssr
 *.local
 local/
 # Editor directories and files
-.vscode/*
-!.vscode/extensions.json
+.vscode/
 .idea
 .DS_Store
 *.suo
@@ -32,7 +29,12 @@ local/
 *.sln
 *.sw?
 
+# Our stuff
 .vite/
 .certs/
 .python-version
 .env
+__pycache__
+.pytest_cache
+.mypy_cache
+.ruff_cache

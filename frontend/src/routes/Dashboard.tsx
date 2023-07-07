@@ -5,13 +5,12 @@ import StatsGrid from '@/components/StatsGrid'
 import { LogTable } from '@/components/LogTable'
 import { TagSpan } from '@/components/TagSpan'
 import TagSet from '@/components/TagSet'
-import AreaChart from '@/components/AreaChart'
 
 export default function Dashboard() {
   return (
     <div>
       <SetTitle text='Dashboard' />
-      <Box maw={1000} mx='auto'>
+      <Box maw={1200} mx='auto'>
         <PageTitle>Dashboard</PageTitle>
         <Stack>
           <StatsGrid
@@ -44,7 +43,6 @@ export default function Dashboard() {
           />
           <TagSet label='Tags in schema' data={['foo', 'bar', 'baz']} />
           <TagSet label='Tags in schema & knowledgebase' data={['foo', 'bar', 'baz']} />
-          <AreaChart />
           <LogTable
             data={[
               {

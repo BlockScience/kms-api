@@ -1,17 +1,23 @@
 from fastapi import APIRouter, Depends
-from api.core import firestore_db
-from api.auth import validate_auth
 
-router = APIRouter(prefix="/meta", dependencies=[Depends(validate_auth)])
+from api.auth import validate_auth
+from api.core import firestore_db
+from api.utils.profile import profile
+
+router: APIRouter = APIRouter(prefix="/meta", dependencies=[Depends(validate_auth)])
 
 
 @router.get("/schema")
+@profile
 def get_schema():
-    return firestore_db.collection("meta").document("schema").get().get("markdown")
+    """Returns the human readable schema stored in the database"""
+    schema = firestore_db.collection("meta").document("schema").get().get("markdown")
+    return schema
 
 
 @router.get("/tagsets")
 def get_tagsets():
+    """Returns a list of tagsets computed from the database"""
     schema = set(
         firestore_db.collection("meta")
         .document("tagsets")
@@ -36,6 +42,7 @@ def get_tagsets():
 
 @router.get("/curation_stats")
 def get_curation_stats():
+    """Returns the curation statistics from the database"""
     scores = (
         firestore_db.collection("meta").document("curation_statistics").get().to_dict()
     )

@@ -1,0 +1,7 @@
+bashplotlib
+InstructorEmbedding~=1.0.1
+progress~=1.6
+pytest
+python-dotenv
+sentence_transformers
+torch

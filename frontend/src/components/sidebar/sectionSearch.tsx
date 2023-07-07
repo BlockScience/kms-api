@@ -40,7 +40,12 @@ export default function Search({ fullwidth }: { fullwidth: boolean }) {
     return (
       <NavTooltip label='Search'>
         <Center>
-          <ActionIcon size={30} onMouseDown={handleSearch} variant='default'>
+          <ActionIcon
+            size={30}
+            onClick={handleSearch}
+            variant='default'
+            sx={{ svg: { pointerEvents: 'none' } }}
+          >
             <IconSearch size={px('1rem')} />
           </ActionIcon>
         </Center>

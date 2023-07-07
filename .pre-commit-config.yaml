@@ -1,0 +1,52 @@
+default_language_version:
+  python: python3.11
+repos:
+  # TYPESCRIPT
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: "v8.44.0"
+    hooks:
+      - id: eslint
+        files: \.[t]sx?$ # *.ts and *.tsx
+        types: [file]
+        args: [--quiet]
+
+  - repo: local
+    hooks:
+      - id: typescript-typecheck
+        name: TypeScript Typecheck
+        language: system
+        entry: npm --prefix frontend run typecheck
+        files: \.[t]sx?$
+        pass_filenames: false
+
+  # PYTHON
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+      - id: check-byte-order-marker
+      - id: check-case-conflict
+      - id: check-json
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+      - id: check-ast
+      - id: debug-statements
+      - id: detect-private-key
+      - id: check-added-large-files
+      - id: requirements-txt-fixer
+      - id: sort-simple-yaml
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.4.1
+    hooks:
+      - id: mypy
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.0.276
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+
+  - repo: https://github.com/psf/black
+    rev: 23.3.0
+    hooks:
+      - id: black

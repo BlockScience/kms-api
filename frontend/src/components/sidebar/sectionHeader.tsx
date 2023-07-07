@@ -3,7 +3,6 @@ import {
   ActionIcon,
   useMantineColorScheme,
   Box,
-  rem,
   Text,
   createStyles,
   Center,
@@ -13,9 +12,10 @@ import {
 } from '@mantine/core'
 import { IconSun, IconMoonStars, IconX, IconMenu2 } from '@tabler/icons-react'
 import { NavLink } from 'react-router-dom'
-import LogoLight from '@/assets/images/logoLight'
-import LogoDark from '@/assets/images/logoDark'
+import LogoLight from '@/assets/images/bsci_glyph_light.svg'
+import LogoDark from '@/assets/images/bsci_glyph_dark.svg'
 import { NavTooltip } from './Tooltip'
+import { KMS_VERSION } from '@/config'
 
 const useStyles = createStyles((theme) => ({
   logoText: {
@@ -39,11 +39,13 @@ export function Header({ fullwidth, onToggle }: { fullwidth?: boolean; onToggle(
   const { colorScheme, toggleColorScheme } = useMantineColorScheme()
   const { classes } = useStyles()
   const theme = useMantineTheme()
-  const kmsVersion = 1.1
 
-  const logoIcon = () => {
-    return colorScheme === 'dark' ? <LogoLight /> : <LogoDark />
+  const Icon = () => {
+    const width = px('2.2rem')
+    const dark = colorScheme === 'dark'
+    return <img src={dark ? LogoLight : LogoDark} width={width} />
   }
+
   const DarkmodeButton = (
     <ActionIcon
       id='tour-toggleDarkmode'
@@ -74,12 +76,12 @@ export function Header({ fullwidth, onToggle }: { fullwidth?: boolean; onToggle(
       <Group position='apart' className={classes.box}>
         <NavLink to='/' style={{ textDecoration: 'none' }}>
           <Group>
-            {logoIcon()}
+            <Icon />
             <Text className={classes.logoText} td='none'>
               KMS{' '}
               <Center inline>
                 <Text span inherit fz='sm' c='dimmed'>
-                  v{kmsVersion}
+                  {KMS_VERSION}
                 </Text>
               </Center>
             </Text>
@@ -96,7 +98,7 @@ export function Header({ fullwidth, onToggle }: { fullwidth?: boolean; onToggle(
     return (
       <Box className={classes.box}>
         <Stack align='center'>
-          <NavLink to='/'>{logoIcon}</NavLink>
+          <NavLink to='/'>{Icon}</NavLink>
           <NavTooltip label='Expand Sidebar'>{SidebarToggler}</NavTooltip>
           <NavTooltip label='Toggle Dark Mode'>{DarkmodeButton}</NavTooltip>
         </Stack>

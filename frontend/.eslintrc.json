@@ -19,6 +19,9 @@
   "settings": {
     "import/resolver": {
       "typescript": {}
+    },
+    "react": {
+      "version": "detect"
     }
   },
   "rules": {
@@ -37,6 +40,9 @@
     "spaced-comment": 2,
     "react/react-in-jsx-scope": 0,
     "react/no-unescaped-entities": 0,
-    "@typescript-eslint/no-empty-function": 0
+    "@typescript-eslint/no-empty-function": 0,
+    "warnOnUnsupportedTypeScriptVersion": 0,
+    "no-control-regex": 0,
+    "@typescript-eslint/ban-ts-comment": 0
   }
 }

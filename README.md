@@ -1,6 +1,7 @@
 # KMS API
 
-This is the repository for the Knowledge Management System API. It is currently in the process of being refactored from the old pipeline and contains endpoint for creating, reading, updating, deleting, and querying knowledge objects from the FireStore database.
+This is the repository for the Knowledge Management System API. It is currently in the process of being refactored from the old pipeline and contains endpoint for creating, reading, updating, deleting, and querying knowledge objects from the FireStore database.  
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 # Setup
 ## API Backend
@@ -39,7 +40,7 @@ Run `python setup.py` to generate your local config file and update settings.
 Edit `config.py` to reflect your system configuration, most common change will be `PROJECT_PATH` which should point to where this repo was clone, most likely your home directory.
 
 ### For Development
-For local testing, you can execute `python -m kms_api` to run a server on `localhost:8000`. You can also run `python -m generate_key` to create an API key for testing.
+For local testing, you can execute `python -m api` to run a server on `localhost:8000`. You can also run `python -m generate_key` to create an API key for testing.
 
 If you want to run the full stack development server, you will need to set `DOMAIN = 'localhost'` in `config.py`, create a self-signed certificate for HTTPS, and set `SSL_CERT_PATH` and `SSL_KEY_PATH` in `config.py`. You can follow the rest of the steps for production, starting at running `python setup.py` again.
 
@@ -93,6 +94,21 @@ npm run dev
 ```bash
 npm run build
 ```
+
+### Contributing
+We are using pre-commit hooks in aid of a clean and consistent codebase. For hooks to run automatically you can run 
+```bash
+pre-commit install
+```
+You can also run it manually with
+```bash
+pre-commit run --all-files
+```
+### Used Ports
+- 8000: API Backend
+- 3000: Frontend Dev Server
+- 7000: Chroma Embeddings Server
+
 
 ## Making configuration changes
 

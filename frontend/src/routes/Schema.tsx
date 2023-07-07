@@ -9,13 +9,13 @@ import { TagSpan } from '@/components/TagSpan'
 import { common } from '@/components/typography/overrides'
 
 export default function Schema() {
-  const { result, loaded } = useApi('/meta/schema')
+  const { result, loading, error } = useApi('/meta/schema')
   const preprocess = (s: string) =>
     s.replace(/:([a-zA-Z0-9-_]*?)(?=\s|$)/g, '<schemaTag>$1</schemaTag>')
   return (
     <div>
       <SetTitle text='Schema' />
-      <Box maw={1000} mx='auto'>
+      <Box maw={1200} mx='auto'>
         <Group position='apart'>
           <PageTitle>Schema</PageTitle>
           <Button
@@ -29,7 +29,7 @@ export default function Schema() {
           </Button>
         </Group>
         <Stack>
-          {loaded ? (
+          {result ? (
             <Markdown
               options={{
                 overrides: {
@@ -40,8 +40,10 @@ export default function Schema() {
             >
               {preprocess(result)}
             </Markdown>
-          ) : (
+          ) : loading ? (
             Paragraphs([5, 3, 3])
+          ) : (
+            error && 'Error loading schema'
           )}
         </Stack>
       </Box>
