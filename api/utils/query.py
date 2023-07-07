@@ -4,8 +4,7 @@ from base64 import b64encode
 from hashlib import md5
 from typing import Any
 
-
-from api import config
+from config import HIGHLIGHT_AFFIX_NUM_TOKENS
 from api.core import firestore_db, typesense_db
 
 
@@ -31,7 +30,7 @@ def query(query: str, page: int, per_page: int) -> dict:
         "query_by_weights": "3, 2, 1",
         "sort_by": "rank:desc,_text_match:desc",
         "highlight_full_fields": "title,tags",
-        "highlight_affix_num_tokens": config.HIGHLIGHT_AFFIX_NUM_TOKENS,
+        "highlight_affix_num_tokens": HIGHLIGHT_AFFIX_NUM_TOKENS,
         "per_page": per_page,
         "page": page,
     }
