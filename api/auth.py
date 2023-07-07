@@ -63,11 +63,8 @@ async def validate_jwt(
 
 
 async def validate_auth(api_key=Depends(validate_key), token=Depends(validate_jwt)):
-    if not (api_key or token):
-        return True
-        # raise HTTPException(
-        #     status_code=403, detail="Missing authorization"
-        # )
+    if not (token or api_key):
+        raise HTTPException(status_code=403, detail="Missing authorization")
 
 
 if __name__ == "__main__":

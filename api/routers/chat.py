@@ -45,8 +45,7 @@ def get_chats(user_id: str):
 async def get_chat_response(
     user_id: str, chat_id: str, response: Response, body: dict = Body(...)
 ):
-    """Takes a user ID, chat ID, and a request body and returns a response to that prompt"""
-    """Returns a stream of tokens as they are generated"""
+    """Takes a user ID, chat ID, and a request body and returns a stream of tokens as they are generated."""
     """body must include a "prompt" key with a string value"""
     """body may optionally include an "options" key which conforms to the CHAT_OPTIONS_SCHEMA"""
     try:
