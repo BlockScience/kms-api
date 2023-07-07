@@ -5,29 +5,27 @@ from typesense.exceptions import ObjectNotFound, RequestMalformed
 
 from api.auth import validate_auth
 from api.core import firestore_db
-from api.schema import KNOWLEDGE_SCHEMA, QUERY_SCHEMA
+from api.schema import KOBJ_SCHEMA, QUERY_SCHEMA
 from api.utils.query import encode_url, query, search_typesense
 from api.utils.profile import profile
 from url_normalize import url_normalize
 
-router: APIRouter = APIRouter(prefix="/object", dependencies=[Depends(validate_auth)])
+router: APIRouter = APIRouter(prefix="/objects", dependencies=[Depends(validate_auth)])
 
 
 @router.post("")
-def create_knowledge(response: Response, knowledge: dict = Body(...)):
+def create_object(response: Response, kobj: dict = Body(...)):
     """Takes a knowledge object and enters it into the database. Returns the new object ID"""
     try:
-        validate(knowledge, KNOWLEDGE_SCHEMA)
+        validate(kobj, KOBJ_SCHEMA)
     except ValidationError as e:
         response.status_code = status.HTTP_400_BAD_REQUEST
         return {"message": e.message}
 
-    url_normalized = url_normalize(knowledge["url"])
+    url_normalized = url_normalize(kobj["url"])
     url_encoded = encode_url(url_normalized)
 
-    firestore_db.collection("knowledge").document(url_encoded).set(
-        knowledge, merge=True
-    )
+    firestore_db.collection("knowledge").document(url_encoded).set(kobj, merge=True)
 
     return {"status": "success", "id": url_encoded}
 
@@ -50,14 +48,13 @@ def typesense_query(response: Response, query: dict = Body(...)):
 
 
 @router.get("/{object_id}")
-def get_knowledge(object_id: str):
+def get_object(object_id: str):
     """Takes a knowledge object ID and returns the object"""
-    kobj = firestore_db.collection("knowledge").document(object_id).get()
-    return kobj.to_dict()
+    return firestore_db.collection("knowledge").document(object_id).get().to_dict()
 
 
 @router.get("")
-def query_knowledge(q: str, page: int = 1, per_page: int = 15):
+def query_objects(q: str, page: int = 1, per_page: int = 15):
     """Takes a query string and returns the matching objects"""
     if q == "":
         return {"status": "failure", "error": "missing query param: q"}
@@ -65,7 +62,7 @@ def query_knowledge(q: str, page: int = 1, per_page: int = 15):
 
 
 @router.put("/{object_id}")
-def update_knowledge(object_id: str, knowledge: dict = Body(...)):
+def update_object(object_id: str, knowledge: dict = Body(...)):
     """Takes an object ID and fields to update in the database"""
     # no validation here, may be need in the future
     firestore_db.collection("knowledge").document(object_id).set(knowledge, merge=True)
@@ -73,7 +70,7 @@ def update_knowledge(object_id: str, knowledge: dict = Body(...)):
 
 
 @router.delete("/{object_id}")
-def delete_knowledge(object_id: str):
+def delete_object(object_id: str):
     """Takes an object ID and deletes that object from the database"""
     firestore_db.collection("knowledge").document(object_id).delete()
     return {"status": "success"}

@@ -1,4 +1,4 @@
-KNOWLEDGE_SCHEMA = {
+KOBJ_SCHEMA = {
     "type": "object",
     "properties": {
         "url": {"type": "string"},
