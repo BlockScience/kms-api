@@ -37,7 +37,11 @@ export default function LLMChat() {
   })
 
   // Get response to a prompt (result is response str) - call is deferred
-  const { loading: getPromptLoading, update: getPromptResponse } = useApi(null, {
+  const {
+    result_stream: getPromptResponseStream,
+    loading: getPromptLoading,
+    update: getPromptResponse,
+  } = useApi(null, {
     method: 'POST',
     defer: true,
     stream: true,
@@ -133,7 +137,7 @@ export default function LLMChat() {
               </>
             ))}
             {currentPrompt && <Chat.Message user='orion'>{currentPrompt}</Chat.Message>}
-            {getPromptLoading && (
+            {getPromptLoading && !getPromptResponseStream && (
               <Chat.Message isResponse>
                 <Loader variant='dots' />
               </Chat.Message>
