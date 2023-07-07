@@ -24,7 +24,21 @@ def profile(func):
         print(
             f"{color_by_calltime(f'PERF:     {func_name}', t)} {color_by_calltime(f'{round(t,2)}s', t, ['bold'])}"
         )
+        return result
 
+    return wrapper
+
+
+def profile_async(func):
+    @wraps(func)
+    async def wrapper(*args, **kwargs):
+        start_time = time.perf_counter()
+        result = await func(*args, **kwargs)
+        t = time.perf_counter() - start_time
+        func_name = func.__name__
+        print(
+            f"{color_by_calltime(f'PERF:     {func_name}', t)} {color_by_calltime(f'{round(t,2)}s', t, ['bold'])}"
+        )
         return result
 
     return wrapper
