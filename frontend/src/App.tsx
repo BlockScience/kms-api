@@ -2,7 +2,7 @@ import 'preact/debug' // Must be the first import
 import { render } from 'preact'
 import { AppShell, Box, ScrollArea } from '@mantine/core'
 import { Routes, Route, BrowserRouter, Outlet } from 'react-router-dom'
-import { ThemeProvider, SpotlightProvider, Auth0RedirectProvider } from '@/components/providers'
+import { ThemeProvider, Auth0RedirectProvider } from '@/components/providers'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import lazy from 'preact-lazy'
 
@@ -10,6 +10,7 @@ import { Sidebar } from '@/components/sidebar'
 import { Notifications } from '@mantine/notifications'
 import { Shortcuts } from '@/components/Shortcuts'
 import { AuthRequired } from '@/components/ProtectedRoute'
+import { Spotlight } from '@/components/spotlight'
 
 const Home = lazy(() => import('@/routes/Home'))
 const Dashboard = lazy(() => import('@/routes/Dashboard'))
@@ -53,7 +54,7 @@ function App() {
 function Protected() {
   return (
     <QueryClientProvider client={queryClient}>
-      <SpotlightProvider>
+      <Spotlight>
         <Shortcuts />
         <Notifications />
         <AppShell padding={0} fixed navbar={<Sidebar />}>
@@ -74,7 +75,7 @@ function Protected() {
             <Route path='*' Component={NotFound} />
           </Routes>
         </AppShell>
-      </SpotlightProvider>
+      </Spotlight>
     </QueryClientProvider>
   )
 }
