@@ -46,17 +46,21 @@ const tourSteps = [
     target: '#tour-searchInput',
     content: (
       <>
-        <Text align='left' pb={8}>
+        <Text align='left' pb='xs'>
           The <i>spotlight</i> interface is where all searches start — it's the command center of
-          KMS.
+          KMS. If you want to search the knowledgebase simply write your search and hit{' '}
+          <Kbd>Enter</Kbd>
         </Text>
-        <Text align='left' pb={8}>
-          The <Kbd>/</Kbd> key will open spotlight from anywhere in the app. If you want to search
-          the knowledgebase simply write your search and hit <Kbd>Enter</Kbd>
+        <Text align='left' pb='sm'>
+          <Kbd>/</Kbd> will open spotlight with an empty input from anywhere in the app.
+        </Text>
+        <Text align='left' pb='sm'>
+          <Kbd>Alt</Kbd> + <Kbd>/</Kbd> or typing <Kbd>{'?'}</Kbd> will let you run complex queries
+          to filter, sort and group results.
         </Text>
         <Text align='left'>
-          Typing <Code>'{'>'}'</Code> or hitting <ModKey /> + <Kbd>K</Kbd> lets you run various
-          commands and shortcuts so you can interact with KMS efficiently, all from your keyboard.
+          <Kbd>Shift</Kbd> + <Kbd>/</Kbd> or typing <Kbd>{'>'}</Kbd> will let you run various
+          commands so you can interact with KMS efficiently, all from your keyboard.
         </Text>
       </>
     ),
