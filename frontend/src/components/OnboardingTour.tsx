@@ -14,6 +14,7 @@ import {
   useMantineTheme,
   px,
   Kbd,
+  Code,
 } from '@mantine/core'
 import {
   IconLayoutDashboard,
@@ -21,6 +22,7 @@ import {
   IconMessages,
   IconBinaryTree2,
   IconNotification,
+  IconTimeline,
 } from '@tabler/icons-react'
 
 const tourSteps = [
@@ -44,12 +46,17 @@ const tourSteps = [
     target: '#tour-searchInput',
     content: (
       <>
-        <Text align='left'>
-          Search is as simple as hitting the search bar and entering your query.
+        <Text align='left' pb={8}>
+          The <i>spotlight</i> interface is where all searches start — it's the command center of
+          KMS.
+        </Text>
+        <Text align='left' pb={8}>
+          The <Kbd>/</Kbd> key will open spotlight from anywhere in the app. If you want to search
+          the knowledgebase simply write your search and hit <Kbd>Enter</Kbd>
         </Text>
         <Text align='left'>
-          You can also hit <Kbd>/</Kbd> or <ModKey /> + <Kbd>K</Kbd> to open the search/command
-          dialogue.
+          Typing <Code>'{'>'}'</Code> or hitting <ModKey /> + <Kbd>K</Kbd> lets you run various
+          commands and shortcuts so you can interact with KMS efficiently, all from your keyboard.
         </Text>
       </>
     ),
@@ -100,7 +107,7 @@ const tourSteps = [
           <List.Item
             icon={
               <ThemeIcon color='gray' size={24} radius='xl'>
-                <IconNotification size={px('1rem')} />
+                <IconTimeline size={px('1rem')} />
               </ThemeIcon>
             }
           >
@@ -119,7 +126,7 @@ const tourSteps = [
             <Text span fw={700}>
               Chat
             </Text>{' '}
-            is a natural language interface to KMS just like chatGPT.
+            is a natural language (LLM) interface to KMS
           </List.Item>
         </List>
       </Text>

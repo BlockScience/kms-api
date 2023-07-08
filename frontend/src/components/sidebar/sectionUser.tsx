@@ -40,7 +40,7 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-export default function User({ fullwidth }: { fullwidth: boolean }) {
+export default function User({ expanded }: { expanded: boolean }) {
   const { classes } = useStyles()
   const theme = useMantineTheme()
   const { user, isAuthenticated, isLoading, logout, loginWithRedirect } = useAuth0()
@@ -146,12 +146,16 @@ export default function User({ fullwidth }: { fullwidth: boolean }) {
     )
   }
 
-  const collapsed = isLoading
+  const sidebarCollapsed = isLoading
     ? loadingCompact
     : !isAuthenticated
     ? loginCompact
     : userLoggedInSmall()
-  const expanded = isLoading ? loadingWide : !isAuthenticated ? loginWide : userLoggedInLarge()
+  const sidebarExpanded = isLoading
+    ? loadingWide
+    : !isAuthenticated
+    ? loginWide
+    : userLoggedInLarge()
 
-  return <Box>{fullwidth ? expanded : collapsed}</Box>
+  return <Box>{expanded ? sidebarExpanded : sidebarCollapsed}</Box>
 }

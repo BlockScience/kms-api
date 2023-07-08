@@ -5,7 +5,7 @@ import type { VNode } from 'preact'
 
 interface NavLinkStyle {
   active?: boolean
-  fullwidth?: boolean
+  expanded?: boolean
 }
 
 interface BaseLinkProps {
@@ -13,7 +13,7 @@ interface BaseLinkProps {
   color: string
   label: string
   active?: boolean
-  fullwidth?: boolean
+  expanded?: boolean
   id?: string
 }
 interface InternalLinkProps extends BaseLinkProps {
@@ -58,10 +58,10 @@ export default function Navigation({
   path,
   href,
   active,
-  fullwidth,
+  expanded,
   ...props
 }: NavigationProps) {
-  const { classes } = navLinkStyles({ active, fullwidth })
+  const { classes } = navLinkStyles({ active, expanded })
   const navigate = useNavigate()
   const handleNavigate = (event: MouseEvent) => {
     if (event.button === 0) {
@@ -71,13 +71,13 @@ export default function Navigation({
   }
 
   return (
-    <NavTooltip label={label} disable={fullwidth}>
+    <NavTooltip label={label} disable={expanded}>
       <UnstyledButton className={classes.button} onMouseDown={handleNavigate} id={props.id}>
-        <Group position={fullwidth ? 'left' : 'center'}>
+        <Group position={expanded ? 'left' : 'center'}>
           <ThemeIcon color={color} variant='light' className={classes.icon}>
             {icon}
           </ThemeIcon>
-          {fullwidth && (
+          {expanded && (
             <Text size='sm' className={classes.label}>
               {label}
             </Text>

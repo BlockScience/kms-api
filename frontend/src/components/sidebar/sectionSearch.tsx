@@ -1,17 +1,9 @@
-import { ActionIcon, Center, Kbd, TextInput, createStyles, px } from '@mantine/core'
+import { ActionIcon, Center, Kbd, TextInput, px } from '@mantine/core'
 import { useSpotlight } from '@/components/mantine-spotlight'
 import { IconSearch } from '@tabler/icons-react'
 import { NavTooltip } from './Tooltip'
 
-const useStyles = createStyles((theme) => ({
-  searchInputShortcut: {
-    color: theme.colorScheme === 'dark' ? theme.colors.gray[1] : theme.colors.gray[7],
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[2],
-  },
-}))
-
-export default function Search({ fullwidth }: { fullwidth: boolean }) {
-  const { classes } = useStyles()
+export default function Search({ expanded }: { expanded: boolean }) {
   const spotlight = useSpotlight()
   const handleSearch = (e: MouseEvent) => {
     if (e.target instanceof HTMLElement) {
@@ -20,7 +12,7 @@ export default function Search({ fullwidth }: { fullwidth: boolean }) {
       spotlight.openSpotlight()
     }
   }
-  const searchFullwidth = () => {
+  const searchExpanded = () => {
     return (
       <TextInput
         id='tour-searchInput'
@@ -33,7 +25,7 @@ export default function Search({ fullwidth }: { fullwidth: boolean }) {
       />
     )
   }
-  const searchSmall = () => {
+  const searchCollapsed = () => {
     return (
       <NavTooltip label='Search'>
         <Center>
@@ -51,5 +43,5 @@ export default function Search({ fullwidth }: { fullwidth: boolean }) {
     )
   }
 
-  return fullwidth ? searchFullwidth() : searchSmall()
+  return expanded ? searchExpanded() : searchCollapsed()
 }

@@ -82,7 +82,7 @@ const useStyles = createStyles((theme) => ({
     paddingTop: theme.spacing.lg,
     justifyContent: 'space-between',
 
-    '#navbarDivider': {
+    '#sidebarDivider': {
       width: '3px',
       right: '-1px', // should be -((width/2)-0.5)
       position: 'absolute',
@@ -103,33 +103,34 @@ const useStyles = createStyles((theme) => ({
 
 export function Sidebar() {
   const location = useLocation().pathname
-  const [expanded, setExpanded] = useLocalStorage<boolean>({
-    key: 'sidebar-prefer-expanded',
-    defaultValue: true,
-    getInitialValueInEffect: true,
-  })
-
-  const toggle = () => setExpanded((v) => !v)
+  const { classes } = useStyles()
   const theme = useMantineTheme()
   const bigScreen = useMediaQuery(`(min-width: ${theme.breakpoints.sm})`)
-  const fullWidthNav = bigScreen ? expanded : false
-  const { classes } = useStyles()
+  const toggle = () => setprefersExpanded((v) => !v)
+  const [prefersExpanded, setprefersExpanded] = useLocalStorage<boolean>({
+    key: 'sidebar-prefer-expanded',
+    defaultValue: true,
+    getInitialValueInEffect: false,
+  })
+
+  // Override preference if screen is small
+  const expandedState = bigScreen ? prefersExpanded : false
 
   return (
-    <Box id='navbarContainer' className={classes.container}>
-      <Stack spacing='xs' className={classes.stack} w={expanded ? 280 : 70}>
-        <Box id='navbarDivider' className='tour-toggleSidebar' onClick={toggle} />
+    <Box className={classes.container}>
+      <Stack spacing='xs' className={classes.stack} w={expandedState ? 280 : 70}>
+        <Box id='sidebarDivider' className='tour-toggleSidebar' onClick={toggle} />
         <Stack spacing='xs'>
-          <Header fullwidth={fullWidthNav} onToggle={toggle} />
+          <Header expanded={expandedState} onToggle={toggle} />
           <Divider />
-          <Search fullwidth={fullWidthNav} />
+          <Search expanded={expandedState} />
           <Stack className='tour-navInternal' spacing={0}>
             {upperNavigation.map((link) => (
               <Navigation
                 {...link}
                 key={link.label}
                 active={link.path === location}
-                fullwidth={fullWidthNav}
+                expanded={expandedState}
               />
             ))}
           </Stack>
@@ -141,12 +142,12 @@ export function Sidebar() {
                 {...link}
                 key={link.label}
                 active={link.path === location}
-                fullwidth={fullWidthNav}
+                expanded={expandedState}
               />
             ))}
           </Stack>
           <Divider />
-          <User fullwidth={fullWidthNav} />
+          <User expanded={expandedState} />
         </Stack>
       </Stack>
     </Box>

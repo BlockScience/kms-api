@@ -35,7 +35,7 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-export function Header({ fullwidth, onToggle }: { fullwidth?: boolean; onToggle(): void }) {
+export function Header({ expanded, onToggle }: { expanded?: boolean; onToggle(): void }) {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme()
   const { classes } = useStyles()
   const theme = useMantineTheme()
@@ -68,10 +68,10 @@ export function Header({ fullwidth, onToggle }: { fullwidth?: boolean; onToggle(
       size={30}
       color={theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[7]}
     >
-      {fullwidth ? <IconX size={px('1rem')} /> : <IconMenu2 size={px('1rem')} />}
+      {expanded ? <IconX size={px('1rem')} /> : <IconMenu2 size={px('1rem')} />}
     </ActionIcon>
   )
-  const wideHeader = () => {
+  const headerExpanded = () => {
     return (
       <Group position='apart' className={classes.box}>
         <NavLink to='/' style={{ textDecoration: 'none' }}>
@@ -94,7 +94,7 @@ export function Header({ fullwidth, onToggle }: { fullwidth?: boolean; onToggle(
       </Group>
     )
   }
-  const narrowHeader = () => {
+  const headerCollapsed = () => {
     return (
       <Box className={classes.box}>
         <Stack align='center'>
@@ -105,5 +105,5 @@ export function Header({ fullwidth, onToggle }: { fullwidth?: boolean; onToggle(
       </Box>
     )
   }
-  return fullwidth ? wideHeader() : narrowHeader()
+  return expanded ? headerExpanded() : headerCollapsed()
 }
