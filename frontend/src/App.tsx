@@ -8,7 +8,6 @@ import lazy from 'preact-lazy'
 
 import { Sidebar } from '@/components/sidebar'
 import { Notifications } from '@mantine/notifications'
-import { OnboardingTour } from '@/components/OnboardingTour'
 import { Shortcuts } from '@/components/Shortcuts'
 import { AuthRequired } from '@/components/ProtectedRoute'
 
@@ -45,7 +44,6 @@ function App() {
       <Auth0RedirectProvider>
         <ThemeProvider>
           <AuthRequired component={Protected} />
-          {/* <Protected /> */}
         </ThemeProvider>
       </Auth0RedirectProvider>
     </BrowserRouter>
@@ -56,7 +54,6 @@ function Protected() {
   return (
     <QueryClientProvider client={queryClient}>
       <SpotlightProvider>
-        <OnboardingTour />
         <Shortcuts />
         <Notifications />
         <AppShell padding={0} fixed navbar={<Sidebar />}>

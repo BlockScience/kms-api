@@ -19,7 +19,6 @@ export default defineConfig({
   ],
   assetsInclude: ['**/*.md'],
   server: {
-    host: '0.0.0.0',
     port: 3000,
     strictPort: true,
   },

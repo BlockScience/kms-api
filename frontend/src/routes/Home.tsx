@@ -15,6 +15,7 @@ import {
 import { IconListSearch, IconMathSymbols, IconTerminal2, IconWallOff } from '@tabler/icons-react'
 import { trigger, SetTitle } from '@/utils'
 import { useNavigate } from 'react-router-dom'
+import { OnboardingTour } from '@/components/OnboardingTour'
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -58,6 +59,7 @@ export default function Home() {
   const color = theme.colors.blue[theme.primaryShade['light']]
   return (
     <>
+      <OnboardingTour />
       <SetTitle text='KMS' noPrefix />
       <Box maw={1000} mx='auto'>
         <Container>
