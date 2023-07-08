@@ -11,9 +11,10 @@ import {
   Anchor,
   Box,
   useMantineTheme,
+  Kbd,
 } from '@mantine/core'
 import { IconListSearch, IconMathSymbols, IconTerminal2, IconWallOff } from '@tabler/icons-react'
-import { trigger, SetTitle } from '@/utils'
+import { trigger, SetTitle, ModKey } from '@/utils'
 import { useNavigate } from 'react-router-dom'
 import { OnboardingTour } from '@/components/OnboardingTour'
 
@@ -84,8 +85,10 @@ export default function Home() {
 
               <List mt={30} spacing='sm' size='sm'>
                 <List.Item icon={<IconListSearch stroke={1.5} color={color} />}>
-                  <b>Search-based UX</b> — just hit <Code color='gray'>/</Code> to start searching.
-                  No knowledge required.
+                  <b>Search-based UX</b> — just hit <Kbd>/</Kbd> to start searching, no knowledge
+                  required. By starting a search with a <Code>{'>'}</Code> or hitting <ModKey /> +{' '}
+                  <Kbd>K</Kbd> you'll see various commands and shortcuts which let you interact with
+                  KMS efficiently, all from your keyboard.
                 </List.Item>
                 <List.Item icon={<IconMathSymbols stroke={1.5} color={color} />}>
                   <b>Powerful query system</b> — searches can be filtered, sorted, and grouped with

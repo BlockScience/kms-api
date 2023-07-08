@@ -136,7 +136,7 @@ export function Sidebar() {
   return (
     <Box id='navbarContainer' className={classes.container}>
       <Stack spacing='xs' className={classes.stack} w={expanded ? 280 : 70}>
-        <Box id='navbarDivider' onClick={toggle} />
+        <Box id='navbarDivider' className='tour-toggleSidebar' onClick={toggle} />
         <Stack spacing='xs'>
           <Header fullwidth={fullWidthNav} onToggle={toggle} />
           <Divider />

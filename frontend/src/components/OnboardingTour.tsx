@@ -1,6 +1,6 @@
 import Joyride, { ACTIONS, EVENTS, STATUS, TooltipRenderProps, CallBackProps } from 'react-joyride'
 import { useState } from 'preact/hooks'
-import { on } from '@/utils'
+import { ModKey, on } from '@/utils'
 import {
   Box,
   Title,
@@ -9,11 +9,11 @@ import {
   Text,
   Group,
   rem,
-  Code,
   ThemeIcon,
   List,
   useMantineTheme,
   px,
+  Kbd,
 } from '@mantine/core'
 import {
   IconLayoutDashboard,
@@ -48,8 +48,8 @@ const tourSteps = [
           Search is as simple as hitting the search bar and entering your query.
         </Text>
         <Text align='left'>
-          You can also hit <Code color='gray'>/</Code> or <Code color='gray'>CTRL/CMD + P</Code> to
-          open the search dialogue.
+          You can also hit <Kbd>/</Kbd> or <ModKey /> + <Kbd>K</Kbd> to open the search/command
+          dialogue.
         </Text>
       </>
     ),
@@ -156,7 +156,7 @@ const tourSteps = [
   {
     title: 'Collapsing the sidebar',
     target: '.tour-toggleSidebar',
-    content: <Text align='left'>If you prefer more space you can toggle the sidebar here.</Text>,
+    content: <Text align='left'>Collapse or expand the sidebar by clicking the divider here.</Text>,
     disableBeacon: true,
   },
 ]
