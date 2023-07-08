@@ -6,8 +6,9 @@ export function Shortcuts() {
   const spotlight = useSpotlight()
 
   useHotkeys([
-    ['mod+K', () => spotlight.openSpotlightWithQuery('>')],
     ['/', () => spotlight.openSpotlightWithQuery('')],
+    ['shift+Slash', () => spotlight.openSpotlightWithQuery('> ')],
+    ['alt+Slash', () => spotlight.openSpotlightWithQuery('? ')],
   ])
   return <div />
 }

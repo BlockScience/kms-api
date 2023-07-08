@@ -291,7 +291,9 @@ export function Spotlight({ children }: SpotlightProps) {
           return actionsQuery
         } else if (isCommand) {
           return actions.filter((action) =>
-            action.title.toLowerCase().includes(removePrefix(query.toLowerCase(), commandPrefix)),
+            action.title
+              .toLowerCase()
+              .includes(removePrefix(query.toLowerCase(), commandPrefix).trim()),
           )
         } else {
           return actions.filter(
