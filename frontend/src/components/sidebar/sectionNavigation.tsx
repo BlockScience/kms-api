@@ -15,8 +15,6 @@ interface BaseLinkProps {
   active?: boolean
   fullwidth?: boolean
   id?: string
-  //* * Called after link has navigated or opened link */
-  onLinkActive?(): void
 }
 interface InternalLinkProps extends BaseLinkProps {
   path: string
@@ -61,7 +59,6 @@ export default function Navigation({
   href,
   active,
   fullwidth,
-  onLinkActive,
   ...props
 }: NavigationProps) {
   const { classes } = navLinkStyles({ active, fullwidth })
@@ -70,7 +67,6 @@ export default function Navigation({
     if (event.button === 0) {
       if (path) navigate(path)
       if (href) window.open(href, '_blank')
-      onLinkActive?.()
     }
   }
 

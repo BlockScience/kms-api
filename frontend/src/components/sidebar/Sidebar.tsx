@@ -14,7 +14,7 @@ import {
   IconMessages,
   IconTimeline,
 } from '@tabler/icons-react'
-import { useState } from 'preact/hooks'
+import { useLocation } from 'react-router-dom'
 const upperNavigation: NavigationProps[] = [
   {
     icon: <IconAlertCircle size={px('1rem')} />,
@@ -102,7 +102,7 @@ const useStyles = createStyles((theme) => ({
 }))
 
 export function Sidebar() {
-  const [activeView, setActive] = useState([null, null])
+  const location = useLocation().pathname
   const [expanded, setExpanded] = useLocalStorage<boolean>({
     key: 'sidebar-prefer-expanded',
     defaultValue: true,
@@ -115,24 +115,6 @@ export function Sidebar() {
   const fullWidthNav = bigScreen ? expanded : false
   const { classes } = useStyles()
 
-  const upperNavLinks = upperNavigation.map((link, index) => (
-    <Navigation
-      {...link}
-      key={link.label}
-      active={index === activeView[1]}
-      fullwidth={fullWidthNav}
-      onLinkActive={() => link.path && setActive([null, index])}
-    />
-  ))
-  const lowerNavLinks = lowerNavigation.map((link, index) => (
-    <Navigation
-      {...link}
-      key={link.label}
-      active={index === activeView[0]}
-      fullwidth={fullWidthNav}
-      onLinkActive={() => link.path && setActive([index, null])}
-    />
-  ))
   return (
     <Box id='navbarContainer' className={classes.container}>
       <Stack spacing='xs' className={classes.stack} w={expanded ? 280 : 70}>
@@ -142,12 +124,26 @@ export function Sidebar() {
           <Divider />
           <Search fullwidth={fullWidthNav} />
           <Stack className='tour-navInternal' spacing={0}>
-            {upperNavLinks}
+            {upperNavigation.map((link) => (
+              <Navigation
+                {...link}
+                key={link.label}
+                active={link.path === location}
+                fullwidth={fullWidthNav}
+              />
+            ))}
           </Stack>
         </Stack>
         <Stack spacing='xs'>
           <Stack className='tour-navExternal' spacing={0}>
-            {lowerNavLinks}
+            {lowerNavigation.map((link) => (
+              <Navigation
+                {...link}
+                key={link.label}
+                active={link.path === location}
+                fullwidth={fullWidthNav}
+              />
+            ))}
           </Stack>
           <Divider />
           <User fullwidth={fullWidthNav} />
