@@ -28,7 +28,7 @@ import {
 import { useEffect, useState } from 'preact/hooks'
 import { notifications } from '@mantine/notifications'
 import { VNode } from 'preact'
-import { parser } from '@/utils/parser'
+import { parser } from '@/parsers/parser-7'
 
 const useStyles = createStyles((theme) => ({
   action: {
@@ -183,6 +183,14 @@ export function Spotlight({ children }: SpotlightProps) {
       icon: <IconTerminal2 size={px('1.2rem')} />,
       onTrigger: () => {
         navigate('/experimental')
+      },
+    },
+    {
+      title: 'dev/PEG parser',
+      description: 'Test environment for the PEG parser',
+      icon: <IconTerminal2 size={px('1.2rem')} />,
+      onTrigger: () => {
+        navigate('/query-test')
       },
     },
     {
