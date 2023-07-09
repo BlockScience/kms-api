@@ -1,7 +1,7 @@
-import Navigation, { NavigationProps } from './sectionNavigation'
+import NavItem, { NavItemProps } from './sectionNavigation'
 import { Header } from './sectionHeader'
-import Search from './sectionSearch'
-import User from './sectionUser'
+import { Search } from './sectionSearch'
+import { User } from './sectionUser'
 import { Box, Divider, Stack, createStyles, px, useMantineTheme } from '@mantine/core'
 import { useLocalStorage, useMediaQuery } from '@mantine/hooks'
 import {
@@ -15,7 +15,8 @@ import {
   IconTimeline,
 } from '@tabler/icons-react'
 import { useLocation } from 'react-router-dom'
-const upperNavigation: NavigationProps[] = [
+
+const upperNavigation: NavItemProps[] = [
   {
     icon: <IconAlertCircle size={px('1rem')} />,
     color: 'teal',
@@ -24,31 +25,31 @@ const upperNavigation: NavigationProps[] = [
   },
   {
     icon: <IconLayoutDashboard size={px('1rem')} />,
-    color: 'blue',
+    color: 'cyan',
     label: 'Dashboard',
     path: '/dashboard',
   },
   {
     icon: <IconBinaryTree2 size={px('1rem')} />,
-    color: 'violet',
+    color: 'blue',
     label: 'Schema',
     path: '/schema',
   },
   {
     icon: <IconTimeline size={px('1rem')} />,
-    color: 'grape',
+    color: 'indigo',
     label: 'Activity',
     path: '/activity',
   },
   {
     icon: <IconMessages size={px('1rem')} />,
-    color: 'pink',
+    color: 'violet',
     label: 'Chat',
     path: '/chat',
   },
 ]
 
-const lowerNavigation: NavigationProps[] = [
+const lowerNavigation: NavItemProps[] = [
   {
     icon: <IconBrandSlack size={px('1rem')} />,
     color: 'gray',
@@ -95,7 +96,7 @@ const useStyles = createStyles((theme) => ({
       '&:hover': {
         backgroundColor: theme.colorScheme === 'dark' ? theme.colors.blue[8] : theme.colors.blue[3],
         transitionDelay: '0.2s',
-        cursor: 'pointer',
+        cursor: 'col-resize',
       },
     },
   },
@@ -114,40 +115,41 @@ export function Sidebar() {
   })
 
   // Override preference if screen is small
-  const expandedState = bigScreen ? prefersExpanded : false
+  const expanded = bigScreen ? prefersExpanded : false
 
   return (
     <Box className={classes.container}>
-      <Stack spacing='xs' className={classes.stack} w={expandedState ? 280 : 70}>
+      <Stack spacing='xs' className={classes.stack} w={expanded ? 280 : 70}>
         <Box id='sidebarDivider' className='tour-toggleSidebar' onClick={toggle} />
         <Stack spacing='xs'>
-          <Header expanded={expandedState} onToggle={toggle} />
+          <Header expanded={expanded} onToggle={toggle} />
           <Divider />
-          <Search expanded={expandedState} />
+          {expanded && <Search.Expanded />}
           <Stack className='tour-navInternal' spacing={0}>
             {upperNavigation.map((link) => (
-              <Navigation
+              <NavItem
                 {...link}
                 key={link.label}
                 active={link.path === location}
-                expanded={expandedState}
+                expanded={expanded}
               />
             ))}
+            {!expanded && <Search.Collapsed active={location === '/search'} />}
           </Stack>
         </Stack>
         <Stack spacing='xs'>
           <Stack className='tour-navExternal' spacing={0}>
             {lowerNavigation.map((link) => (
-              <Navigation
+              <NavItem
                 {...link}
                 key={link.label}
                 active={link.path === location}
-                expanded={expandedState}
+                expanded={expanded}
               />
             ))}
           </Stack>
           <Divider />
-          <User expanded={expandedState} />
+          <User expanded={expanded} />
         </Stack>
       </Stack>
     </Box>

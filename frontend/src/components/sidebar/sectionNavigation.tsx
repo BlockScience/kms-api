@@ -8,7 +8,7 @@ interface NavLinkStyle {
   expanded?: boolean
 }
 
-interface BaseLinkProps {
+interface BaseNavProps {
   icon: VNode
   color: string
   label: string
@@ -16,15 +16,22 @@ interface BaseLinkProps {
   expanded?: boolean
   id?: string
 }
-interface InternalLinkProps extends BaseLinkProps {
+interface InternalNavProps extends BaseNavProps {
   path: string
   href?: never
+  onAction?: never
 }
-interface ExternalLinkProps extends BaseLinkProps {
+interface ExternalNavProps extends BaseNavProps {
   path?: never
   href: string
+  onAction?: never
 }
-export type NavigationProps = InternalLinkProps | ExternalLinkProps
+interface ActionNavProps extends BaseNavProps {
+  path?: never
+  href?: never
+  onAction?: () => void
+}
+export type NavItemProps = ActionNavProps | InternalNavProps | ExternalNavProps
 
 const navLinkStyles = createStyles((theme, { active }: NavLinkStyle) => ({
   button: {
@@ -51,22 +58,24 @@ const navLinkStyles = createStyles((theme, { active }: NavLinkStyle) => ({
   },
 }))
 
-export default function Navigation({
+export default function NavItem({
   icon,
   color,
   label,
   path,
   href,
+  onAction,
   active,
   expanded,
   ...props
-}: NavigationProps) {
+}: NavItemProps) {
   const { classes } = navLinkStyles({ active, expanded })
   const navigate = useNavigate()
   const handleNavigate = (event: MouseEvent) => {
     if (event.button === 0) {
       if (path) navigate(path)
       if (href) window.open(href, '_blank')
+      if (onAction) onAction()
     }
   }
 

@@ -1,9 +1,9 @@
-import { ActionIcon, Center, Kbd, TextInput, px } from '@mantine/core'
+import { Kbd, TextInput, px } from '@mantine/core'
 import { useSpotlight } from '@/components/mantine-spotlight'
 import { IconSearch } from '@tabler/icons-react'
-import { NavTooltip } from './Tooltip'
+import NavItem from './sectionNavigation'
 
-export default function Search({ expanded }: { expanded: boolean }) {
+const SearchExpanded = () => {
   const spotlight = useSpotlight()
   const handleSearch = (e: MouseEvent) => {
     if (e.target instanceof HTMLElement) {
@@ -12,36 +12,41 @@ export default function Search({ expanded }: { expanded: boolean }) {
       spotlight.openSpotlight()
     }
   }
-  const searchExpanded = () => {
-    return (
-      <TextInput
-        id='tour-searchInput'
-        onMouseDown={handleSearch}
-        style={{ cursor: 'pointer' }}
-        placeholder='Search'
-        icon={<IconSearch size={px('1rem')} />}
-        rightSection={<Kbd>/</Kbd>}
-        styles={{ rightSection: { pointerEvents: 'none' } }}
-      />
-    )
-  }
-  const searchCollapsed = () => {
-    return (
-      <NavTooltip label='Search'>
-        <Center>
-          <ActionIcon
-            id='tour-searchInput'
-            size={30}
-            onClick={handleSearch}
-            variant='default'
-            sx={{ svg: { pointerEvents: 'none' } }}
-          >
-            <IconSearch size={px('1rem')} />
-          </ActionIcon>
-        </Center>
-      </NavTooltip>
-    )
-  }
+  return (
+    <TextInput
+      id='tour-searchInput'
+      onMouseDown={handleSearch}
+      style={{ cursor: 'pointer' }}
+      placeholder='Search'
+      icon={<IconSearch size={px('1rem')} />}
+      rightSection={<Kbd>/</Kbd>}
+      rightSectionWidth={27}
+      styles={{ rightSection: { pointerEvents: 'none' } }}
+    />
+  )
+}
 
-  return expanded ? searchExpanded() : searchCollapsed()
+const SearchCollapsed = ({ active }: { active: boolean }) => {
+  const spotlight = useSpotlight()
+  console.log('spotlight', active)
+
+  return (
+    <NavItem
+      icon={<IconSearch size={px('1rem')} />}
+      color='grape'
+      label='Search'
+      active={active}
+      onAction={() => spotlight.openSpotlight()}
+    />
+  )
+}
+
+type Search = {
+  Expanded: typeof SearchExpanded
+  Collapsed: typeof SearchCollapsed
+}
+
+export const Search: Search = {
+  Expanded: SearchExpanded,
+  Collapsed: SearchCollapsed,
 }

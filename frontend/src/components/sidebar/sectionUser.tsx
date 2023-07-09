@@ -40,7 +40,7 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-export default function User({ expanded }: { expanded: boolean }) {
+export function User({ expanded }: { expanded: boolean }) {
   const { classes } = useStyles()
   const theme = useMantineTheme()
   const { user, isAuthenticated, isLoading, logout, loginWithRedirect } = useAuth0()
@@ -87,7 +87,7 @@ export default function User({ expanded }: { expanded: boolean }) {
   )
   const userLoggedInSmall = () => {
     return (
-      <Stack spacing='md' pt='sm' p={0} justify='center' className={classes.base}>
+      <Stack spacing='md' mt='xs' p={0} justify='center' className={classes.base}>
         <Center>
           <NavTooltip label='Log Out'>
             <ActionIcon

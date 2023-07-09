@@ -10,7 +10,12 @@ import {
   Stack,
   px,
 } from '@mantine/core'
-import { IconSun, IconMoonStars, IconX, IconMenu2 } from '@tabler/icons-react'
+import {
+  IconSun,
+  IconMoonStars,
+  IconLayoutSidebarLeftCollapse,
+  IconLayoutSidebarLeftExpand,
+} from '@tabler/icons-react'
 import { NavLink } from 'react-router-dom'
 import LogoLight from '@/assets/images/bsci_glyph_light.svg'
 import LogoDark from '@/assets/images/bsci_glyph_dark.svg'
@@ -68,7 +73,11 @@ export function Header({ expanded, onToggle }: { expanded?: boolean; onToggle():
       size={30}
       color={theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[7]}
     >
-      {expanded ? <IconX size={px('1rem')} /> : <IconMenu2 size={px('1rem')} />}
+      {expanded ? (
+        <IconLayoutSidebarLeftCollapse size={px('1rem')} />
+      ) : (
+        <IconLayoutSidebarLeftExpand size={px('1rem')} />
+      )}
     </ActionIcon>
   )
   const headerExpanded = () => {
@@ -97,7 +106,7 @@ export function Header({ expanded, onToggle }: { expanded?: boolean; onToggle():
   const headerCollapsed = () => {
     return (
       <Box className={classes.box}>
-        <Stack align='center'>
+        <Stack align='center' spacing='xs' mb='xs'>
           <NavLink to='/'>{Icon}</NavLink>
           <NavTooltip label='Expand Sidebar'>{SidebarToggler}</NavTooltip>
           <NavTooltip label='Toggle Dark Mode'>{DarkmodeButton}</NavTooltip>
