@@ -1,8 +1,8 @@
 Expression
-  = OrExpression _
+  = AndExpression
 
 OrExpression
-  = head:AndExpression tail:(_ "|" _ AndExpression)* {
+  = head:AndExpression tail:(_ "|" _ AndExpression)* _ {
     return tail.reduce(function(result, element) {
       return { type: "or", left: result, right: element[3] };
     }, head);
@@ -17,31 +17,33 @@ AndExpression
 
 Atom
   = "(" _ expr:OrExpression _ ")" { return expr; }
-  / field:(NumberField / ArrayField / StringField)
+  / field:(NumberField / ListField / StringField)
 
 StringFields = "url" / "title" / "text" / "platform" / "type"
 ArrayFields = "tags"
 NumberFields = "rank" / "measure_text_length"
 
 StringField
-  = name:StringFields _ ColonSeparator _ value:(EqualityOperator / Term / List) 
-  { return { type: 'string', field: name, value }; }
+  = name:StringFields sep ColonSeparator _ value:(EqualityOperator / Term / List) 
+  { return { type: 'string_field', field: name, value }; }
 
-ArrayField
-  = name:ArrayFields _ ColonSeparator _ value:(EqualityOperator / Term / List) 
-  { return { type: 'array', field: name, value: Array.isArray(value) ? value : [value] }; }
+ListField
+  = name:ArrayFields sep value:(EqualityOperator / Term / List) 
+  { return { type: 'list_field', field: name, value: value }; }
 
 NumberField
-  = name:NumberFields _ ColonSeparator _ value:(EqualityOperator / ComparisonOperator / Range) 
-  { return { type: 'number', field: name, value }; }
+  = name:NumberFields _ value:(EqualityOperator / ComparisonOperator / Range) 
+  { return { type: 'number_field', field: name, value }; }
+  
+sep = wsep / EqualityOperator / List
 
 ComparisonOperator
-  = operator: ("<=" / ">=" / "<" / ">") _ number:Number 
-  { return { type: 'comparison', operator, value: number }; }
+  = op: ("<=" / ">=" / "<" / ">") _ number:Number 
+  { return { type: 'compare', op, value: number }; }
 
 EqualityOperator
   = type: "=" _ value:(Term / Number / List)
-  { return { type: 'comparison', operator: type, value }; }
+  { return { type: 'compare', op: type, value }; }
 
 Range "[min..max]"
   = "[" _ min:Number _ ".." _ max:Number _ "]" {
@@ -59,9 +61,12 @@ Number
   = digits:[0-9]+ { return Number(digits.join('')); }
 
 Term
-  = chars:[a-zA-Z_-]+ { return { type: 'term', value: chars.join('') }; }
+  = chars:[0-9a-zA-Z_-]+ { return { type: 'term', value: chars.join('') }; }
 
 _ "whitespace"
   = [ \t\n\r]*
+  
+wsep "whitespace"
+  = [ \t\n\r]
   
 ColonSeparator = ":"

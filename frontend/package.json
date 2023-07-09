@@ -9,7 +9,8 @@
     "typecheck": "tsc --noemit",
     "preview": "vite preview",
     "ts-prune": "ts-prune | grep -v '(used in module)'",
-    "peg": "node src/parsers/generate.js"
+    "peg": "node src/parsers/generate.js",
+    "peg-test": "node src/parsers/test.js"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.1.1",
