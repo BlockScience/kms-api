@@ -1,19 +1,22 @@
-FilterBy
-  = _ head:Condition tail:(_ "||" _ Condition)* _ {
+Expression
+  = OrExpression _
+
+OrExpression
+  = head:AndExpression tail:(_ "|" _ AndExpression)* {
     return tail.reduce(function(result, element) {
-      return { operator: "||", operands: [result, element[3]] };
+      return { type: "or", left: result, right: element[3] };
     }, head);
   }
 
-Condition
-  = head:SubCondition tail:(_ "&&" _ SubCondition)* {
+AndExpression
+  = head:Atom tail:(_ "&" _ Atom)* {
     return tail.reduce(function(result, element) {
-      return { operator: "&&", operands: [result, element[3]] };
+      return { type: "and", left: result, right: element[3] };
     }, head);
   }
 
-SubCondition
-  = "(" _ condition:FilterBy _ ")" { return condition; }
+Atom
+  = "(" _ expr:OrExpression _ ")" { return expr; }
   / field:(NumberField / ArrayField / StringField)
 
 StringFields = "url" / "title" / "text" / "platform" / "type"
@@ -21,42 +24,44 @@ ArrayFields = "tags"
 NumberFields = "rank" / "measure_text_length"
 
 StringField
-  = name:StringFields _ ":" _ value:(EqualityOperator / Identifier / List) 
-  { return { field: name, value }; }
+  = name:StringFields _ ColonSeparator _ value:(EqualityOperator / Term / List) 
+  { return { type: 'string', field: name, value }; }
 
 ArrayField
-  = name:ArrayFields _ ":" _ value:(EqualityOperator / Identifier / List) 
-  { return { field: name, value }; }
+  = name:ArrayFields _ ColonSeparator _ value:(EqualityOperator / Term / List) 
+  { return { type: 'array', field: name, value: Array.isArray(value) ? value : [value] }; }
 
 NumberField
-  = name:NumberFields _ ":" _ value:(EqualityOperator / ComparisonOperator / Range) 
-  { return { field: name, value }; }
+  = name:NumberFields _ ColonSeparator _ value:(EqualityOperator / ComparisonOperator / Range) 
+  { return { type: 'number', field: name, value }; }
 
 ComparisonOperator
-  = operator: ("<" / ">" / "<=" / ">=") _ number:Number 
-  { return { type: 'number', operator, value: Number(number.join('')) }; }
+  = operator: ("<=" / ">=" / "<" / ">") _ number:Number 
+  { return { type: 'comparison', operator, value: number }; }
 
 EqualityOperator
-  = operator: "=" _ value:(Identifier / Number / List)
-  { return { type: 'equality', operator, value: Array.isArray(value) ? value : value.join('') }; }
+  = type: "=" _ value:(Term / Number / List)
+  { return { type: 'comparison', operator: type, value }; }
 
 Range "[min..max]"
   = "[" _ min:Number _ ".." _ max:Number _ "]" {
-  return { type: 'number', range: { min: Number(min.join('')), max: Number(max.join('')) } }; }
+  return { type: 'range', min: Number(min.join('')), max: Number(max.join('')) }; }
 
 List
-  = "[" _ head:Identifier tail:(_ "," _ Identifier)* _ "]" 
+  = "[" _ head:Term tail:(_ "," _ Term)* _ "]" 
   { 
     const tails = tail.map(x => x[3])
-    const values = [head].concat(tails).map(x => x.join(''))
-    return values;
+    const values = [head].concat(tails)
+    return { type: 'list', values };
   }
 
 Number
-  = [0-9]+
+  = digits:[0-9]+ { return Number(digits.join('')); }
 
-Identifier
-  = chars:[a-zA-Z_-]+ { return chars; }
+Term
+  = chars:[a-zA-Z_-]+ { return { type: 'term', value: chars.join('') }; }
 
 _ "whitespace"
   = [ \t\n\r]*
+  
+ColonSeparator = ":"
