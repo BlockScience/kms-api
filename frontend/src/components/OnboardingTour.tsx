@@ -1,6 +1,6 @@
 import Joyride, { ACTIONS, EVENTS, STATUS, TooltipRenderProps, CallBackProps } from 'react-joyride'
 import { useState } from 'preact/hooks'
-import { on } from '@/utils'
+import { ModKey, on } from '@/utils'
 import {
   Box,
   Title,
@@ -9,11 +9,12 @@ import {
   Text,
   Group,
   rem,
-  Code,
   ThemeIcon,
   List,
   useMantineTheme,
   px,
+  Kbd,
+  Code,
 } from '@mantine/core'
 import {
   IconLayoutDashboard,
@@ -21,6 +22,7 @@ import {
   IconMessages,
   IconBinaryTree2,
   IconNotification,
+  IconTimeline,
 } from '@tabler/icons-react'
 
 const tourSteps = [
@@ -44,12 +46,21 @@ const tourSteps = [
     target: '#tour-searchInput',
     content: (
       <>
-        <Text align='left'>
-          Search is as simple as hitting the search bar and entering your query.
+        <Text align='left' pb='xs'>
+          The <i>spotlight</i> interface is where all searches start — it's the command center of
+          KMS. If you want to search the knowledgebase simply write your search and hit{' '}
+          <Kbd>Enter</Kbd>
+        </Text>
+        <Text align='left' pb='sm'>
+          <Kbd>/</Kbd> will open spotlight with an empty input from anywhere in the app.
+        </Text>
+        <Text align='left' pb='sm'>
+          <Kbd>Alt</Kbd> <Kbd>/</Kbd> or typing <Kbd>{'?'}</Kbd> will let you run complex queries to
+          filter, sort and group results.
         </Text>
         <Text align='left'>
-          You can also hit <Code color='gray'>/</Code> or <Code color='gray'>CTRL/CMD + P</Code> to
-          open the search dialogue.
+          <Kbd>Shift</Kbd> <Kbd>/</Kbd> or typing <Kbd>{'>'}</Kbd> will let you run various commands
+          so you can interact with KMS efficiently, all from your keyboard.
         </Text>
       </>
     ),
@@ -100,7 +111,7 @@ const tourSteps = [
           <List.Item
             icon={
               <ThemeIcon color='gray' size={24} radius='xl'>
-                <IconNotification size={px('1rem')} />
+                <IconTimeline size={px('1rem')} />
               </ThemeIcon>
             }
           >
@@ -119,7 +130,7 @@ const tourSteps = [
             <Text span fw={700}>
               Chat
             </Text>{' '}
-            is a natural language interface to KMS just like chatGPT.
+            is a natural language (LLM) interface to KMS
           </List.Item>
         </List>
       </Text>
@@ -156,7 +167,7 @@ const tourSteps = [
   {
     title: 'Collapsing the sidebar',
     target: '.tour-toggleSidebar',
-    content: <Text align='left'>If you prefer more space you can toggle the sidebar here.</Text>,
+    content: <Text align='left'>Collapse or expand the sidebar by clicking the divider here.</Text>,
     disableBeacon: true,
   },
 ]
@@ -244,7 +255,7 @@ export function OnboardingTour() {
       callback={handleJoyrideCallback}
       run={state.run}
       scrollToFirstStep
-      disableOverlayClose
+      // disableOverlayClose
       spotlightClicks
       locale={{
         back: 'Back',

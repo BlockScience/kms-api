@@ -1,9 +1,9 @@
 import Chat from '@/components/Conversation'
+import { Layout } from '@/components/Layout'
 import { SplitButton } from '@/components/SplitButton'
-import { useApi } from '@/hooks/useApi'
-import { SetTitle } from '@/utils'
+import { useApi } from '@/hooks'
 import { useAuth0 } from '@auth0/auth0-react'
-import { Box, Group, Loader, Select, Stack, Title } from '@mantine/core'
+import { Loader, Select } from '@mantine/core'
 import { useEffect, useState } from 'preact/hooks'
 
 export default function LLMChat() {
@@ -82,72 +82,67 @@ export default function LLMChat() {
   }
 
   return (
-    <div>
-      <SetTitle text='Chat' />
-      <Box maw={1200} mx='auto'>
-        <Stack spacing='xs'>
-          <Group mt={30} position='apart' align='start'>
-            <Title m={0} p={0} order={2}>
-              Chat
-            </Title>
-            <Group>
-              <Select
-                placeholder='Mode'
-                data={[
-                  { value: 'conversational', label: 'Conversational' },
-                  { value: 'agentic', label: 'Agentic' },
-                ]}
-                defaultValue='conversational'
-              />
-              <Select
-                data={[
-                  { value: 'general', label: 'General Embeddings' },
-                  { value: 'none', label: 'None' },
-                ]}
-                defaultValue='general'
-              />
-              <SplitButton
-                label='Previous Chats'
-                onSelect={handleChatSelect}
-                onNew={handleChatNew}
-                items={
-                  previousChats &&
-                  previousChats.length > 0 &&
-                  previousChats.map((id) => [id, `Chat #${id}`])
-                }
-              />
-            </Group>
-          </Group>
-          <Chat
-            height='80vh'
-            onSubmit={handlePromptSubmit}
-            startLabel={
-              getChatHistoryLoading ? (
-                <Loader variant='dots' />
-              ) : currentChatId ? (
-                `start of conversation #${currentChatId}`
-              ) : (
-                'start of new conversation'
-              )
+    <Layout.Simple
+      title='Chat'
+      dividerLabel=''
+      rightSection={
+        <>
+          <Select
+            placeholder='Mode'
+            data={[
+              { value: 'conversational', label: 'Conversational' },
+              { value: 'agentic', label: 'Agentic' },
+            ]}
+            defaultValue='conversational'
+          />
+          <Select
+            data={[
+              { value: 'general', label: 'General Embeddings' },
+              { value: 'none', label: 'None' },
+            ]}
+            defaultValue='general'
+          />
+          <SplitButton
+            label='Previous Chats'
+            onSelect={handleChatSelect}
+            onNew={handleChatNew}
+            items={
+              previousChats &&
+              previousChats.length > 0 &&
+              previousChats.map((id) => [id, `Chat #${id}`])
             }
-          >
-            {localChatHistory.map(([prompt, response], i) => (
-              <>
-                <Chat.Message user={userId} key={i}>
-                  {prompt}
-                </Chat.Message>
-                <Chat.Message isResponse>{response}</Chat.Message>
-              </>
-            ))}
-            {currentPrompt && <Chat.Message user={userId}>{currentPrompt}</Chat.Message>}
-            {getPromptLoading && !getPromptResponseStream && (
-              <Chat.Message isResponse>
-                <Loader variant='dots' />
-              </Chat.Message>
-            )}
-          </Chat>
-        </Stack>
-      </Box>
-    </div>
+          />
+        </>
+      }
+    >
+      <Chat
+        height='75vh'
+        onSubmit={handlePromptSubmit}
+        startLabel={
+          getChatHistoryLoading ? (
+            <Loader variant='dots' />
+          ) : currentChatId ? (
+            `start of conversation #${currentChatId}`
+          ) : (
+            'start of new conversation'
+          )
+        }
+      >
+        {localChatHistory.map(([prompt, response], i) => (
+          <>
+            <Chat.Message user={userId} key={i}>
+              {prompt}
+            </Chat.Message>
+            <Chat.Message isResponse>{response}</Chat.Message>
+          </>
+        ))}
+        {currentPrompt && <Chat.Message user={userId}>{currentPrompt}</Chat.Message>}
+        {getPromptLoading && !getPromptResponseStream && (
+          <Chat.Message isResponse>
+            <Loader variant='dots' />
+          </Chat.Message>
+        )}
+      </Chat>
+    </Layout.Simple>
   )
 }

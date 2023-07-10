@@ -1,7 +1,7 @@
-import Navigation, { NavigationProps } from './sectionNavigation'
+import NavItem, { NavItemProps } from './sectionNavigation'
 import { Header } from './sectionHeader'
-import Search from './sectionSearch'
-import User from './sectionUser'
+import { Search } from './sectionSearch'
+import { User } from './sectionUser'
 import { Box, Divider, Stack, createStyles, px, useMantineTheme } from '@mantine/core'
 import { useLocalStorage, useMediaQuery } from '@mantine/hooks'
 import {
@@ -14,8 +14,9 @@ import {
   IconMessages,
   IconTimeline,
 } from '@tabler/icons-react'
-import { useState } from 'preact/hooks'
-const upperNavigation: NavigationProps[] = [
+import { useLocation } from 'react-router-dom'
+
+const upperNavigation: NavItemProps[] = [
   {
     icon: <IconAlertCircle size={px('1rem')} />,
     color: 'teal',
@@ -24,31 +25,31 @@ const upperNavigation: NavigationProps[] = [
   },
   {
     icon: <IconLayoutDashboard size={px('1rem')} />,
-    color: 'blue',
+    color: 'cyan',
     label: 'Dashboard',
     path: '/dashboard',
   },
   {
     icon: <IconBinaryTree2 size={px('1rem')} />,
-    color: 'violet',
+    color: 'blue',
     label: 'Schema',
     path: '/schema',
   },
   {
     icon: <IconTimeline size={px('1rem')} />,
-    color: 'grape',
+    color: 'indigo',
     label: 'Activity',
     path: '/activity',
   },
   {
     icon: <IconMessages size={px('1rem')} />,
-    color: 'pink',
+    color: 'violet',
     label: 'Chat',
     path: '/chat',
   },
 ]
 
-const lowerNavigation: NavigationProps[] = [
+const lowerNavigation: NavItemProps[] = [
   {
     icon: <IconBrandSlack size={px('1rem')} />,
     color: 'gray',
@@ -82,7 +83,7 @@ const useStyles = createStyles((theme) => ({
     paddingTop: theme.spacing.lg,
     justifyContent: 'space-between',
 
-    '#navbarDivider': {
+    '#sidebarDivider': {
       width: '3px',
       right: '-1px', // should be -((width/2)-0.5)
       position: 'absolute',
@@ -95,62 +96,60 @@ const useStyles = createStyles((theme) => ({
       '&:hover': {
         backgroundColor: theme.colorScheme === 'dark' ? theme.colors.blue[8] : theme.colors.blue[3],
         transitionDelay: '0.2s',
-        cursor: 'pointer',
+        cursor: 'col-resize',
       },
     },
   },
 }))
 
 export function Sidebar() {
-  const [activeView, setActive] = useState([null, null])
-  const [expanded, setExpanded] = useLocalStorage<boolean>({
-    key: 'sidebar-prefer-expanded',
-    defaultValue: true,
-    getInitialValueInEffect: true,
-  })
-
-  const toggle = () => setExpanded((v) => !v)
+  const location = useLocation().pathname
+  const { classes } = useStyles()
   const theme = useMantineTheme()
   const bigScreen = useMediaQuery(`(min-width: ${theme.breakpoints.sm})`)
-  const fullWidthNav = bigScreen ? expanded : false
-  const { classes } = useStyles()
+  const toggle = () => setprefersExpanded((v) => !v)
+  const [prefersExpanded, setprefersExpanded] = useLocalStorage<boolean>({
+    key: 'sidebar-prefer-expanded',
+    defaultValue: true,
+    getInitialValueInEffect: false,
+  })
 
-  const upperNavLinks = upperNavigation.map((link, index) => (
-    <Navigation
-      {...link}
-      key={link.label}
-      active={index === activeView[1]}
-      fullwidth={fullWidthNav}
-      onLinkActive={() => link.path && setActive([null, index])}
-    />
-  ))
-  const lowerNavLinks = lowerNavigation.map((link, index) => (
-    <Navigation
-      {...link}
-      key={link.label}
-      active={index === activeView[0]}
-      fullwidth={fullWidthNav}
-      onLinkActive={() => link.path && setActive([index, null])}
-    />
-  ))
+  // Override preference if screen is small
+  const expanded = bigScreen ? prefersExpanded : false
+
   return (
-    <Box id='navbarContainer' className={classes.container}>
+    <Box className={classes.container}>
       <Stack spacing='xs' className={classes.stack} w={expanded ? 280 : 70}>
-        <Box id='navbarDivider' onClick={toggle} />
+        <Box id='sidebarDivider' className='tour-toggleSidebar' onClick={toggle} />
         <Stack spacing='xs'>
-          <Header fullwidth={fullWidthNav} onToggle={toggle} />
+          <Header expanded={expanded} onToggle={toggle} />
           <Divider />
-          <Search fullwidth={fullWidthNav} />
+          {expanded && <Search.Expanded />}
           <Stack className='tour-navInternal' spacing={0}>
-            {upperNavLinks}
+            {upperNavigation.map((link) => (
+              <NavItem
+                {...link}
+                key={link.label}
+                active={link.path === location}
+                expanded={expanded}
+              />
+            ))}
+            {!expanded && <Search.Collapsed active={location === '/search'} />}
           </Stack>
         </Stack>
         <Stack spacing='xs'>
           <Stack className='tour-navExternal' spacing={0}>
-            {lowerNavLinks}
+            {lowerNavigation.map((link) => (
+              <NavItem
+                {...link}
+                key={link.label}
+                active={link.path === location}
+                expanded={expanded}
+              />
+            ))}
           </Stack>
           <Divider />
-          <User fullwidth={fullWidthNav} />
+          <User expanded={expanded} />
         </Stack>
       </Stack>
     </Box>

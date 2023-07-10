@@ -12,7 +12,7 @@ interface ProposalProps {
 export function CurationProposal(proposal: ProposalProps) {
   const theme = useMantineTheme()
   return (
-    <Paper shadow='sm' p='sm' withBorder radius='md'>
+    <Paper p='sm' withBorder radius='md'>
       <Group position='apart'>
         <Group>
           <Title order={5}>{proposal.title}</Title>
@@ -37,7 +37,7 @@ export function CurationProposal(proposal: ProposalProps) {
             </Group>
           )}
           {proposal.status === 'approved' && (
-            <Text color='green' fw={500}>
+            <Text size='sm' color='green' fw={500}>
               Approved{' '}
               <Text
                 span
@@ -49,7 +49,7 @@ export function CurationProposal(proposal: ProposalProps) {
             </Text>
           )}
           {proposal.status === 'rejected' && (
-            <Text color='red' fw={500}>
+            <Text size='sm' color='red' fw={500}>
               Rejected{' '}
               <Text
                 span

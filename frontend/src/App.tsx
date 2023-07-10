@@ -1,16 +1,17 @@
 import 'preact/debug' // Must be the first import
 import { render } from 'preact'
-import { AppShell, Box, ScrollArea } from '@mantine/core'
-import { Routes, Route, BrowserRouter, Outlet } from 'react-router-dom'
-import { ThemeProvider, SpotlightProvider, Auth0RedirectProvider } from '@/components/providers'
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
-import lazy from 'preact-lazy'
+import { AppShell } from '@mantine/core'
+import { Routes, Route, BrowserRouter } from 'react-router-dom'
+import { ThemeProvider, Auth0RedirectProvider } from '@/components/providers'
 
 import { Sidebar } from '@/components/sidebar'
 import { Notifications } from '@mantine/notifications'
 import { Shortcuts } from '@/components/Shortcuts'
 import { AuthRequired } from '@/components/ProtectedRoute'
+import { Spotlight } from '@/components/spotlight'
+import { PaddedShell } from '@/components/PaddedShell'
 
+import lazy from 'preact-lazy'
 const Home = lazy(() => import('@/routes/Home'))
 const Dashboard = lazy(() => import('@/routes/Dashboard'))
 const Governance = lazy(() => import('@/routes/Governance'))
@@ -23,20 +24,6 @@ const NotFound = lazy(() => import('@/routes/NotFound'))
 const Documentation = lazy(() => import('@/routes/Documentation'))
 const Graph = lazy(() => import('@/routes/Graph'))
 const QueryTest = lazy(() => import('@/routes/QueryTest'))
-
-const queryClient = new QueryClient()
-
-const DefaultShell = () => {
-  return (
-    // TODO: Replace with custom scroll area
-    // @ts-ignore
-    <ScrollArea h='100vh'>
-      <Box p='md'>
-        <Outlet />
-      </Box>
-    </ScrollArea>
-  )
-}
 
 function App() {
   return (
@@ -52,30 +39,28 @@ function App() {
 
 function Protected() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <SpotlightProvider>
-        <Shortcuts />
-        <Notifications />
-        <AppShell padding={0} fixed navbar={<Sidebar />}>
-          <Routes>
-            <Route element={<DefaultShell />}>
-              <Route path='/' Component={Home} />
-              <Route path='/governance' Component={Governance} />
-              <Route path='/dashboard' Component={Dashboard} />
-              <Route path='/schema' Component={Schema} />
-              <Route path='/activity' Component={Activity} />
-              <Route path='/search' Component={Search} />
-              <Route path='/settings' Component={Settings} />
-              <Route path='/chat' Component={LLMChat} />
-              <Route path='/query-test' Component={QueryTest} />
-            </Route>
-            <Route path='/experimental' Component={Graph} />
-            <Route path='/docs' Component={Documentation} />
-            <Route path='*' Component={NotFound} />
-          </Routes>
-        </AppShell>
-      </SpotlightProvider>
-    </QueryClientProvider>
+    <Spotlight>
+      <Shortcuts />
+      <Notifications />
+      <AppShell padding={0} fixed navbar={<Sidebar />}>
+        <Routes>
+          <Route element={<PaddedShell />}>
+            <Route path='/' Component={Home} />
+            <Route path='/governance' Component={Governance} />
+            <Route path='/dashboard' Component={Dashboard} />
+            <Route path='/schema' Component={Schema} />
+            <Route path='/activity' Component={Activity} />
+            <Route path='/search' Component={Search} />
+            <Route path='/settings' Component={Settings} />
+            <Route path='/chat' Component={LLMChat} />
+            <Route path='/query-test' Component={QueryTest} />
+          </Route>
+          <Route path='/graph' Component={Graph} />
+          <Route path='/docs' Component={Documentation} />
+          <Route path='*' Component={NotFound} />
+        </Routes>
+      </AppShell>
+    </Spotlight>
   )
 }
 

@@ -5,28 +5,33 @@ import type { VNode } from 'preact'
 
 interface NavLinkStyle {
   active?: boolean
-  fullwidth?: boolean
+  expanded?: boolean
 }
 
-interface BaseLinkProps {
+interface BaseNavProps {
   icon: VNode
   color: string
   label: string
   active?: boolean
-  fullwidth?: boolean
+  expanded?: boolean
   id?: string
-  //* * Called after link has navigated or opened link */
-  onLinkActive?(): void
 }
-interface InternalLinkProps extends BaseLinkProps {
+interface InternalNavProps extends BaseNavProps {
   path: string
   href?: never
+  onAction?: never
 }
-interface ExternalLinkProps extends BaseLinkProps {
+interface ExternalNavProps extends BaseNavProps {
   path?: never
   href: string
+  onAction?: never
 }
-export type NavigationProps = InternalLinkProps | ExternalLinkProps
+interface ActionNavProps extends BaseNavProps {
+  path?: never
+  href?: never
+  onAction?: () => void
+}
+export type NavItemProps = ActionNavProps | InternalNavProps | ExternalNavProps
 
 const navLinkStyles = createStyles((theme, { active }: NavLinkStyle) => ({
   button: {
@@ -53,35 +58,35 @@ const navLinkStyles = createStyles((theme, { active }: NavLinkStyle) => ({
   },
 }))
 
-export default function Navigation({
+export default function NavItem({
   icon,
   color,
   label,
   path,
   href,
+  onAction,
   active,
-  fullwidth,
-  onLinkActive,
+  expanded,
   ...props
-}: NavigationProps) {
-  const { classes } = navLinkStyles({ active, fullwidth })
+}: NavItemProps) {
+  const { classes } = navLinkStyles({ active, expanded })
   const navigate = useNavigate()
   const handleNavigate = (event: MouseEvent) => {
     if (event.button === 0) {
       if (path) navigate(path)
       if (href) window.open(href, '_blank')
-      onLinkActive?.()
+      if (onAction) onAction()
     }
   }
 
   return (
-    <NavTooltip label={label} disable={fullwidth}>
+    <NavTooltip label={label} disable={expanded}>
       <UnstyledButton className={classes.button} onMouseDown={handleNavigate} id={props.id}>
-        <Group position={fullwidth ? 'left' : 'center'}>
+        <Group position={expanded ? 'left' : 'center'}>
           <ThemeIcon color={color} variant='light' className={classes.icon}>
             {icon}
           </ThemeIcon>
-          {fullwidth && (
+          {expanded && (
             <Text size='sm' className={classes.label}>
               {label}
             </Text>
