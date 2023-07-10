@@ -1,10 +1,10 @@
-import { useEffect } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
 import { useApi } from '@/hooks'
 import { useSearchParams, useNavigate, createSearchParams } from 'react-router-dom'
 
 import { IconSearch } from '@tabler/icons-react'
 import { CardsSkeleton } from '@/components/Skeleton'
-import { Anchor, Center, Container, Pagination, Text, TextInput } from '@mantine/core'
+import { Anchor, Container, Title, Pagination, Text, TextInput, Stack } from '@mantine/core'
 import { Layout } from '@/components/Layout'
 import { KObjectCards } from './KObjectCard'
 import { useLocalStorage } from '@mantine/hooks'
@@ -22,19 +22,6 @@ const QUERY_DEFAULTS = {
 }
 
 const RESULT_LOADING = <>{CardsSkeleton([100, 120, 80, 100, 130, 150, 100])}</>
-const RESULT_ERROR = (
-  <Center>
-    <Text>
-      Something went wrong. If the issue persists please <Anchor>file a bug report.</Anchor>
-    </Text>
-  </Center>
-)
-
-const RESULT_NONE = (
-  <Center>
-    <Text>No results found</Text>
-  </Center>
-)
 
 // -------- INTERFACES -------- //
 interface TypesenseQuery {
@@ -79,6 +66,8 @@ export interface KObjectProps {
   text: string | JSX.Element
 }
 
+type SearchResultState = 'loading' | 'error' | 'results' | 'none'
+
 // ----------- HELPERS ----------- //
 const createSearchSummary = (response: TypesenseResponse) => {
   const totalResults = response.found
@@ -91,8 +80,8 @@ const createSearchSummary = (response: TypesenseResponse) => {
 
 export default function Search() {
   const navigate = useNavigate()
-  const [searchParams] = useSearchParams()
-  const currentQuery = searchParams.get('q')
+  const currentQuery = useSearchParams()[0].get('q')
+  const [searchState, setSearchState] = useState<SearchResultState>('none')
   const [recentQueries, setRecentQueries] = useLocalStorage<string[]>({
     key: 'recentQueries',
     defaultValue: [],
@@ -100,15 +89,24 @@ export default function Search() {
 
   const { result, error, loading, update } = useApi('/objects/query', {
     method: 'POST',
-    defer: true,
+    defer: currentQuery === null,
     data: {
       ...QUERY_DEFAULTS,
       q: currentQuery,
     },
   })
 
+  // Set search result state
   useEffect(() => {
-    console.log('useEffect')
+    if (loading) setSearchState('loading')
+    else if (result) {
+      if (result.found === 0) setSearchState('none')
+      else setSearchState('results')
+    }
+    if (error) setSearchState('error')
+  }, [loading, error, result])
+
+  useEffect(() => {
     if (currentQuery === null) return
     update({
       ...QUERY_DEFAULTS,
@@ -135,30 +133,6 @@ export default function Search() {
     )
   }
 
-  const RecentSearches = () => {
-    if (recentQueries.length === 0) return <>No recent searches</>
-    else
-      return (
-        <>
-          {recentQueries.reverse().map((query, i) => (
-            <Anchor align='center' key={i} onClick={() => handleSearchDirectly(query)}>
-              {query}
-            </Anchor>
-          ))}
-        </>
-      )
-  }
-
-  const ConditionalResults = (): JSX.Element => {
-    if (loading) return RESULT_LOADING
-    if (error) return RESULT_ERROR
-    if (result) {
-      if (result.found === 0) return RESULT_NONE
-      if (result.hits) return <KObjectCards hits={result.hits} />
-    }
-    return <RecentSearches />
-  }
-
   // Handlers
   const handleSearchSubmit = (e: Event) => {
     if (e.target instanceof HTMLFormElement) {
@@ -170,39 +144,102 @@ export default function Search() {
     } else throw new Error('handleSearchSubmit must be called with an HTMLFormElement')
   }
 
-  const handleSearchDirectly = (search: string) => {
-    updateSearch({
-      ...QUERY_DEFAULTS,
-      q: search,
-    })
-  }
-
   const handlePaginationChange = (newPage: number): void => {
     updateSearch({ ...QUERY_DEFAULTS, q: currentQuery, page: newPage })
   }
 
+  // Components
+  const RecentSearches = () => {
+    if (recentQueries.length === 0) return <></>
+    return (
+      <>
+        <Title align='center' order={2}>
+          Recent Searches
+        </Title>
+        <Stack spacing={0} align='center'>
+          {recentQueries.reverse().map((query, i) => (
+            <Anchor
+              key={i}
+              onClick={() =>
+                updateSearch({
+                  ...QUERY_DEFAULTS,
+                  q: query,
+                })
+              }
+            >
+              {query}
+            </Anchor>
+          ))}
+        </Stack>
+      </>
+    )
+  }
+
+  const Results = () => {
+    switch (searchState) {
+      case 'loading':
+        return RESULT_LOADING
+      case 'results':
+        return <KObjectCards hits={result.hits} />
+      case 'none':
+        return <RecentSearches />
+      default:
+        throw new Error('Invalid search result state')
+    }
+  }
+
+  const Paginate = () => {
+    switch (searchState) {
+      case 'results':
+      case 'loading':
+        return (
+          <Container>
+            <Pagination
+              total={Math.ceil(result.found / result.request_params.per_page)}
+              value={result.page}
+              disabled={loading}
+              onChange={handlePaginationChange}
+            />
+          </Container>
+        )
+    }
+    return null
+  }
+
+  const SearchInput = () => (
+    <form onSubmit={handleSearchSubmit}>
+      <TextInput name='query' placeholder={currentQuery} icon={<IconSearch />} />
+    </form>
+  )
+
+  const SearchStatus = () => {
+    let status = ''
+    switch (searchState) {
+      case 'error':
+        status = 'Something went wrong'
+        break
+      case 'loading':
+        status = 'Searching...'
+        break
+      case 'none':
+        status = 'No results found'
+        break
+      case 'results':
+        status = createSearchSummary(result)
+    }
+    return (
+      <Text size='sm' align='center'>
+        {status}
+      </Text>
+    )
+  }
+
   return (
     <Layout.Simple title='Search'>
-      <form onSubmit={handleSearchSubmit}>
-        <TextInput name='query' placeholder={currentQuery} icon={<IconSearch />} />
-      </form>
-      {
-        <Text size='sm' align='center'>
-          {(loading ? 'waiting for results' : result && createSearchSummary(result)) ||
-            'Recent searches'}
-        </Text>
-      }
-      <ConditionalResults />
-      <Container>
-        {result && (
-          <Pagination
-            total={Math.ceil(result.found / result.request_params.per_page)}
-            value={result.page}
-            disabled={loading}
-            onChange={handlePaginationChange}
-          />
-        )}
-      </Container>
+      <SearchInput />
+      <SearchStatus />
+      <Results />
+      <Paginate />
     </Layout.Simple>
   )
 }
