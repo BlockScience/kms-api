@@ -1,7 +1,6 @@
 import { useEffect } from 'preact/hooks'
-import { useApi } from '@/hooks/useApi'
+import { useApi } from '@/hooks'
 import { useSearchParams, useNavigate, createSearchParams, useLocation } from 'react-router-dom'
-import { SetTitle } from '@/utils'
 import parseHtml from '@/utils/htmlParser'
 
 import { IconSearch } from '@tabler/icons-react'
@@ -11,16 +10,15 @@ import {
   Anchor,
   Center,
   Container,
-  Divider,
   Group,
   Pagination,
   Paper,
-  Stack,
   Text,
   TextInput,
   Title,
   useMantineTheme,
 } from '@mantine/core'
+import { Layout } from '@/components/Layout'
 
 // -------- CONSTANTS -------- //
 const QUERY_DEFAULTS = {
@@ -199,28 +197,28 @@ export default function Search() {
   }
 
   return (
-    <div>
-      <SetTitle text='Search' />
-      <Stack maw={1000} mx='auto' mt={30}>
-        <form onSubmit={handleSearchSubmit}>
-          <TextInput name='query' placeholder={currentQuery} icon={<IconSearch />} />
-        </form>
-        <Divider
-          label={loading ? 'waiting for results' : result && searchSummaryString(result)}
-          labelPosition='center'
-        />
-        <ConditionalResults />
-        <Container>
-          {result && (
-            <Pagination
-              total={Math.ceil(result.found / result.request_params.per_page)}
-              value={result.page}
-              disabled={loading}
-              onChange={handlePaginationChange}
-            />
-          )}
-        </Container>
-      </Stack>
-    </div>
+    <Layout.Simple
+      title='Search'
+      dividerLabel={
+        (loading ? 'waiting for results' : result && searchSummaryString(result)) ||
+        'no results to show'
+      }
+      rightSection={
+        // <form onSubmit={handleSearchSubmit}>
+        <TextInput name='query' placeholder={currentQuery} icon={<IconSearch />} />
+      }
+    >
+      <ConditionalResults />
+      <Container>
+        {result && (
+          <Pagination
+            total={Math.ceil(result.found / result.request_params.per_page)}
+            value={result.page}
+            disabled={loading}
+            onChange={handlePaginationChange}
+          />
+        )}
+      </Container>
+    </Layout.Simple>
   )
 }

@@ -1,9 +1,9 @@
 import DocsTOC from '@/components/TableOfContents'
-import { SetTitle } from '@/utils'
 import { Box, Grid, ScrollArea, useMantineTheme } from '@mantine/core'
 import { useState } from 'preact/hooks'
 import Markdown from 'markdown-to-jsx'
 import { common } from '@/components/typography/overrides'
+import { useTitle } from '@/hooks'
 
 const initialDoc = 'index'
 const docs = [
@@ -39,51 +39,49 @@ export default function Documentation() {
   function handlePageChange(page: number, filename: string) {
     setCurrentDoc(filename)
   }
+  useTitle('Docs')
 
   return (
-    <>
-      <SetTitle text='Docs' />
-      <Grid columns={24}>
-        <Grid.Col
-          span={6}
-          p='1rem'
-          pt='3rem'
-          style={{
-            borderRight:
-              theme.colorScheme === 'dark'
-                ? `1px solid ${theme.colors.dark[5]}`
-                : `1px solid ${theme.colors.gray[2]}`,
-          }}
-        >
-          <Box mt={theme.spacing.xl} ml={theme.spacing.xl}>
-            <DocsTOC
-              title='Documentation'
-              docs={docs}
-              onActiveChange={handlePageChange}
-              icons={[null, '#']}
-            />
-          </Box>
-        </Grid.Col>
-        <Grid.Col span={18}>
-          {/* // TODO: Create preact replacement for ScrollArea */}
-          {/* 
+    <Grid columns={24}>
+      <Grid.Col
+        span={6}
+        p='1rem'
+        pt='3rem'
+        style={{
+          borderRight:
+            theme.colorScheme === 'dark'
+              ? `1px solid ${theme.colors.dark[5]}`
+              : `1px solid ${theme.colors.gray[2]}`,
+        }}
+      >
+        <Box mt={theme.spacing.xl} ml={theme.spacing.xl}>
+          <DocsTOC
+            title='Documentation'
+            docs={docs}
+            onActiveChange={handlePageChange}
+            icons={[null, '#']}
+          />
+        </Box>
+      </Grid.Col>
+      <Grid.Col span={18}>
+        {/* // TODO: Create preact replacement for ScrollArea */}
+        {/* 
           // @ts-ignore */}
-          <ScrollArea h='100vh'>
-            <Box m='4em'>
-              <Markdown
-                options={{
-                  overrides: {
-                    dw: ({ children }) => <span>{children}</span>,
-                    ...common,
-                  },
-                }}
-              >
-                {getDoc(currentDoc)}
-              </Markdown>
-            </Box>
-          </ScrollArea>
-        </Grid.Col>
-      </Grid>
-    </>
+        <ScrollArea h='100vh'>
+          <Box m='4em'>
+            <Markdown
+              options={{
+                overrides: {
+                  dw: ({ children }) => <span>{children}</span>,
+                  ...common,
+                },
+              }}
+            >
+              {getDoc(currentDoc)}
+            </Markdown>
+          </Box>
+        </ScrollArea>
+      </Grid.Col>
+    </Grid>
   )
 }

@@ -22,7 +22,6 @@
     "@mantine/prism": "^6.0.15",
     "@mantine/utils": "^6.0.14",
     "@tabler/icons-react": "^2.23.0",
-    "@tanstack/react-query": "^4.29.19",
     "cytoscape": "^3.25.0",
     "cytoscape-cola": "^2.5.1",
     "mantine-datatable": "^2.7.0",

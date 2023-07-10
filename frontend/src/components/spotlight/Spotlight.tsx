@@ -83,9 +83,11 @@ function CustomAction({
           {action.new && <Badge>new</Badge>}
         </Group>
       </UnstyledButton>
-      <Group mt={5} grow>
-        {action.below && action.below}
-      </Group>
+      {action.below && (
+        <Group mt={5} grow>
+          {action.below}
+        </Group>
+      )}
     </>
   )
 }
@@ -182,7 +184,7 @@ export function Spotlight({ children }: SpotlightProps) {
       description: 'Show the graph view',
       icon: <IconTerminal2 size={px('1.2rem')} />,
       onTrigger: () => {
-        navigate('/experimental')
+        navigate('/graph')
       },
     },
     {

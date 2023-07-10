@@ -7,16 +7,16 @@ import {
   Text,
   List,
   rem,
-  Code,
   Anchor,
   Box,
   useMantineTheme,
   Kbd,
 } from '@mantine/core'
 import { IconListSearch, IconMathSymbols, IconTerminal2, IconWallOff } from '@tabler/icons-react'
-import { trigger, SetTitle, ModKey } from '@/utils'
+import { trigger } from '@/utils'
 import { useNavigate } from 'react-router-dom'
 import { OnboardingTour } from '@/components/OnboardingTour'
+import { useTitle } from '@/hooks'
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -58,10 +58,10 @@ export default function Home() {
   const navigate = useNavigate()
   const theme = useMantineTheme()
   const color = theme.colors.blue[theme.primaryShade['light']]
+  useTitle('KMS', false)
   return (
     <>
       <OnboardingTour />
-      <SetTitle text='KMS' noPrefix />
       <Box maw={1000} mx='auto'>
         <Container>
           <div className={classes.inner}>
@@ -79,8 +79,8 @@ export default function Home() {
                 knowledge system.
               </Title>
               <Text color='dimmed' mt='md'>
-                A lightweight, powerful tool to find and organise knowledge objects. Built just for
-                us!
+                KMS helps us find, discover and organise knowledge objects. Built with new
+                primitives to support the self-organisation of digital knowledge.
               </Text>
 
               <List mt={30} spacing='sm' size='sm'>

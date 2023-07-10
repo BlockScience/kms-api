@@ -32,8 +32,7 @@ const Chat: ChatComponent = ({
   onSubmit,
 }: ChatProps): JSX.Element => {
   return (
-    <div>
-      <Divider />
+    <>
       {/* 
       // TODO: create a robust replacement for mantine ScrollArea and ScrollArea.Autosize
       // @ts-ignore */}
@@ -59,7 +58,7 @@ const Chat: ChatComponent = ({
           placeholder='Send a message'
         ></TextInput>
       </form>
-    </div>
+    </>
   )
 }
 

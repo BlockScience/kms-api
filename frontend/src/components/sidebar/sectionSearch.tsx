@@ -27,16 +27,13 @@ const SearchExpanded = () => {
 }
 
 const SearchCollapsed = ({ active }: { active: boolean }) => {
-  const spotlight = useSpotlight()
-  console.log('spotlight', active)
-
   return (
     <NavItem
       icon={<IconSearch size={px('1rem')} />}
       color='grape'
       label='Search'
       active={active}
-      onAction={() => spotlight.openSpotlight()}
+      path='/search'
     />
   )
 }

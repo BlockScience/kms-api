@@ -1,3 +1,4 @@
+import { useTitle } from '@/hooks'
 import {
   createStyles,
   Container,
@@ -10,7 +11,6 @@ import {
   Center,
 } from '@mantine/core'
 import { NavLink } from 'react-router-dom'
-import { SetTitle } from '@/utils'
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -50,9 +50,9 @@ const useStyles = createStyles((theme) => ({
 
 export default function NotFound() {
   const { classes } = useStyles()
+  useTitle('Page not found')
   return (
     <Container className={classes.root} style={{ height: '100%' }}>
-      <SetTitle text='404' />
       <Center style={{ height: '100%' }}>
         <SimpleGrid spacing={80} cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1, spacing: 40 }]}>
           <Image src='/404.svg' className={classes.mobileImage} />

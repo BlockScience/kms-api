@@ -255,7 +255,7 @@ export function OnboardingTour() {
       callback={handleJoyrideCallback}
       run={state.run}
       scrollToFirstStep
-      disableOverlayClose
+      // disableOverlayClose
       spotlightClicks
       locale={{
         back: 'Back',
