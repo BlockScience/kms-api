@@ -1,14 +1,16 @@
 import { useEffect } from 'preact/hooks'
 import { useApi } from '@/hooks'
-import { useSearchParams, useNavigate, createSearchParams, useLocation } from 'react-router-dom'
+import { useSearchParams, useNavigate, createSearchParams } from 'react-router-dom'
 
 import { IconSearch } from '@tabler/icons-react'
 import { CardsSkeleton } from '@/components/Skeleton'
 import { Anchor, Center, Container, Pagination, Text, TextInput } from '@mantine/core'
 import { Layout } from '@/components/Layout'
 import { KObjectCards } from './KObjectCard'
+import { useLocalStorage } from '@mantine/hooks'
 
 // -------- CONSTANTS -------- //
+const SHOW_RECENT_SEARCHES = 5
 const QUERY_DEFAULTS = {
   query_by: 'tags, title, text',
   query_by_weights: '3, 2, 1',
@@ -78,7 +80,7 @@ export interface KObjectProps {
 }
 
 // ----------- HELPERS ----------- //
-const searchSummaryString = (response: TypesenseResponse) => {
+const createSearchSummary = (response: TypesenseResponse) => {
   const totalResults = response.found
   const resultsPerPage = response.request_params.per_page
   const currentPage = response.page || 1
@@ -89,11 +91,16 @@ const searchSummaryString = (response: TypesenseResponse) => {
 
 export default function Search() {
   const navigate = useNavigate()
-  const { search } = useLocation()
-  const [searchparams] = useSearchParams()
-  const currentQuery = searchparams.get('q')
+  const [searchParams] = useSearchParams()
+  const currentQuery = searchParams.get('q')
+  const [recentQueries, setRecentQueries] = useLocalStorage<string[]>({
+    key: 'recentQueries',
+    defaultValue: [],
+  })
+
   const { result, error, loading, update } = useApi('/objects/query', {
     method: 'POST',
+    defer: true,
     data: {
       ...QUERY_DEFAULTS,
       q: currentQuery,
@@ -101,11 +108,18 @@ export default function Search() {
   })
 
   useEffect(() => {
+    console.log('useEffect')
+    if (currentQuery === null) return
     update({
       ...QUERY_DEFAULTS,
       q: currentQuery,
     })
-  }, [search])
+    setRecentQueries((prev) => {
+      const repeatedSearch = prev.indexOf(currentQuery)
+      if (repeatedSearch >= 0) prev.splice(repeatedSearch, 1)
+      return [...prev, currentQuery].slice(-SHOW_RECENT_SEARCHES)
+    })
+  }, [currentQuery])
 
   const updateSearch = (typesenseQuery: TypesenseQuery) => {
     if (!typesenseQuery.q) throw new Error('updateSearch must be called with a q parameter')
@@ -121,6 +135,20 @@ export default function Search() {
     )
   }
 
+  const RecentSearches = () => {
+    if (recentQueries.length === 0) return <>No recent searches</>
+    else
+      return (
+        <>
+          {recentQueries.reverse().map((query, i) => (
+            <Anchor align='center' key={i} onClick={() => handleSearchDirectly(query)}>
+              {query}
+            </Anchor>
+          ))}
+        </>
+      )
+  }
+
   const ConditionalResults = (): JSX.Element => {
     if (loading) return RESULT_LOADING
     if (error) return RESULT_ERROR
@@ -128,7 +156,7 @@ export default function Search() {
       if (result.found === 0) return RESULT_NONE
       if (result.hits) return <KObjectCards hits={result.hits} />
     }
-    return null
+    return <RecentSearches />
   }
 
   // Handlers
@@ -142,6 +170,13 @@ export default function Search() {
     } else throw new Error('handleSearchSubmit must be called with an HTMLFormElement')
   }
 
+  const handleSearchDirectly = (search: string) => {
+    updateSearch({
+      ...QUERY_DEFAULTS,
+      q: search,
+    })
+  }
+
   const handlePaginationChange = (newPage: number): void => {
     updateSearch({ ...QUERY_DEFAULTS, q: currentQuery, page: newPage })
   }
@@ -153,8 +188,8 @@ export default function Search() {
       </form>
       {
         <Text size='sm' align='center'>
-          {(loading ? 'waiting for results' : result && searchSummaryString(result)) ||
-            'no results to show'}
+          {(loading ? 'waiting for results' : result && createSearchSummary(result)) ||
+            'Recent searches'}
         </Text>
       }
       <ConditionalResults />
