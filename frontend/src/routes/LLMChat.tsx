@@ -116,7 +116,7 @@ export default function LLMChat() {
       }
     >
       <Chat
-        height='80vh'
+        height='75vh'
         onSubmit={handlePromptSubmit}
         startLabel={
           getChatHistoryLoading ? (

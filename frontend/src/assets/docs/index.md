@@ -1,5 +1,3 @@
-# BSci KMS Guide
-
 Here you'll find a *friendly* introduction & guide to the KMS — a lightweight but powerful tool to find and organise knowledge artifacts. It only takes a minute to get started. You'll also find feature details and ongoing research.
 
 Get started with basic search [here.](start/search.md)

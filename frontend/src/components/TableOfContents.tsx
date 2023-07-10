@@ -1,6 +1,5 @@
 import { useState } from 'preact/hooks'
-import { createStyles, Box, Text, Group, rem, useMantineTheme, px } from '@mantine/core'
-import { IconListSearch } from '@tabler/icons-react'
+import { createStyles, Box, Group, rem } from '@mantine/core'
 import { closestWithCondition } from '@/utils'
 
 const LINK_HEIGHT = 38
@@ -57,18 +56,15 @@ const useStyles = createStyles((theme) => ({
 }))
 
 export interface TableOfContentsProps {
-  title: string
   docs: { label: string; filename?: string; order: number }[]
   /** arrray of icons to use for each level of nesting. null for no icon */
   icons?: (string | null)[]
   onActiveChange: (active: number, filename: string) => void
 }
 
-export default function DocsTOC({ docs, icons, title, onActiveChange }: TableOfContentsProps) {
+export default function DocsTOC({ docs, icons, onActiveChange }: TableOfContentsProps) {
   const { classes, cx } = useStyles()
   const [active, setActive] = useState(0)
-  const theme = useMantineTheme()
-  const dimmed = theme.colorScheme === 'dark' ? theme.colors.dark[2] : theme.colors.gray[6]
 
   const items = docs.map((item, index) => (
     <Box
@@ -104,22 +100,14 @@ export default function DocsTOC({ docs, icons, title, onActiveChange }: TableOfC
   const searchIconSize = 1.4
 
   return (
-    <div>
-      <Group mb='sm' noWrap>
-        <IconListSearch size={px(`${searchIconSize}rem`)} stroke={1.5} color={dimmed} />
-        <Text sx={{ overflow: 'hidden', whiteSpace: 'nowrap' }} color={dimmed}>
-          {title}
-        </Text>
-      </Group>
-      <div className={classes.links} style={{ marginLeft: `${searchIconSize / 2}rem` }}>
-        <div
-          className={classes.indicator}
-          style={{
-            transform: `translateY(${rem(active * LINK_HEIGHT + INDICATOR_OFFSET)})`,
-          }}
-        />
-        {items}
-      </div>
+    <div className={classes.links} style={{ marginLeft: `${searchIconSize / 2}rem` }}>
+      <div
+        className={classes.indicator}
+        style={{
+          transform: `translateY(${rem(active * LINK_HEIGHT + INDICATOR_OFFSET)})`,
+        }}
+      />
+      {items}
     </div>
   )
 }
