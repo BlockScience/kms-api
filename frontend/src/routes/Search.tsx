@@ -1,24 +1,12 @@
 import { useEffect } from 'preact/hooks'
 import { useApi } from '@/hooks'
 import { useSearchParams, useNavigate, createSearchParams, useLocation } from 'react-router-dom'
-import parseHtml from '@/utils/htmlParser'
 
 import { IconSearch } from '@tabler/icons-react'
 import { CardsSkeleton } from '@/components/Skeleton'
-import ObjectRID from '@/components/ObjectRID'
-import {
-  Anchor,
-  Center,
-  Container,
-  Group,
-  Pagination,
-  Paper,
-  Text,
-  TextInput,
-  Title,
-  useMantineTheme,
-} from '@mantine/core'
+import { Anchor, Center, Container, Pagination, Text, TextInput } from '@mantine/core'
 import { Layout } from '@/components/Layout'
+import { KObjectCards } from './KObjectCard'
 
 // -------- CONSTANTS -------- //
 const QUERY_DEFAULTS = {
@@ -61,7 +49,7 @@ interface TypesenseResponse {
   }
 }
 
-interface SearchHit {
+export interface SearchHit {
   document: Document
   highlight: {
     text?: {
@@ -79,7 +67,7 @@ interface Document {
   tags: string[]
 }
 
-interface KObjectProps {
+export interface KObjectProps {
   title: string
   url: string
   type: string
@@ -97,44 +85,6 @@ const searchSummaryString = (response: TypesenseResponse) => {
   const end = Math.min(currentPage * resultsPerPage, totalResults)
   const start = Math.min(Math.max(0, currentPage - 1) * resultsPerPage + 1, end)
   return `showing ${start}-${end} of ${totalResults} results`
-}
-
-// -------- SUBCOMPONENTS -------- //
-function KObjectCard({ title, text, url, type, platform, tags, id }: KObjectProps) {
-  const theme = useMantineTheme()
-  const bg = theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]
-  return (
-    <Paper bg={bg} p='sm' radius='md' withBorder>
-      <Group position='apart' noWrap align='start'>
-        <Title order={5}>
-          <Anchor color='inherit' target='_blank' href={url}>
-            {title}
-          </Anchor>
-        </Title>
-        <ObjectRID id={id} />
-      </Group>
-      <Text c='dimmed' fz='sm'>
-        {type} from {platform}
-      </Text>
-      <Text>{text}</Text>
-    </Paper>
-  )
-}
-
-const KObjectCards = ({ hits }: { hits: SearchHit[] }): JSX.Element => {
-  const cards = hits.map((hit) => (
-    <KObjectCard
-      key={hit.document.id}
-      id={hit.document.id}
-      title={hit.document.title}
-      url={hit.document.url}
-      type={hit.document.type}
-      platform={hit.document.platform}
-      tags={hit.document.tags}
-      text={parseHtml(hit.highlight.text?.snippet)}
-    />
-  ))
-  return <>{cards}</>
 }
 
 export default function Search() {
@@ -197,17 +147,16 @@ export default function Search() {
   }
 
   return (
-    <Layout.Simple
-      title='Search'
-      dividerLabel={
-        (loading ? 'waiting for results' : result && searchSummaryString(result)) ||
-        'no results to show'
-      }
-      rightSection={
-        // <form onSubmit={handleSearchSubmit}>
+    <Layout.Simple title='Search'>
+      <form onSubmit={handleSearchSubmit}>
         <TextInput name='query' placeholder={currentQuery} icon={<IconSearch />} />
+      </form>
+      {
+        <Text size='sm' align='center'>
+          {(loading ? 'waiting for results' : result && searchSummaryString(result)) ||
+            'no results to show'}
+        </Text>
       }
-    >
       <ConditionalResults />
       <Container>
         {result && (
