@@ -1,10 +1,13 @@
+import os
 from tinydb import Query, TinyDB
-
 from config import LLM_CHAT_HISTORY_DB
 
 
 class ChatHistories:
     def __init__(self):
+        os.makedirs(os.path.dirname(LLM_CHAT_HISTORY_DB), exist_ok=True)
+        with open(LLM_CHAT_HISTORY_DB, "a"):
+            pass  # create file if it doesn't exist
         self.db = TinyDB(LLM_CHAT_HISTORY_DB, indent=2)
         self.clean_empty()
 

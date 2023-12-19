@@ -1,10 +1,11 @@
-chromadb~=0.3.26
+chromadb~=0.4.20
 fastapi~=0.97
 firebase-admin~=6.1.0
 google-cloud-secret-manager~=2.16
 google-crc32c~=1.0
+InstructorEmbedding
 jsonschema~=4.17
-langchain~=0.0.174
+langchain~=0.0.351
 nanoid~=2.0.0
 openai
 pre-commit~=3.3.3 

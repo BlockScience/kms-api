@@ -1,5 +1,8 @@
 # KMS API
 
+## Docker Containers
+`docker build -t kms-api .` and `docker run --env-file .env -p 8080:8080 kms-api`
+
 This is the repository for the Knowledge Management System API. It is currently in the process of being refactored from the old pipeline and contains endpoint for creating, reading, updating, deleting, and querying knowledge objects from the FireStore database.  
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 

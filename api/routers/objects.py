@@ -1,16 +1,15 @@
-from fastapi import APIRouter, Body, Depends, Response, status
+from fastapi import APIRouter, Body, Response, status
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 from typesense.exceptions import ObjectNotFound, RequestMalformed
 
-from api.auth import validate_auth
 from api.core import firestore_db
 from api.schema import KOBJ_SCHEMA, QUERY_SCHEMA
 from api.utils.query import encode_url, query, search_typesense
 from api.utils.profile import profile
 from url_normalize import url_normalize
 
-router: APIRouter = APIRouter(prefix="/objects", dependencies=[Depends(validate_auth)])
+router: APIRouter = APIRouter(prefix="/objects")
 
 
 @router.post("")

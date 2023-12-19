@@ -24,6 +24,13 @@ llm_condense = ChatOpenAI(
     temperature=0.3,
     streaming=False,
 )
+llm_default = ChatOpenAI(
+    model_name=BASE_MODEL,
+    verbose=False,
+    request_timeout=240,
+    temperature=0.3,
+    streaming=False,
+)
 
 
 class InstructorEmbedder(Embeddings):
@@ -50,8 +57,9 @@ db = Chroma(
     embedding_function=InstructorEmbedder(),
     persist_directory=str(LLM_EMBEDDINGS),
 )
+# db2 = chromadb.HttpClient(host="localhost", port=8000)
 retriever = db.as_retriever(search_kwargs={"k": 10})
-
+# print(db._client.get_collection("general-max-size-512").count())
 # -------------- CHAINS ---------------
 conversation_retrieval_chain = ConversationalRetrievalChain.from_llm(
     llm_chat, retriever=retriever, condense_question_llm=llm_condense

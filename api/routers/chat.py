@@ -11,6 +11,7 @@ from api.auth import validate_auth
 
 from api.llm.history import histories
 from api.llm.interaction_handler import conversational
+from api.llm.models import llm_default
 from api.schema import CHAT_SCHEMA
 
 router: APIRouter = APIRouter(
@@ -57,6 +58,30 @@ async def get_chat_response(
 
     async def task():
         await conversational(body["prompt"], user_id, chat_id, queue)
+        queue.put(False)
+
+    t = Thread(target=asyncio.run, args=(task(),))
+    t.start()
+
+    def stream_tokens(q):
+        while True:
+            try:
+                next_token = q.get(False, timeout=1)
+                if next_token is False:
+                    break
+                yield next_token
+            except Empty:
+                continue
+
+    return StreamingResponse(content=stream_tokens(queue), media_type="text/html")
+
+
+@router.post("/response")
+async def get_response(response: Response, body: dict = Body(...)):
+    queue: Queue = Queue()
+
+    async def task():
+        await llm_default.call_as_llm(body["prompt"])
         queue.put(False)
 
     t = Thread(target=asyncio.run, args=(task(),))

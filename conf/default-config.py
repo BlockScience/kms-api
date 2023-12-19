@@ -2,8 +2,7 @@
 PROJECT_NAME = "kms-api"
 BACKEND_NAME = "api"
 FRONTEND_NAME = "frontend"
-PROJECT_PATH = "/home/admin/" + PROJECT_NAME
-LOCAL_STORAGE_DIR = PROJECT_PATH + "/local/"
+LOCAL_STORAGE_DIR = "./local/"
 SSL_CERT_PATH = "/etc/letsencrypt/live/kms-beta.block.science/fullchain.pem"
 SSL_CERT_KEY_PATH = "/etc/letsencrypt/live/kms-beta.block.science/privkey.pem"
 

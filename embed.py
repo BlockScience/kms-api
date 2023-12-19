@@ -28,7 +28,7 @@ class Embedder:
             )
         )
 
-    def preprocess(self, min_chunk_size, max_chunk_size, chunk_overlap):
+    def preprocess(self, min_text_length, max_chunk_size, chunk_overlap):
         with open(self.dataset) as r:
             docs_raw = list(json.loads(r.read()))
 
@@ -40,7 +40,7 @@ class Embedder:
                     continue
                 if e["text"] == "":
                     continue
-                if len(e["text"]) < min_chunk_size:
+                if len(e["text"]) < min_text_length:
                     continue
                 docs_clean.append(e)
             print(f"\n* Filtered {len(docs_raw)} sources down to {len(docs_clean)}")
@@ -61,7 +61,7 @@ class Embedder:
         self.chunks = [
             (str(index), chunk)
             for index, chunk in enumerate(text_splitter.split_documents(cleaned_docs))
-            if len(chunk.page_content) > min_chunk_size
+            if len(chunk.page_content) > min_text_length
         ]
         # plot_hist(
         #     [len(chunk[1].page_content) for chunk in self.chunks],
@@ -99,6 +99,6 @@ embed_func = embedding_functions.InstructorEmbeddingFunction(
     model_name="hkunlp/instructor-large", device="cpu"
 )
 
-embedder = Embedder("local/data.json", "local/embeddings")
-embedder.preprocess(120, 1024, 128)
-embedder.embed("general-min_chunk_size", embed_func)
+embedder = Embedder("local/knowledge.json", "local/embeddings")
+embedder.preprocess(80, 512, 128)
+embedder.embed("general-max-size-512", embed_func)
