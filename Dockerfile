@@ -6,7 +6,7 @@ WORKDIR /app
 COPY . .
 
 # Install the dependencies (dev dependencies are temporary)
-RUN pip install -r requirements.txt -r requirements-dev.txt
+RUN pip install -r requirements.txt 
 
 # Remove the cache to reduce the image size
 RUN pip cache purge
